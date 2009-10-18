@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  challenge_id: 1
+  name: MyString
+  start_time: 2009-10-15 10:29:07
+  end_time: 2009-10-15 10:29:07
+  winner_id: 1
+
+two:
+  challenge_id: 1
+  name: MyString
+  start_time: 2009-10-15 10:29:07
+  end_time: 2009-10-15 10:29:07
+  winner_id: 1

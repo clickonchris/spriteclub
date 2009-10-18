@@ -1,0 +1,14 @@
+<p>
+  <b>Received by user:</b>
+  <%=h @challenge == nil ? @challenge.sent_to_user.first_name : "" %> 
+  <%=h @challenge == nil ? @challenge.sent_to_user.last_name : "" %>
+</p>
+
+<p>
+  <b>Expire date:</b>
+  <%=h @challenge.expire_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_challenge_path(@challenge) %> |
+<%= link_to 'Back', challenges_path %>

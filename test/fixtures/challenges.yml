@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  created_by_user_id: 1
+  issued_to_user_id: 1
+  status: MyString
+  expire_date: 2009-10-15 10:31:57
+
+two:
+  created_by_user_id: 1
+  issued_to_user_id: 1
+  status: MyString
+  expire_date: 2009-10-15 10:31:57

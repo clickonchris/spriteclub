@@ -50,6 +50,8 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
+   config.action_controller.allow_forgery_protection = false
+
   # Your secret key for verifying cookie session data integrity.
   # If you change this key, all old sessions will become invalid!
   # Make sure the secret is at least 30 characters and all random, 
@@ -58,6 +60,8 @@ Rails::Initializer.run do |config|
     :session_key => '_spriteclub_session',
     :secret      => 'a18dfe62481dd8988289cc025dffce7fb3d99cff6aa941844be313858074154893b4b0d03ed2033cb8b876b2f577bf3c646bd703b193fd8008e4ee6a8d405a4b'
   }
+  
+
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information

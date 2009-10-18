@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  contest_id: 1
+  firstName: 
+  lastName: 
+  middleName: MyString
+  imageFile: 
+  photoUrl: MyString
+
+two:
+  contest_id: 1
+  firstName: 
+  lastName: 
+  middleName: MyString
+  imageFile: 
+  photoUrl: MyString
