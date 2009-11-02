@@ -1,0 +1,41 @@
+<h1>New challenge</h1>
+
+<%= facebook_messages %>
+
+<% facebook_form_for :contest,@contest, :url=>contests_path do |f| %>
+	
+	<%= f.multi_friend_input :label=>"User to Challenge"%>
+	
+	<p/>
+	<%= f.text_field :name %>
+		
+	
+	<p/>
+  <p>
+  	<% fields_for "contest[challenge_attributes][]", @contest.challenge do |challenge_form|  %>
+    	<%# Challenge Expiration Date: <%= challenge_form.datetime_select :expire_date %>
+	<% end %>
+  </p>
+  <p>
+		<!-- put ui elements here for Contestant -->
+		<!-- If this user already has contestants,
+		 let them pick one from a dropdown OR create a new one -->
+		 <% for contestant in @contest.contestants %>
+		 <% fields_for "contest[contestant_attributes][]", contestant do |contestant_form| %>
+		 
+			 First Name: <%= contestant_form.text_field :first_name %>
+			 <br/>
+			 Last Name: <%= contestant_form.text_field :last_name %>
+			 <br/>
+			 Image URL: <%= contestant_form.text_field :photo_url %>
+			 
+		 <% end %>
+		 <% end %>
+	</p>
+  
+  <p>
+ 	<%= f.buttons "Submit Challenge!" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', contests_path %>

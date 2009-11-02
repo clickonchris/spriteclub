@@ -38,9 +38,11 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   #this is the default route when the user hits "/"
+  
+  map.resources :contests
   map.resources :challenges
   
-  map.spriteclub '',:controller=>"challenges"#,  :conditions=>{:canvas=>true}
+  map.spriteclub '',:controller=>"contests"#,  :conditions=>{:canvas=>true}
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
