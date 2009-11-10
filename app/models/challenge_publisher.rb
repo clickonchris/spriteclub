@@ -10,8 +10,8 @@ class ChallengePublisher < Facebooker::Rails::Publisher
     fbml  <<-MESSAGE  
       <fb:fbml>
       #{challenge_info(challenge) }
-      #{challenge.sent_to_user} with a spriteclub challenge.
-      #{link_to "Respond to the challenge", new_challenge_url}
+      .
+      #{link_to "Accept the challenge", new_challenge_url}
       </fb:fbml>
     MESSAGE
     

@@ -10,14 +10,9 @@ class Challenge < ActiveRecord::Base
   
   validates_presence_of :initiated_by_user, :sent_to_user
   
-  after_create :send_challenge_notification
+
   
-  def send_challenge_notification
-    ChallengePublisher.deliver_challenge_notification(self) 
-  rescue Facebooker::Session::SessionExpired
-    # We can't recover from this error, but
-    # we don't want to show an error to our user
-  end
+  
   
   # method to build a contest based on the supplied attributes
   def contest_attributes=(contest_attributes)

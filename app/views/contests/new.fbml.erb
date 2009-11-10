@@ -5,9 +5,8 @@
 <% facebook_form_for :contest,@contest, :url=>contests_path do |f| %>
 	
 	<%= f.multi_friend_input :label=>"User to Challenge"%>
-	
 	<p/>
-	<%= f.text_field :name %>
+	<%= f.text_field :name, :label=>"Challenge Name (optional)" %>
 		
 	
 	<p/>
@@ -15,20 +14,25 @@
   	<% fields_for "contest[challenge_attributes][]", @contest.challenge do |challenge_form|  %>
     	<%# Challenge Expiration Date: <%= challenge_form.datetime_select :expire_date %>
 	<% end %>
-  </p>
+
+  <fb:editor-custom>
+	  <h3>Sprite Profile</h3>
+	
+  </fb:editor-custom>
   <p>
 		<!-- put ui elements here for Contestant -->
 		<!-- If this user already has contestants,
 		 let them pick one from a dropdown OR create a new one -->
 		 <% for contestant in @contest.contestants %>
 		 <% fields_for "contest[contestant_attributes][]", contestant do |contestant_form| %>
-		 
-			 First Name: <%= contestant_form.text_field :first_name %>
-			 <br/>
-			 Last Name: <%= contestant_form.text_field :last_name %>
+		 <fb:editor-custom>
+			 Sprite Name:<%= contestant_form.text_field :first_name %>
+			
+			<%#--<br/> Last Name: <%= contestant_form.text_field :last_name %>
+			 
 			 <br/>
 			 Image URL: <%= contestant_form.text_field :photo_url %>
-			 
+			 </fb:editor-custom>
 		 <% end %>
 		 <% end %>
 	</p>
