@@ -1,0 +1,49 @@
+<h1>Accept Challenge</h1>
+
+<%= facebook_messages %>
+
+<% facebook_form_for :contest,@contest, :url=> "/spriteclub/contests/accept_save" do |f| %>
+		<input type="hidden" name="id" value="<%=@contest.id %>" />
+  <p>
+  	<% fields_for "contest[challenge_attributes][]", @contest.challenge do |challenge_form|  %>
+    	<%# Challenge Expiration Date: <%= challenge_form.datetime_select :expire_date %>
+	<% end %>
+
+
+  <p>
+		<!-- put ui elements here for Contestant -->
+		<!-- If this user already has contestants,
+		 let them pick one from a dropdown OR create a new one -->
+		 <% for contestant in @contest.contestants %>
+		 <% fields_for "contest[contestant_attributes][]", contestant do |contestant_form| %>
+		 	<fb:editor-custom>
+		 	<% if contestant.user != nil  && contestant.user.id == @current_user.id %>
+	  			<h3>Enter information about your sprite</h3>
+				Sprite Name:<%= contestant_form.text_field :first_name %>
+			
+				<%#--<br/> Last Name: <%= contestant_form.text_field :last_name %>
+				 
+				 <br/>
+				 Image URL: <%= contestant_form.text_field :photo_url %>
+			<% else %>
+				<h3>The Challenger:</h3>
+				Sprite Name: <%=contestant.first_name %>
+			
+				<%#--<br/> Last Name: <%= contestant_form.text_field :last_name %>
+			 
+				 <br/>
+				 photo: <img src='<%=contestant.photo_url %>' />
+				
+			<% end %>
+			 
+			 </fb:editor-custom>
+		 <% end %>
+		 <% end %>
+	</p>
+  
+  <p>
+ 	<%= f.buttons "Submit Challenge!" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', contests_path %>

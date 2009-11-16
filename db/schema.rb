@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091015173157) do
+ActiveRecord::Schema.define(:version => 20091110133748) do
 
   create_table "challenges", :force => true do |t|
     t.integer  "initiated_by_user_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20091015173157) do
     t.integer  "experience_level"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "owner_user_id"
   end
 
   create_table "contests", :force => true do |t|

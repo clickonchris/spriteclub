@@ -27,6 +27,7 @@ end
     @contest = Contest.new
     @contest.build_challenge
     @contest.contestants.build
+    @contest.contestants[0].user = @user;
 
 end
 
@@ -48,8 +49,66 @@ end
     @contest.challenge.sent_to_user = User.for(params[:ids][0])
     
     @contest.save!
+    
+    flash[:notice] = "Challenge sent successfully"
+    
+    redirect_to :action=>'index'
 
+end
+
+def accept
+  if params[:user_id]
+      @user = User.find(params[:user_id])
+  else
+      @user = current_user
   end
+  
+  @contest = Contest.find(params[:id])
+  
+  #build the new contestant for the sent to user.
+  #We need a way to link this contestant directly to the user
+  newContestant = @contest.contestants.build
+  newContestant.user = @user
+  
+  #do some validation to make sure that the user accessing this method is
+  #the "sent_to_user"
+  if (@user == @contest.challenge.sent_to_user)
+    logger.info "the current user is the sent to user"
+  else
+    logger.error "the current user is NOT the sent to user"
+  end
+  
+end
+
+def accept_save
+  @contest = Contest.find(params[:id])
+  
+  if(@contest.update_attributes(params[:contest]))
+    logger.info "contest updated"
+    @contest.save!
+    #save is successful
+    redirect_to 
+  end
+  
+end
+
+
+# The method that correlates to viewing of the main contest page
+#
+def view
+  if params[:user_id]
+      @user = User.find(params[:user_id])
+  else
+      @user = current_user
+  end
+  
+  @contest = Contest.find(params[:id])
+  
+  #for each contestant, show picture, show votes
+  
+end
+
+
 
   def default_url_options(options)
     {:canvas=>true}

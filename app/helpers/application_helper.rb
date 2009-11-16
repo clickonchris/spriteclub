@@ -2,7 +2,7 @@
 module ApplicationHelper
   
   def challenge_info(challenge)
-    "A Challenge has been issued:" + (challenge.contest != nil ? challenge.contest.name : "un-named challenge")
+    "thinks their kid is better looking than your kid, and has issued you a challenge: "  + (challenge.contest != nil ? challenge.contest.name : "un-named challenge")
     
   end
   

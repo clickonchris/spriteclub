@@ -11,7 +11,7 @@ class ChallengePublisher < Facebooker::Rails::Publisher
       <fb:fbml>
       #{challenge_info(challenge) }
       .
-      #{link_to "Accept the challenge", new_challenge_url}
+      #{link_to "Accept the challenge", :controller=>'contests', :action=>'accept', :id=>challenge.contest.id }
       </fb:fbml>
     MESSAGE
     
