@@ -39,7 +39,7 @@ class ChallengesController < ApplicationController
   # GET /challenges/new.xml
   def new
     @challenge = Challenge.new
-    @challenge.build_contest unless @challenge.contest
+    #@challenge.build_contest unless @challenge.contest
 
   end
 

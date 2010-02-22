@@ -1,4 +1,4 @@
-<h1>Listing challenges</h1>
+<h1>Listing Contests</h1>
 
 <table>
   <tr>
@@ -10,11 +10,10 @@
 <% for contest in @contests %>
   <tr>
   	<td><%=h contest.name %></td>
-    <td><%=h contest.challenge.sent_to_user %></td>
-    <td><%=h contest.challenge.expire_date %></td>
-    <td><%= link_to 'Show', contest %></td>
+    <td><%=h contest.sent_to_user %></td>
+    <td><%=h contest.expire_date %></td>
+    <td><%= link_to 'Show', :action=>"show",:id=>contest.id %></td>
     <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
-    <td><%= link_to 'Destroy', contest, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

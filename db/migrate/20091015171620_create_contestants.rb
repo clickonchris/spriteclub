@@ -2,11 +2,7 @@ class CreateContestants < ActiveRecord::Migration
   def self.up
     create_table :contestants do |t|
       t.integer :contest_id, :null=>false
-      t.string :first_name, :limit=>100
-      t.string :last_name, :limit=>100
-      t.string :middle_name, :limit=>50
-      t.column :image_file, :binary, :limit=> 1.megabyte
-      t.string :photo_url
+      t.string :name, :limit=>200
       t.integer :total_points
       t.integer :experience_level
 

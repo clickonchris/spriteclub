@@ -40,9 +40,15 @@ ActionController::Routing::Routes.draw do |map|
   #this is the default route when the user hits "/"
   
   map.resources :contests
-  map.resources :challenges
+  #map.resources :challenges
+  map.resources :contestants
   
-  map.spriteclub '',:controller=>"contests"#,  :conditions=>{:canvas=>true}
+  map.spriteclub '',:controller=>"contests",
+                    :conditions=>{:canvas=>true}
+                    
+  #this is the contest controller that will be accessible from spriteclub.net                  
+  map.contest '',:controller=>"test"
+  #map.contest 'contestants',:controller=>"contestant"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

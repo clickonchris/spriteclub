@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :votes
-  has_many :challenges_initiated, :class_name=>'Challenge', :foreign_key=>'initiated_by_user_id'
-  has_many :challenges_received, :class_name=>'Challenge', :foreign_key=>'sent_to_user_id'
+  has_many :challenges_initiated, :class_name=>'Contest', :foreign_key=>'initiated_by_user_id'
+  has_many :challenges_received, :class_name=>'Contest', :foreign_key=>'sent_to_user_id'
   has_many :contestants, :class_name=>'Contestants', :foreign_key=>'owner_user_id'
   
   def create_user

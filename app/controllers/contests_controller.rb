@@ -23,15 +23,25 @@ def index
 #    end
 end
 
-  def new
+
+
+def new
     @contest = Contest.new
-    @contest.build_challenge
-    @contest.contestants.build
-    @contest.contestants[0].user = @user;
+    #@contest.build_challenge
+    # @contest.contestants.build
+    # @contest.contestants[0].user = @user;
 
 end
 
+
+#
+#  When the user saves the contest it will go here.
+#  If there is no contestant, redirect the user to create a contestant
+#
+#
  def create
+   
+   
     
     if params[:ids].blank?
       flash[:error] = "You forgot to tell me who you wanted to Challenge!"    
@@ -40,19 +50,25 @@ end
     
     @contest = Contest.new(params[:contest])
     
-    @contest.build_challenge
-    
     #set the initiating user
-    @contest.challenge.initiated_by_user = current_user;
+    @contest.initiated_by_user = current_user;
     
     #params[:ids][0] should be the id of the facebook user we are sending the challenge to
-    @contest.challenge.sent_to_user = User.for(params[:ids][0])
+    @contest.sent_to_user = User.for(params[:ids][0])
     
     @contest.save!
     
-    flash[:notice] = "Challenge sent successfully"
+    flash[:notice] = "Contest saved"
     
-    redirect_to :action=>'index'
+    if @contest.contestants.empty?
+        redirect_to :controller=>"contestants",:action=>"new",
+                    :canvas=>false,
+                    :contest_id=>@contest.id,
+                    :method=>'post'
+    else
+        redirect_to :action=>'index'
+    end
+
 
 end
 
@@ -95,7 +111,7 @@ end
 
 # The method that correlates to viewing of the main contest page
 #
-def view
+def show
   if params[:user_id]
       @user = User.find(params[:user_id])
   else

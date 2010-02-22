@@ -9,29 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091110133748) do
-
-  create_table "challenges", :force => true do |t|
-    t.integer  "initiated_by_user_id"
-    t.integer  "sent_to_user_id"
-    t.string   "status"
-    t.datetime "expire_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(:version => 20100221194246) do
 
   create_table "contestants", :force => true do |t|
-    t.integer  "contest_id",                           :null => false
-    t.string   "first_name",       :limit => 100
-    t.string   "last_name",        :limit => 100
-    t.string   "middle_name",      :limit => 50
-    t.binary   "image_file",       :limit => 16777215
+    t.integer  "contest_id",                             :null => false
+    t.string   "name",               :limit => 200
+    t.binary   "image_file",         :limit => 16777215
     t.string   "photo_url"
     t.integer  "total_points"
     t.integer  "experience_level"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_user_id"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
   end
 
   create_table "contests", :force => true do |t|
@@ -39,7 +32,11 @@ ActiveRecord::Schema.define(:version => 20091110133748) do
     t.string   "name"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer  "winner_id"
+    t.integer  "winner_contestant_id"
+    t.integer  "initiated_by_user_id"
+    t.integer  "sent_to_user_id"
+    t.string   "status"
+    t.datetime "expire_date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

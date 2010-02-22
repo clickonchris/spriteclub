@@ -2,23 +2,41 @@
 
 <%= facebook_messages %>
 
-<% facebook_form_for :challenge, :url=>challenges_path do |f| %>
-	
-	<%= f.multi_friend_input :label=>"User to Challenge"%>
-	
+<% form_for :contest,@contest,
+					 :html => { :multipart => true },
+					 :url=>'http://his0dudeness.kicks-ass.net:3001/test/create' do |f| %>
+		
 	<p/>
-	
-	<%# The form elements for challenge.contest #%> 
-		<% fields_for "challenge[contest_attributes][]", @challenge.contest do |contest_form|  %>
-		Contest Name:	<%= contest_form.text_field :name %>
+	<!--%= f.multi_friend_input :label=>"User to Challenge"%-->
+	User to Challenge:
+	<fb:multi-friend-input width="350px" border_color="#8496ba" max="1" />
+	<p/>
+
+
+	<%if false %>
+		<%# The form elements for challenge.contest #%> 
+			<% fields_for "challenge[contest_attributes][]", @challenge.contest do |contest_form|  %>
+			Contest Name:	<%= contest_form.text_field :name %>
+		<% end %>
+		
 	<% end %>
 	
 	<p/>
   <p>
+  	<fb:editor-custom>
+  		Expire Date:<br/>
     <%= f.datetime_select :expire_date %>
+	
+	</br>
+	
+	Photo:
+		<%= f.file_field :photo %>
+	</fb:editor-custom>
   </p>
   <p>
- 	<%= f.buttons "Challenge!" %>
+  	<fb:editor-custom>
+  	<%= f.submit "Submit Challenge!", :class=>'editorkit_button action' %>
+	</fb:editor-custom>
   </p>
 <% end %>
 

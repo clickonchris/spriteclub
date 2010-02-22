@@ -1,0 +1,26 @@
+<h1>Create New Contestant</h1>
+
+
+<% form_for :contestant,@contestant,
+					 :html => { :multipart => true },
+					 :url=>'http://his0dudeness.kicks-ass.net:3001/contestants/create' do |f| %>
+	
+	
+	<fb:editor-custom>
+	Contestant name: <%= f.text_field :name %>			 
+					 
+	<br/>
+	
+	
+	Photo:
+		<%= f.file_field :photo %>
+	</fb:editor-custom>
+  </p>
+  <p>
+  	<fb:editor-custom>
+  	<%= f.submit "Submit Challenge!", :class=>'editorkit_button action' %>
+	</fb:editor-custom>
+  </p>
+<% end %>
+
+<%= link_to 'Back', challenges_path %>
