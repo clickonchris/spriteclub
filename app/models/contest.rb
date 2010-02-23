@@ -1,6 +1,6 @@
 class Contest < ActiveRecord::Base
 
-  has_many :contestants
+  has_and_belongs_to_many :contestants
   
   belongs_to :initiated_by_user, 
              :class_name=>'User', 

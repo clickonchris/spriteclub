@@ -9,13 +9,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100221194246) do
+ActiveRecord::Schema.define(:version => 20100223045351) do
 
   create_table "contestants", :force => true do |t|
-    t.integer  "contest_id",                             :null => false
     t.string   "name",               :limit => 200
-    t.binary   "image_file",         :limit => 16777215
-    t.string   "photo_url"
     t.integer  "total_points"
     t.integer  "experience_level"
     t.datetime "created_at"
@@ -27,8 +24,12 @@ ActiveRecord::Schema.define(:version => 20100221194246) do
     t.datetime "photo_updated_at"
   end
 
+  create_table "contestants_contests", :id => false, :force => true do |t|
+    t.integer "contest_id"
+    t.integer "contestant_id"
+  end
+
   create_table "contests", :force => true do |t|
-    t.integer  "challenge_id"
     t.string   "name"
     t.datetime "start_time"
     t.datetime "end_time"

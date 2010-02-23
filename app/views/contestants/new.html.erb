@@ -1,24 +1,27 @@
-<h1>Create New Contestant</h1>
+<h1>Create New Sprite Profile</h1>
 
 
 <% form_for :contestant,@contestant,
 					 :html => { :multipart => true },
-					 :url=>'http://his0dudeness.kicks-ass.net:3001/contestants/create' do |f| %>
-	
-	
+					 :url=> { :action=>'create'} do |f| %>
+	<input type="hidden" name="contest_id" value="<%=@contestant.contests[0].id %>" />					 
 	<fb:editor-custom>
-	Contestant name: <%= f.text_field :name %>			 
-					 
-	<br/>
-	
-	
-	Photo:
-		<%= f.file_field :photo %>
+		<table>
+			<tr>
+				<td>Sprite Name:</td>
+				<td><%= f.text_field :name %></td>
+			</tr>
+			<tr>
+				<td>Photo:</td>
+				<td><%= f.file_field :photo %></td>
+			</tr>
+		</table>		 
+
 	</fb:editor-custom>
   </p>
   <p>
   	<fb:editor-custom>
-  	<%= f.submit "Submit Challenge!", :class=>'editorkit_button action' %>
+  	<%= f.submit "Create Sprite and Submit Challenge!", :class=>'editorkit_button action' %>
 	</fb:editor-custom>
   </p>
 <% end %>
