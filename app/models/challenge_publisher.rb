@@ -3,15 +3,15 @@ class ChallengePublisher < Facebooker::Rails::Publisher
   
   helper :application
 
-  def challenge_notification(challenge)
+  def challenge_notification(contest)
     send_as :notification
-    recipients  challenge.sent_to_user
-    from challenge.initiated_by_user.facebook_session.user
+    recipients  contest.sent_to_user
+    from contest.initiated_by_user.facebook_session.user
     fbml  <<-MESSAGE  
       <fb:fbml>
-      #{challenge_info(challenge) }
+      #{challenge_info(contest) }
       .
-      #{link_to "Accept the challenge", :controller=>'contests', :action=>'accept', :id=>challenge.contest.id }
+      #{link_to "Accept the challenge", :controller=>'contests', :action=>'accept', :id=>contest.id }
       </fb:fbml>
     MESSAGE
     
@@ -19,16 +19,16 @@ class ChallengePublisher < Facebooker::Rails::Publisher
   
   
   
-#  def challenge_notification_email(challenge)
+#  def contest_notification_email(challenge)
 #    send_as :email
-#    recipients  challenge.defending_user
-#    from challenge.attacking_user.facebook_session.user
+#    recipients  contest.defending_user
+#    from contest.attacking_user.facebook_session.user
 #    title "You've been challenged!"
 #    fbml  <<-MESSAGE
 #      <fb:fbml> 
-#      #{challenge_info(challenge) }
-#      #{name challenge.sent_to_user} with a spriteclub challenge.
-#      #{link_to "Challenge them back", new_challenge_url}
+#      #{challenge_info(contest) }
+#      #{name contest.sent_to_user} with a spriteclub challenge.
+#      #{link_to "Challenge them back", new_contest_url}
 #      </fb:fbml>
 #    MESSAGE
 #    

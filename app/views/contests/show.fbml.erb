@@ -1,0 +1,39 @@
+<h1>Spriteclub Contest - <%=@contest.name %></h1>
+
+
+<%= facebook_messages %>
+<br/><br/>
+
+<table>
+	<tr>
+		<% for i in (0..1) %>
+			<% if i < @contest.contestants.size  %>
+				<% contestant = @contest.contestants[i] %>
+				<td width="380"><h2><%= contestant.name %></h2>
+					<br/>				
+					<br/>
+					<%= image_tag contestant.photo.url :medium %>
+					<br/>
+					<!-- Only show the vote button when the contest is in progress -->
+					<% if @contest.status == "IN_PROGRESS" %>
+						<span class="vote">
+							<button name="Vote" 
+									value="vote<%=contestant.id%>" 
+									title="vote for<%=contestant.name%>">Vote!</button>
+						</span>
+					<% end%>
+				</td>
+			<% else %> 
+				<%# There is no contestant. We are waiting for the challenger #%>
+				<td width="380" valign="top"><h2>Waiting for Challenger...</h2>
+					<br/>
+					<br/>
+					put some greyed out picture of a mystery challenger profile with a question mark over it
+				</td>
+			<% end%>
+		<% end %>
+
+		
+	</tr>	
+</table>
+<%= link_to 'Back', contests_path %>

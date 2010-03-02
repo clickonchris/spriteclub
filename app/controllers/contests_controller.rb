@@ -56,6 +56,8 @@ end
     #params[:ids][0] should be the id of the facebook user we are sending the challenge to
     @contest.sent_to_user = User.for(params[:ids][0])
     
+    @contest.status = 'WAITING_FOR_CHALLENGER'
+    
     @contest.save!
     
     flash[:notice] = "Contest saved"
@@ -66,6 +68,9 @@ end
                     :contest_id=>@contest.id,
                     :method=>'post'
     else
+        #send the challenge notification
+        @contest.send_challenge_notification
+        
         redirect_to :action=>'index'
     end
 
@@ -110,6 +115,13 @@ end
 
 
 # The method that correlates to viewing of the main contest page
+# If the contest is pending, show "waiting for challenger" from the missing
+# contestant.
+
+# If the contest is active, show a vote button to any users that haven't voted yet
+
+# If the contest is over, show the contest results and vote totals
+
 #
 def show
   if params[:user_id]

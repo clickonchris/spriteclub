@@ -14,6 +14,12 @@ class Contest < ActiveRecord::Base
   
   attr_accessor :new_contestant
   
+  # Lets define the statuses for a contest:
+  #  WAITING_FOR_CHALLENGER - waiting to be accepted
+  #  IN_PROGRESS - accepted and active
+  #  FINISHED - 
+  #  EXPIRED - never accepted and past the expire date
+  
   #after_create :send_challenge_notification
 
   
@@ -24,12 +30,14 @@ class Contest < ActiveRecord::Base
     end
   end
   
-#  def send_challenge_notification
-#    ChallengePublisher.deliver_challenge_notification(self.challenge) 
-#  rescue Facebooker::Session::SessionExpired
-##     We can't recover from this error, but
-##     we don't want to show an error to our user
-#  end
+  
+  def send_challenge_notification
+    ChallengePublisher.deliver_challenge_notification(self) 
+  rescue Facebooker::Session::SessionExpired
+    #     We can't recover from this error, but
+    #     we don't want to show an error to our user
+    #   Log it!
+  end
 
   
 end

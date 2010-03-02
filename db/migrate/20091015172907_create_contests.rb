@@ -10,6 +10,7 @@ class CreateContests < ActiveRecord::Migration
       t.integer :sent_to_user_id
       t.string :status
       t.timestamp :expire_date
+      t.timestamp :finish_date
 
       t.timestamps
     end
