@@ -1,49 +1,23 @@
 <h1>Accept Challenge</h1>
 
 <%= facebook_messages %>
+	<p/>
 
-<% facebook_form_for :contest,@contest, :url=> "/spriteclub/contests/accept_save" do |f| %>
-		<input type="hidden" name="id" value="<%=@contest.id %>" />
+<%# We need to make a partial page to share code between new and accept %>
+
+In order to accept the challenge You must create a new sprite profile or choose an existing sprite profile.
+
+Your sprite will compete for votes against <%=@contest.initiated_by_user.facebook_session.user.name%>'s sprite
+
+<% facebook_form_for :contest,@contest, :url=>"/spriteclub/contests/accept_save", :prompt_permission=>'publish_stream' do |f| %>
+	<input type="hidden" name="id" value="<%=@contest.id %>" />
+	<%= f.select :select_contestant_id, @contestants.map { |c| [c.name,c.id]} , :label=>"Choose your sprite" %>
+	
+
   <p>
-  	<% fields_for "contest[challenge_attributes][]", @contest.challenge do |challenge_form|  %>
-    	<%# Challenge Expiration Date: <%= challenge_form.datetime_select :expire_date %>
-	<% end %>
-
-
-	<p>
-		<!-- put ui elements here for Contestant -->
-		<!-- If this user already has contestants,
-		 let them pick one from a dropdown OR create a new one -->
-		 <% for contestant in @contest.contestants %>
-		 <% fields_for "contest[contestant_attributes][]", contestant do |contestant_form| %>
-		 	<fb:editor-custom>
-		 	<% if contestant.user != nil  && contestant.user.id == @current_user.id %>
-	  			<h3>Enter information about your sprite</h3>
-				Sprite Name:<%= contestant_form.text_field :first_name %>
-			
-				<%#--<br/> Last Name: <%= contestant_form.text_field :last_name %>
-				 
-				 <br/>
-				 Image URL: <%= contestant_form.text_field :photo_url %>
-			<% else %>
-				<h3>The Challenger:</h3>
-				Sprite Name: <%=contestant.first_name %>
-			
-				<%#--<br/> Last Name: <%= contestant_form.text_field :last_name %>
-			 
-				 <br/>
-				 photo: <img src='<%=contestant.photo_url %>' />
-				
-			<% end %>
-			 
-			 </fb:editor-custom>
-		 <% end %>
-		 <% end %>
-	</p>
-  
-  <p>
- 	<%= f.buttons "Submit Challenge!" %>
+ 	<%= f.buttons "Accept Challenge!" %>
   </p>
 <% end %>
+  
 
 <%= link_to 'Back', contests_path %>

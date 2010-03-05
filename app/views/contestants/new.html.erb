@@ -3,8 +3,7 @@
 
 <% form_for :contestant,@contestant,
 					 :html => { :multipart => true },
-					 :url=> { :action=>'create'} do |f| %>
-	<input type="hidden" name="contest_id" value="<%=@contestant.contests[0].id %>" />					 
+					 :url=> { :action=>'create'} do |f| %>					 
 	<fb:editor-custom>
 		<table>
 			<tr>

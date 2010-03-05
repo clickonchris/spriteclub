@@ -1,6 +1,7 @@
 class Contest < ActiveRecord::Base
 
   has_and_belongs_to_many :contestants
+  has_many :votes
   
   belongs_to :initiated_by_user, 
              :class_name=>'User', 
@@ -12,7 +13,7 @@ class Contest < ActiveRecord::Base
   
   validates_presence_of :initiated_by_user, :sent_to_user
   
-  attr_accessor :new_contestant
+  attr_accessor :select_contestant_id
   
   # Lets define the statuses for a contest:
   #  WAITING_FOR_CHALLENGER - waiting to be accepted

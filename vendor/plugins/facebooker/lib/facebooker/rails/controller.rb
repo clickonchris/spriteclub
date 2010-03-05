@@ -132,14 +132,17 @@ module Facebooker
       def secure_with_cookies!
           parsed = {}
           
-          fb_cookie_names.each { |key| parsed[key[fb_cookie_prefix.size,key.size]] = cookies[key] }
- 
+          # josephsofaer finds the cookies[key] returns an array, 
+          # it doesn't happen for me (mmangino)
+          # so force it to array and take the first value
+          fb_cookie_names.each { |key| parsed[key[fb_cookie_prefix.size,key.size]] = Array(cookies[key]).first }
+
           #returning gracefully if the cookies aren't set or have expired
           return unless parsed['session_key'] && parsed['user'] && parsed['expires'] && parsed['ss'] 
-          return unless Time.at(parsed['expires'].to_s.to_f) > Time.now || (parsed['expires'] == "0")          
+          return unless (Time.at(parsed['expires'].to_s.to_f) > Time.now) || (parsed['expires'] == "0")      
           #if we have the unexpired cookies, we'll throw an exception if the sig doesn't verify
-          verify_signature(parsed,cookies[Facebooker.api_key])
-          
+          verify_signature(parsed,cookies[Facebooker.api_key],true)
+
           @facebook_session = new_facebook_session
           @facebook_session.secure_with!(parsed['session_key'],parsed['user'],parsed['expires'],parsed['ss'])
           @facebook_session
@@ -223,9 +226,9 @@ module Facebooker
         48.hours.ago
       end
       
-      def verify_signature(facebook_sig_params,expected_signature)
+      def verify_signature(facebook_sig_params,expected_signature,force=false)
         # Don't verify the signature if rack has already done so.
-        unless ::Rails.version >= "2.3" and ActionController::Dispatcher.middleware.include? Rack::Facebook
+        unless ::Rails.version >= "2.3" and ActionController::Dispatcher.middleware.include? Rack::Facebook and !force
           raw_string = facebook_sig_params.map{ |*args| args.join('=') }.sort.join
           actual_sig = Digest::MD5.hexdigest([raw_string, Facebooker::Session.secret_key].join)
           raise Facebooker::Session::IncorrectSignature if actual_sig != expected_signature
@@ -293,6 +296,9 @@ module Facebooker
       end
       def ensure_has_create_listing
         has_extended_permission?("create_listing") || application_needs_permission("create_listing")
+      end
+      def ensure_has_create_event
+        has_extended_permission?("create_event") || application_needs_permission("create_event")
       end
       
       def application_needs_permission(perm)

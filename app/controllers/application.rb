@@ -2,12 +2,15 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  
   helper :all # include all helpers, all the time
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4d95a45fc63dc292a49749954a059cd2'
   ensure_authenticated_to_facebook  
+  
+  class SpriteClubAuthError < StandardError; end
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
@@ -28,5 +31,9 @@ class ApplicationController < ActionController::Base
       self.current_user = User.for(facebook_session.user.to_i,facebook_session) 
     end
   end
+  
+#  def challenge_info(contest)
+#    "thinks their kid is better looking than your kid, and has issued you a challenge: "  + (contest != nil ? contest.name : "un-named challenge")
+#  end
   
 end

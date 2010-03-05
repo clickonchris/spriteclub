@@ -1,4 +1,6 @@
 class ContestsController < ApplicationController
+  
+
 
 def index
     
@@ -14,7 +16,7 @@ def index
       return 
     end
     
-    @contests = Contest.find(:all)
+    @contests = Contest.find(:all, :conditions=>{:status=>'IN_PROGRESS'})
 
 #    respond_to do |format|
 #      format.html # index.html.erb
@@ -30,6 +32,24 @@ def new
     #@contest.build_challenge
     # @contest.contestants.build
     # @contest.contestants[0].user = @user;
+    
+    if params[:user_id]
+      @user = User.find(params[:user_id])
+    end
+    
+    @contestants = current_user.contestants
+    new_contestant_option = Contestant.new()
+    new_contestant_option.id =-1
+    new_contestant_option.name="Create New Sprite..."
+    @contestants.insert(0,new_contestant_option)
+    #@options = options_from_collection_for_select(contestants, 'id', 'name', selected = nil)
+    
+    
+    @prompt_permission = true
+    
+    if current_user.facebook_session.user.has_permission?('publish_stream')
+      @prompt_permission = false
+    end
 
 end
 
@@ -45,7 +65,7 @@ end
     
     if params[:ids].blank?
       flash[:error] = "You forgot to tell me who you wanted to Challenge!"    
-      redirect_to_new_contest_path
+      redirect_to :action=>"new"
     end
     
     @contest = Contest.new(params[:contest])
@@ -60,14 +80,26 @@ end
     
     @contest.save!
     
+    #set the secret key so we can see it outside of facebook
+    current_user.secret_key = current_user.session_key
+    current_user.save!
+    
     flash[:notice] = "Contest saved"
     
-    if @contest.contestants.empty?
+    if @contest.select_contestant_id == "-1"
+        #User selected "Create new sprite..."
+        #TODO hash session key so we can compare it with a hashed version on constestant/new
+        
         redirect_to :controller=>"contestants",:action=>"new",
                     :canvas=>false,
                     :contest_id=>@contest.id,
+                    :user_id=>current_user.id,
+                    :key=>current_user.secret_key,
                     :method=>'post'
     else
+        #User selected an existing sprite
+        @contest.contestants << Contestant.find(@contest.select_contestant_id)
+
         #send the challenge notification
         @contest.send_challenge_notification
         
@@ -86,31 +118,65 @@ def accept
   
   @contest = Contest.find(params[:id])
   
+  #Verify that this is the sent_to_user
+  #TODO: enhance this so that it 
+  if (@user != @contest.sent_to_user)
+    #raise SpriteClubAuthError.new("Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge")
+    flash[:error] = "Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge"
+    logger.error "the current user is NOT the sent to user"
+    redirect_to :action=>'show', :id=>params[:id]
+  end
+
+  
   #build the new contestant for the sent to user.
   #We need a way to link this contestant directly to the user
   newContestant = @contest.contestants.build
   newContestant.user = @user
   
+  @contestants = current_user.contestants
+  new_contestant_option = Contestant.new()
+  new_contestant_option.id =-1
+  new_contestant_option.name="Create New Sprite..."
+  @contestants.insert(0,new_contestant_option)
+  
   #do some validation to make sure that the user accessing this method is
   #the "sent_to_user"
-  if (@user == @contest.challenge.sent_to_user)
+  if (@user == @contest.sent_to_user)
     logger.info "the current user is the sent to user"
   else
-    logger.error "the current user is NOT the sent to user"
+    
   end
   
 end
 
 def accept_save
   @contest = Contest.find(params[:id])
-  
-  if(@contest.update_attributes(params[:contest]))
-    logger.info "contest updated"
-    @contest.save!
-    #save is successful
-    redirect_to 
+  if !@contest.update_attributes(params[:contest])
+    throw Error.new("Error")
   end
-  
+
+  if @contest.select_contestant_id == "-1"
+      #User selected "Create new sprite..."
+      #TODO hash session key so we can compare it with a hashed version on constestant/new
+      
+      #set the secret key so we can see it outside of facebook
+      current_user.secret_key = current_user.session_key
+      current_user.save!
+      
+      redirect_to :controller=>"contestants",:action=>"new",
+                  :canvas=>false,
+                  :contest_id=>@contest.id,
+                  :user_id=>current_user.id,
+                  :key=>current_user.secret_key,
+                  :method=>'post'
+  else
+      @contest.status = 'IN_PROGRESS'
+      @contest.save!
+      logger.info "contest updated"
+      flash[:notice] = "Challenge Accepted"
+      
+      redirect_to :action=>'show', :id=>params[:id]
+  end
 end
 
 
@@ -140,6 +206,30 @@ end
 
   def default_url_options(options)
     {:canvas=>true}
+  end
+  
+  def vote
+    
+    @contest = Contest.find(params[:id])
+    
+    #make sure that this user isn't voting twice for the same contest (like in Chicago)
+    
+    if (current_user.has_voted_on_contest?(@contest.id))
+      throw Error("You can't vote more than once per contest.  What do you think this is?")
+    end
+    
+    
+    
+    vote = Vote.new
+    vote.user_id = current_user.id
+    vote.contest_id = @contest.id
+    vote.contestant_id = Contestant.find(params[:contestant_id]).id
+    vote.save!
+    
+    flash[:notice] = "Vote cast successfully!"
+    
+    
+    redirect_to :action=>'show', :id=>@contest.id
   end
 
 end

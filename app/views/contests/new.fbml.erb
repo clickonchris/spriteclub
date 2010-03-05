@@ -1,8 +1,16 @@
 <h1>New challenge</h1>
 
+
 <%= facebook_messages %>
 
-<% facebook_form_for :contest,@contest, :url=>contests_path do |f| %>
+<% if @prompt_permission %>
+	<fb:prompt-permission perms="publish_stream">
+	Spriteclub will use your wall to publish challenges to your friends.<br/>
+	 Will you allow spriteclub to publish to your wall?
+	</fb:prompt-permission>
+<% end %>
+
+<% facebook_form_for :contest,@contest, :url=>contests_path, :prompt_permission=>'publish_stream' do |f| %>
 	
 	
 	<%= f.text_field :name, :label=>"Challenge Name (optional)" %>
@@ -11,10 +19,12 @@
 	<%= f.multi_friend_input :label=>"User to Challenge"%>
 	<br/>
 	
-	Challenge Expiration Date:<br/>
-    <%= f.datetime_select :expire_date %>
 	
-	<%= f.select :contestants, { ['Create New Sprite...',''], '' } %>
+    <%= f.datetime_select :expire_date, :label=>'Challenge Expiration Date' %>
+	
+	
+	
+	<%= f.select :select_contestant_id, @contestants.map { |c| [c.name,c.id]} , :label=>"Choose your sprite" %>
 	
 
   <p>
@@ -23,3 +33,33 @@
 <% end %>
 
 <%= link_to 'Back', contests_path %>
+
+<br/><br/>
+<!--
+<a name="extended_perms" onclick="Facebook.showPermissionDialog('publish_stream');">Click Here To Give This App Extended Perms!</a>
+
+<br/><br/>
+<a href='#' onclick="show_Popup(this); return false;">Show Popup</a>
+-->
+<script>
+<!--
+function show_Popup(context) {
+	var d = new Dialog();
+	//d.setContext(context);
+	d.showMessage("Alarm!", "hey ladies", "Yo");
+	
+}
+var onload = [];
+onload.push(function() {
+	if (<%=@prompt_permission %> == true) {
+		Facebook.showPermissionDialog('publish_stream');
+	}
+	
+});
+//-->
+</script>
+
+<script>
+//the very last thing on the page
+for(var a = 0;a < onload.length;a++) {onload[a]();}
+</script>

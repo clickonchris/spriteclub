@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_many :votes
   has_many :challenges_initiated, :class_name=>'Contest', :foreign_key=>'initiated_by_user_id'
   has_many :challenges_received, :class_name=>'Contest', :foreign_key=>'sent_to_user_id'
-  has_many :contestants, :class_name=>'Contestants', :foreign_key=>'owner_user_id'
+  has_many :contestants, :class_name=>'Contestant', :foreign_key=>'owner_user_id'
   
   def create_user
     User.for(facebook_session.user.to_i)
@@ -28,6 +28,18 @@ class User < ActiveRecord::Base
         session.secure_with!(session_key,facebook_id,1.day.from_now) 
         Facebooker::Session.current=session
     end
+  end
+  
+  #convenience method to tell if the user has voted on some contest
+  def has_voted_on_contest?(contest_id)
+    user_votes_for_contest = Vote.find(:all, :conditions=>{:contest_id=> contest_id,
+                                          :user_id=>id})
+    if (user_votes_for_contest.size >0) 
+      return true
+    else
+      return false
+    end
+    
   end
   
 end
