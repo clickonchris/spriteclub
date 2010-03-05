@@ -152,7 +152,7 @@ end
 def accept_save
   @contest = Contest.find(params[:id])
   if !@contest.update_attributes(params[:contest])
-    throw Error.new("Error")
+    throw SpriteClubGenericError.new("Error")
   end
 
   if @contest.select_contestant_id == "-1"
@@ -214,8 +214,8 @@ end
     
     #make sure that this user isn't voting twice for the same contest (like in Chicago)
     
-    if (current_user.has_voted_on_contest?(@contest.id))
-      throw Error("You can't vote more than once per contest.  What do you think this is?")
+    if (current_user.has_voted_on_contest_today?(@contest.id))
+      throw SpriteClubGenericError.new("You have already voted on this contest today")
     end
     
     
@@ -226,7 +226,7 @@ end
     vote.contestant_id = Contestant.find(params[:contestant_id]).id
     vote.save!
     
-    flash[:notice] = "Vote cast successfully!"
+    flash[:notice] = "Vote cast successfully.  Come back tomorrow and vote again!"
     
     
     redirect_to :action=>'show', :id=>@contest.id

@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   ensure_authenticated_to_facebook  
   
   class SpriteClubAuthError < StandardError; end
+  class SpriteClubGenericError < StandardError; end
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters

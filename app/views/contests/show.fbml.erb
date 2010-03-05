@@ -15,7 +15,7 @@
 					<%= image_tag( contestant.photo.url :medium )%>
 					<br/>
 					<!-- Only show the vote button when the contest is in progress -->
-					<% if @contest.status == "IN_PROGRESS" && !current_user.has_voted_on_contest?(@contest.id) %>
+					<% if @contest.status == "IN_PROGRESS" && !current_user.has_voted_on_contest_today?(@contest.id) %>
 					<span class="vote">
 						<a href="vote/<%=@contest.id%>?contestant_id=<%=contestant.id%>">
 							Vote for <%=contestant.name %></a>
