@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
     #find UTC - 24 hours, since thats how its stored in the DB
     yesterday = Time.now.utc - 60*60*24
     user_votes_for_contest = Vote.find(:all,
-                                       :conditions=> ["contest_id= :contest_id AND :user_id= :user_id AND updated_at > :yesterday",
+                                       :conditions=> ["contest_id= :contest_id AND user_id= :user_id AND updated_at > :yesterday",
                                                       {:contest_id=>contest_id, :user_id=>id, :yesterday=>yesterday}])
 
     if (user_votes_for_contest.size >0) 
