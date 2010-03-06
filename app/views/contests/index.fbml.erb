@@ -16,11 +16,13 @@ Need to make this page more intesting, by featuring in progress contests to vote
 
 <% for contest in @contests %>
   <tr>
-  	<td><%=h contest.name %></td>
-    <td><%=h contest.sent_to_user %></td>
+  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %></td>
+    <td><%#=h contest.sent_to_user.facebook_session.user.name %>
+		
+		</td>
     <td><%=h contest.expire_date %></td>
-    <td><%= link_to 'Show', :action=>"show",:id=>contest.id %></td>
-    <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+    <td></td>
+    <td></td>
   </tr>
 <% end %>
 </table>
