@@ -3,6 +3,11 @@ class Contestant < ActiveRecord::Base
   belongs_to :user, :class_name=>'User', :foreign_key=>'owner_user_id'
   has_many :votes
   
+  has_many :contests_won,
+           :class_name=>'Contest',
+           :foreign_key=>'winner_contestant_id'
+
+  
     has_attached_file :photo, :styles => { :small => "150x150>", :medium => "300x300>" },
                   :url  => "/assets/contestants/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/contestants/:id/:style/:basename.:extension"

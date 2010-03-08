@@ -1,3 +1,5 @@
+<%=image_tag "sc_logo.gif" %>
+
 <h1>Create New Sprite Profile</h1>
 
 
@@ -9,6 +11,10 @@
 			<tr>
 				<td>Sprite Name:</td>
 				<td><%= f.text_field :name %></td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td><%= f.select :gender, [["-Select-",""], ["Male","M"], ["Female","F"]]  %></td>
 			</tr>
 			<tr>
 				<td>Photo:</td>

@@ -9,7 +9,7 @@ In order to accept the challenge You must create a new sprite profile or choose 
 
 Your sprite will compete for votes against <%=@contest.initiated_by_user.facebook_session.user.name%>'s sprite
 
-<% facebook_form_for :contest,@contest, :url=>"/spriteclub/contests/accept_save", :prompt_permission=>'publish_stream' do |f| %>
+<% facebook_form_for :contest,@contest, :url=>url_for( :action=>'accept_save'), :prompt_permission=>'publish_stream' do |f| %>
 	<input type="hidden" name="id" value="<%=@contest.id %>" />
 	<%= f.select :select_contestant_id, @contestants.map { |c| [c.name,c.id]} , :label=>"Choose your sprite" %>
 	

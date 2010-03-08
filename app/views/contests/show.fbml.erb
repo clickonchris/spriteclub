@@ -2,7 +2,11 @@
 
 
 <%= facebook_messages %>
-<br/><br/>
+<br/>
+
+<% if @contest.status == 'FINISHED' %>
+<h1><%= @contest.result_text %></h1>
+<% end %>
 
 <table>
 	<tr>

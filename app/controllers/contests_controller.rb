@@ -65,7 +65,7 @@ end
     
     if params[:ids].blank?
       flash[:error] = "You forgot to tell me who you wanted to Challenge!"    
-      redirect_to :action=>"new"
+      render :action=>"new"
     end
     
     @contest = Contest.new(params[:contest])
@@ -103,7 +103,7 @@ end
         #send the challenge notification
         @contest.send_challenge_notification
         
-        redirect_to :action=>'index'
+        render :action=>'show', :id=>@contest.id
     end
 
 
@@ -124,7 +124,7 @@ def accept
     #raise SpriteClubAuthError.new("Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge")
     flash[:error] = "Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge"
     logger.error "the current user is NOT the sent to user"
-    redirect_to :action=>'show', :id=>params[:id]
+    render :action=>'show'
   end
 
   
@@ -171,11 +171,13 @@ def accept_save
                   :method=>'post'
   else
       @contest.status = 'IN_PROGRESS'
+      @contest.start_time = Time.now.utc
+      @contest.end_time = @contest.start_time + 60*60*24*7 # end the contest 7 days from now
       @contest.save!
       logger.info "contest updated"
       flash[:notice] = "Challenge Accepted"
       
-      redirect_to :action=>'show', :id=>params[:id]
+      render :action=>'show'
   end
 end
 
@@ -198,6 +200,9 @@ def show
   
   @contest = Contest.find(params[:id])
   
+  # This will end the contest if it should be ended
+  @contest.check_finished?
+  
   #for each contestant, show picture, show votes
   
 end
@@ -215,21 +220,26 @@ end
     #make sure that this user isn't voting twice for the same contest (like in Chicago)
     
     if (current_user.has_voted_on_contest_today?(@contest.id))
-      throw SpriteClubGenericError.new("You have already voted on this contest today")
+      flash[:error] = "You have already voted on this contest today"
+    end
+    
+    if @contest.check_finished?
+      flash[:error] = "This contest has ended"
     end
     
     
+    if flash[:error].blank?
+      vote = Vote.new
+      vote.user_id = current_user.id
+      vote.contest_id = @contest.id
+      vote.contestant_id = Contestant.find(params[:contestant_id]).id
+      vote.save!
+      
+      flash[:notice] = "Vote cast successfully.  Come back tomorrow and vote again!"
     
-    vote = Vote.new
-    vote.user_id = current_user.id
-    vote.contest_id = @contest.id
-    vote.contestant_id = Contestant.find(params[:contestant_id]).id
-    vote.save!
+    end
     
-    flash[:notice] = "Vote cast successfully.  Come back tomorrow and vote again!"
-    
-    
-    redirect_to :action=>'show', :id=>@contest.id
+    render :action=>'show'
   end
 
 end

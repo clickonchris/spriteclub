@@ -33,7 +33,7 @@ class ContestantsController < ApplicationController
     #Make sure that the same user isn't adding two sprites accidentally
     contest.contestants.each { |c|
       if (c.user.id == user.id)
-        raise Error.new("This contest already has a contestant added by you.")
+        raise SpriteClubGenericError.new("This contest already has a contestant added by you.")
       end
     }
 
@@ -50,14 +50,13 @@ class ContestantsController < ApplicationController
     if (current_user == contest.initiated_by_user)
       contest.send_challenge_notification
     else
-      contest.status = 'IN_PROGRESS'
-      contest.save!
+      contest.kickoff
     end
     
 
     
     #redirect back to facebook, then send the challenge!
-    redirect_to "http://apps.facebook.com/spriteclub/contests/" + contest.id.to_s
+    redirect_to "http://apps.facebook.com/"+ FACEBOOKER['canvas_page_name'] +"/contests/" + contest.id.to_s
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end

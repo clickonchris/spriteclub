@@ -1,9 +1,14 @@
-<h1>Spriteclub</h1>
 <h2>Where your offspring compete with others' offspring to find out who has the cutest kid</h2>
 
-<div id="introMessage" style="border:1px solid #000">
+<div id="introMessage" class="bluebox" >
 	Put some introduction text here
 </div>
+
+
+
+<fb:tabs>
+	<fb:tab-item href="<%=url_for :action=>'index' %>" selected="true" title="Active Challenges" />
+</fb:tabs>
 
 Need to make this page more intesting, by featuring in progress contests to vote on
 
@@ -11,7 +16,7 @@ Need to make this page more intesting, by featuring in progress contests to vote
   <tr>
   	<th>Name</th>
     <th>Received by user</th>
-    <th>Expire date</th>
+    <th>End Date</th>
   </tr>
 
 <% for contest in @contests %>
@@ -20,7 +25,7 @@ Need to make this page more intesting, by featuring in progress contests to vote
     <td><%#=h contest.sent_to_user.facebook_session.user.name %>
 		
 		</td>
-    <td><%=h contest.expire_date %></td>
+    <td><%=h contest.end_time %></td>
     <td></td>
     <td></td>
   </tr>
@@ -29,4 +34,4 @@ Need to make this page more intesting, by featuring in progress contests to vote
 
 <br />
 
-<%= link_to 'New contest', new_contest_path %>
+<h2><%= link_to 'New contest', new_contest_path %></h2>
