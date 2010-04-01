@@ -14,7 +14,7 @@ class Contestant < ActiveRecord::Base
   
   validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 1.megabytes
-  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+  validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg']
    
    
   #convenience method to tell us how many votes some contestant has for some contest 

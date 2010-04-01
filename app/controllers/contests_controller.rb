@@ -119,13 +119,14 @@ def accept
   @contest = Contest.find(params[:id])
   
   #Verify that this is the sent_to_user
-  #TODO: enhance this so that it 
   if (@user != @contest.sent_to_user)
     #raise SpriteClubAuthError.new("Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge")
     flash[:error] = "Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge"
     logger.error "the current user is NOT the sent to user"
     render :action=>'show'
   end
+  
+  #TODO: enhance this so that it validates that the user has not already accepted the challenge
 
   
   #build the new contestant for the sent to user.
@@ -170,9 +171,11 @@ def accept_save
                   :key=>current_user.secret_key,
                   :method=>'post'
   else
+      
       @contest.status = 'IN_PROGRESS'
       @contest.start_time = Time.now.utc
       @contest.end_time = @contest.start_time + 60*60*24*7 # end the contest 7 days from now
+      @contest.contestants << Contestant.find(@contest.select_contestant_id)
       @contest.save!
       logger.info "contest updated"
       flash[:notice] = "Challenge Accepted"
@@ -219,8 +222,9 @@ end
     
     #make sure that this user isn't voting twice for the same contest (like in Chicago)
     
-    if (current_user.has_voted_on_contest_today?(@contest.id))
-      flash[:error] = "You have already voted on this contest today"
+    if (current_user.can_vote_on_contest?(@contest.id))
+      #need to show how long until the user can vote again
+      flash[:error] = "You can only vote on this contest every four hours.  Please come back later"
     end
     
     if @contest.check_finished?
@@ -235,7 +239,7 @@ end
       vote.contestant_id = Contestant.find(params[:contestant_id]).id
       vote.save!
       
-      flash[:notice] = "Vote cast successfully.  Come back tomorrow and vote again!"
+      flash[:notice] = "Vote cast successfully.  Come back in 4 hours and vote again!"
     
     end
     

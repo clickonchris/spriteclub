@@ -31,9 +31,9 @@ class User < ActiveRecord::Base
   end
   
   #convenience method to tell if the user has voted on some contest
-  def has_voted_on_contest_today?(contest_id)
+  def can_vote_on_contest?(contest_id)
     #find UTC - 24 hours, since thats how its stored in the DB
-    yesterday = Time.now.utc - 60*60*24
+    yesterday = Time.now.utc - 60*60*4
     user_votes_for_contest = Vote.find(:all,
                                        :conditions=> ["contest_id= :contest_id AND user_id= :user_id AND updated_at > :yesterday",
                                                       {:contest_id=>contest_id, :user_id=>id, :yesterday=>yesterday}])
