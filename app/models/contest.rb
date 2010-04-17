@@ -105,7 +105,7 @@ class Contest < ActiveRecord::Base
     if results == nil
       if is_a_tie
         self.results = "Tie!"
-      elsif !winner == nil
+      elsif winner != nil
         self.results = "Winner: " + winner.name + "!"
       else
         self.results = "Results inconclusive"
@@ -113,6 +113,15 @@ class Contest < ActiveRecord::Base
     end
     
     return self.results
+  end
+  
+  def contestant_for_user(user_id)
+    contestants.each { |contestant|
+      if contestant.user.id == user_id
+        return contestant
+      end
+    }
+    return nil
   end
 
   

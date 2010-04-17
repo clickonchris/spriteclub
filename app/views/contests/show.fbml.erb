@@ -16,7 +16,7 @@
 				<td width="380"><h2><%= contestant.name %></h2>
 					<br/>				
 					<br/>
-					<%= image_tag( contestant.photo.url :medium )%>
+					<%= image_tag( contestant.photo.url( :medium)) %>
 					<br/>
 					<!-- Only show the vote button when the contest is in progress -->
 					<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>

@@ -7,7 +7,18 @@
 
 In order to accept the challenge You must create a new sprite profile or choose an existing sprite profile.
 
-Your sprite will compete for votes against <%=@contest.initiated_by_user.facebook_session.user.name%>'s sprite
+<p/>
+
+
+Your sprite will compete for votes against <fb:name uid="<%=@contest.initiated_by_user.facebook_id%>"/>'s sprite
+<p/>
+<div id="the_challenger" class="editorkit" style="width:425px;text-align:center;">
+	<h3>The Challenger:</h3>
+	<%=image_tag(@contest.contestant_for_user(@contest.initiated_by_user.id).photo.url(:small))%>
+	<br/>
+	<%=@contest.contestant_for_user(@contest.initiated_by_user.id).name %>
+	
+</div>
 
 <% facebook_form_for :contest,@contest, :url=>url_for( :action=>'accept_save'), :prompt_permission=>'publish_stream' do |f| %>
 	<input type="hidden" name="id" value="<%=@contest.id %>" />
