@@ -1,5 +1,13 @@
 class ContestantsController < ApplicationController
   
+  def index
+    #show all contestants for the currently logged in user
+
+    
+    @contestants = Contestant.find(:all, :conditions=>[ "owner_user_id = ?", current_user.id])
+    
+  end
+  
   def new
     
     @contestant = Contestant.new

@@ -1,0 +1,8 @@
+<%= javascript_include_tag "facebooker" %>
+<%= stylesheet_link_tag "spriteclub" %>
+<%= image_tag "sc_logo.gif" %>
+<fb:tabs>
+	<fb:tab-item href="<%=url_for :controller=>'contests' %>" title="Active Face-Offs" />
+	<fb:tab-item href="<%=url_for :controller=>'contestants' %>" title="My Sprites" selected="true" />
+</fb:tabs>
+<%= yield  %> 

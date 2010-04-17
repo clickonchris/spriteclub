@@ -1,0 +1,6 @@
+
+
+<% for contestant in @contestants %>
+	<a href="<%= url_for :action=>'show', :id=>contestant.id %>" class="editorkit"><%=contestant.name%></a>
+	<br/>
+<% end %>

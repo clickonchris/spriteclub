@@ -6,32 +6,28 @@
 
 
 
-<fb:tabs>
-	<fb:tab-item href="<%=url_for :action=>'index' %>" selected="true" title="Active Challenges" />
-</fb:tabs>
+
 
 Need to make this page more intesting, by featuring in progress contests to vote on
 
 <table>
   <tr>
   	<th>Name</th>
-    <th>Received by user</th>
+    <!--<th>Received by user</th>-->
     <th>End Date</th>
   </tr>
 
 <% for contest in @contests %>
   <tr>
   	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %></td>
-    <td><%#=h contest.sent_to_user.facebook_session.user.name %>
-		
-		</td>
+	
     <td><%=h contest.end_time %></td>
     <td></td>
-    <td></td>
+
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<h2><%= link_to 'New contest', new_contest_path %></h2>
+<h2><%= link_to 'New Face-Off', new_contest_path %></h2>

@@ -84,7 +84,7 @@ end
     current_user.secret_key = current_user.session_key
     current_user.save!
     
-    flash[:notice] = "Contest saved"
+    flash[:notice] = "Face-Off created"
     
     if @contest.select_contestant_id == "-1"
         #User selected "Create new sprite..."
@@ -177,7 +177,7 @@ def accept_save
       @contest.end_time = @contest.start_time + 60*60*24*7 # end the contest 7 days from now
       @contest.contestants << Contestant.find(@contest.select_contestant_id)
       @contest.save!
-      logger.info "contest updated"
+      logger.info "Face-Off updated"
       flash[:notice] = "Challenge Accepted"
       
       render :action=>'show'
@@ -224,11 +224,11 @@ end
     
     if (current_user.can_vote_on_contest?(@contest.id))
       #need to show how long until the user can vote again
-      flash[:error] = "You can only vote on this contest every four hours.  Please come back later"
+      flash[:error] = "You can only vote on this Face-Off every four hours.  Please come back later"
     end
     
     if @contest.check_finished?
-      flash[:error] = "This contest has ended"
+      flash[:error] = "This Face-Off has ended"
     end
     
     

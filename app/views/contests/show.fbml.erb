@@ -1,4 +1,4 @@
-<h1>Spriteclub Contest - <%=@contest.name %></h1>
+<h1>Spriteclub Face-Off - <%=@contest.name %></h1>
 
 
 <%= facebook_messages %>
@@ -13,21 +13,27 @@
 		<% for i in (0..1) %>
 			<% if i < @contest.contestants.size  %>
 				<% contestant = @contest.contestants[i] %>
-				<td width="380"><h2><%= contestant.name %></h2>
-					<br/>				
-					<br/>
-					<%= image_tag( contestant.photo.url( :medium)) %>
-					<br/>
-					<!-- Only show the vote button when the contest is in progress -->
-					<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>
-					<span class="vote">
-						<a href="vote/<%=@contest.id%>?contestant_id=<%=contestant.id%>">
-							Vote for <%=contestant.name %></a>
-						
+				<td width="380" style="text-align:center;">
+					<div id="faceoff_contestant"><!--If we replace the table with divs we can just use this div-->
+						<h2><%= contestant.name %></h2>
+						<br/>				
+						<br/>
+						<a href="vote/<%=@contest.id%>?contestant_id=<%=contestant.id%>" style="text-decoration:none">
+						<%= image_tag( contestant.photo.url( :medium)) %>
+						<br/>
+						<!-- Only show the vote button when the contest is in progress -->
+						<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>
+						<span class="vote">
 							
-						</span>
-				   <% end%>
-				   <span class="votetotal">Total votes: <%=contestant.votes_for_contest @contest.id %></span>
+								Vote for <%=contestant.name %>
+							
+								
+							</span>
+							
+					   <% end%>
+					   </a>
+					   <span class="votetotal">Total votes: <%=contestant.votes_for_contest @contest.id %></span>
+				   </div>
 				</td>
 				
 			<% else %> 
