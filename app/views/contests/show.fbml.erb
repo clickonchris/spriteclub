@@ -22,7 +22,9 @@
 						</a>
 						<br/>				
 						<br/>
-						<a href="<%=url_for :action=>'vote', :id=>@contest.id, :contestant_id=>contestant.id%>" style="text-decoration:none">
+						<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>
+							<a href="<%=url_for :action=>'vote', :id=>@contest.id, :contestant_id=>contestant.id%>" style="text-decoration:none">
+						<% end %>
 						<%= image_tag( contestant.photo.url( :medium)) %>
 						</br>
 						<!-- Only show the vote button when the contest is in progress -->
@@ -50,7 +52,7 @@
 				<td width="380" valign="top"><h2>Waiting for Challenger...</h2>
 					<br/>
 					<br/>
-					put some greyed out picture of a mystery challenger profile with a question mark over it
+					<%= image_tag "challenger_question.gif" %>
 				</td>
 			<% end%>
 		<% end %>
