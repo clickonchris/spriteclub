@@ -40,6 +40,11 @@
 				   </div>
 				</td>
 				
+				<% if i < 1 %>
+					<td><%= image_tag "vs_pink.gif" %></td>
+				<% end%>
+				
+				
 			<% else %> 
 				<%# There is no contestant. We are waiting for the challenger #%>
 				<td width="380" valign="top"><h2>Waiting for Challenger...</h2>
