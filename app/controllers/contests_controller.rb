@@ -1,6 +1,6 @@
 class ContestsController < ApplicationController
   
-
+attr_accessor :intro_text
 
 def index
     
@@ -18,11 +18,7 @@ def index
     
     @contests = Contest.find(:all, :conditions=>{:status=>'IN_PROGRESS'})
 
-#    respond_to do |format|
-#      format.html # index.html.erb
-#      format.fbml # index.fbml.erb
-#      format.xml  { render :xml => @challenges }
-#    end
+
 end
 
 
