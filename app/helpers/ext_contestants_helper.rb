@@ -1,0 +1,2 @@
+module ExtContestantsHelper
+end

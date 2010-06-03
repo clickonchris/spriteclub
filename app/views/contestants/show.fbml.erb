@@ -2,5 +2,30 @@
 
 <%= image_tag @contestant.photo.url :medium %>
 
+<h2>Active Contests</h2>
+<% for contest in @active_contests %>
+<a href="<%=url_for :controller=>'contests',:action=>'show',:id=>contest.id  %>">
+<%=contest.name %>:	<%=@contestant.name %> vs.
+	<% for c in contest.contestants %>
+		<% if c != @contestant %>
+			<%=c.name %>
+		<% end%>
+	<% end %>
+</a>
+ <br/>
+<% end %>
+ 
+<h2>Recently Finished Contests</h2>
+<% for contest in @recent_contests %>
+<%=contest.name %>: 
+	<% if contest.winner == @contestant %>
+		<span style="font-weight:bold;">WON!</span>
+	<% else%>
+		Lost
+	<% end %>
+
+ <br/>
+<% end %>
+
 <br/>
 <%= link_to 'Back', contests_path %>

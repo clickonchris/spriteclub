@@ -1,12 +1,7 @@
-class ContestantsController < ApplicationController
-  
-  def index
-    #show all contestants for the currently logged in user
+class ExtContestantsController < ActionController::Base
 
-    
-    @contestants = Contestant.find(:all, :conditions=>[ "owner_user_id = ?", current_user.id])
-    
-  end
+  class SpriteClubAuthError < StandardError; end
+  class SpriteClubGenericError < StandardError; end
   
   def new
     
@@ -60,7 +55,7 @@ class ContestantsController < ApplicationController
     
     #send the challenge notification
     #We need a way to detect if saving this contestant means that the contest is active
-    if (current_user == contest.initiated_by_user)
+    if (user == contest.initiated_by_user)
       contest.send_challenge_notification
     else
       contest.kickoff
@@ -68,30 +63,10 @@ class ContestantsController < ApplicationController
     
 
     
-    #redirect back to facebook, then send the challenge!
+    #redirect back to facebook
     redirect_to "http://apps.facebook.com/"+ FACEBOOKER['canvas_page_name'] +"/contests/" + contest.id.to_s
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end
   
-  def show
-  
-      @contestant = Contestant.find(params[:id])
-      
-      #Active Contests
-      @active_contests = []
-      @recent_contests = []
-      @contestant.contests.each do |contest|
-        if contest.status != 'FINISHED' && contest.status != 'EXPIRED'
-          @active_contests << contest
-        else
-          @recent_contests << contest
-        end
-      end
-      #Recent Contests
-      
-      #build the statistics
-      #W/L ratio
-    
-  end
 end

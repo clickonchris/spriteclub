@@ -86,7 +86,7 @@ end
         #User selected "Create new sprite..."
         #TODO hash session key so we can compare it with a hashed version on constestant/new
         
-        redirect_to :controller=>"contestants",:action=>"new",
+        redirect_to :controller=>"ext_contestants",:action=>"new",
                     :canvas=>false,
                     :contest_id=>@contest.id,
                     :user_id=>current_user.id,
@@ -117,7 +117,8 @@ def accept
   #Verify that this is the sent_to_user
   if (@user != @contest.sent_to_user)
     #raise SpriteClubAuthError.new("Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge")
-    flash[:error] = "Only " + @contest.sent_to_user.facebook_session.user.name + " may accept the challenge"
+    #flash[:error] = "Only <fb:name uid="+@contest.sent_to_user.facebook_id.to_s+"/> may accept the challenge"
+    flash[:error] = "Only the user to whom this challenge was sent may accept"
     logger.error "the current user is NOT the sent to user"
     render :action=>'show'
   end
@@ -160,7 +161,7 @@ def accept_save
       current_user.secret_key = current_user.session_key
       current_user.save!
       
-      redirect_to :controller=>"contestants",:action=>"new",
+      redirect_to :controller=>"ext_contestants",:action=>"new",
                   :canvas=>false,
                   :contest_id=>@contest.id,
                   :user_id=>current_user.id,

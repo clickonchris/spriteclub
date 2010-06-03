@@ -1,0 +1,33 @@
+
+<h1>Create New Sprite Profile</h1>
+
+
+<% form_for :contestant,@contestant,
+					 :html => { :multipart => true },
+					 :url=> { :action=>'create'} do |f| %>					 
+	<fb:editor-custom>
+		<table>
+			<tr>
+				<td>Sprite Name:</td>
+				<td><%= f.text_field :name %></td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td><%= f.select :gender, [["-Select-",""], ["Boy","M"], ["Girl","F"]]  %></td>
+			</tr>
+			<tr>
+				<td>Photo:</td>
+				<td><%= f.file_field :photo %></td>
+			</tr>
+		</table>		 
+
+	</fb:editor-custom>
+  </p>
+  <p>
+  	<fb:editor-custom>
+  	<%= f.submit "Create Sprite and Submit Challenge!", :class=>'editorkit_button action' %>
+	</fb:editor-custom>
+  </p>
+<% end %>
+
+Back
