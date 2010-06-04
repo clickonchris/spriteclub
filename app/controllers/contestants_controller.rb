@@ -79,12 +79,15 @@ class ContestantsController < ApplicationController
       @contestant = Contestant.find(params[:id])
       
       #Active Contests
+      @pending_contests = []
       @active_contests = []
       @recent_contests = []
       @contestant.contests.each do |contest|
-        if contest.status != 'FINISHED' && contest.status != 'EXPIRED'
+        if contest.status == 'WAITING_FOR_CHALLENGER'
+          @pending_contests << contest
+        elsif contest.status == 'IN_PROGRESS'
           @active_contests << contest
-        else
+        elsif contest.status == 'FINISHED'
           @recent_contests << contest
         end
       end
