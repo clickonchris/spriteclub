@@ -82,6 +82,10 @@ class ContestantsController < ApplicationController
       @pending_contests = []
       @active_contests = []
       @recent_contests = []
+      @wins=0.0
+      @losses=0.0
+      @ties=0.0
+      @wlRatio=1.0
       @contestant.contests.each do |contest|
         if contest.status == 'WAITING_FOR_CHALLENGER'
           @pending_contests << contest
@@ -89,12 +93,26 @@ class ContestantsController < ApplicationController
           @active_contests << contest
         elsif contest.status == 'FINISHED'
           @recent_contests << contest
+          if contest.is_a_tie
+            @ties +=1
+          elsif contest.winner != nil && contest.winner == @contestant
+            @wins +=1
+          else
+            @losses +=1
+          end
         end
       end
-      #Recent Contests
       
-      #build the statistics
+      #build the statistics ?? For each contest? votes for,votes against
+
       #W/L ratio
+      if @losses == 0 #avoid divide by zero errors
+        @wlRatio = 1
+      else
+        @wlRatio= @wins/(@wins+@losses)
+        logger.info "ratio is " + @wlRatio.to_s
+      end
+        
     
   end
 end

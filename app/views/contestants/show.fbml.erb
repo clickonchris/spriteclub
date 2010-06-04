@@ -1,5 +1,7 @@
 <h1><%= @contestant.name %></h1>
 
+<h2>Record: <%=@wins.round %>-<%=@losses.round%>-<%=@ties.round %> (W/L Ratio: <%='%.1f' % (@wlRatio*100)%>% ) </h2>
+
 <%= image_tag @contestant.photo.url :medium %>
 
 <% if @pending_contests.length > 0 %>
@@ -32,13 +34,22 @@
  
 <h2>Recently Finished Contests</h2>
 <% for contest in @recent_contests %>
-<%=contest.name %>: 
-	<% if contest.winner == @contestant %>
+<a href="<%=url_for :controller=>'contests',:action=>'show',:id=>contest.id  %>"><%=contest.name %></a>: 
+	<% if contest.is_a_tie %>
+		Tie
+	<% elsif contest.winner != nil && contest.winner.id == @contestant.id %>
 		<span style="font-weight:bold;">WON!</span>
 	<% else%>
 		Lost
 	<% end %>
-
+	<%# This is inefficiently causing extra queries to be executed and should probably get refactored #%>
+	Votes:
+	<%=@contestant.votes_for_contest(contest.id) %> to
+	<% contest.contestants.each do |c| %>
+		<% if c.id != @contestant.id %>
+			<%=c.votes_for_contest(contest.id) %>
+		<% end %>
+	<% end %>
  <br/>
 <% end %>
 
