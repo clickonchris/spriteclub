@@ -12,9 +12,9 @@
 	<tr>
 		<% for i in (0..1) %>
 			<% if i < @contest.contestants.size  %>
-				<% contestant = @contest.contestants[i] %>
+				<% contestant = @contest.contestants[i] %>				
 				<td width="380" style="text-align:center;">
-					<div id="faceoff_contestant"><!--If we replace the table with divs we can just use this div-->
+					<div id="faceoff_contestant" class="gender<%=contestant.gender%>"><!--If we replace the table with divs we can just use this div-->
 						<a href="<%=url_for :controller=>'contestants',:action=>'show',:id=>contestant.id %>">
 							<h2><%= contestant.name %></h2>
 						

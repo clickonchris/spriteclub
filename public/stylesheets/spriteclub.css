@@ -8,3 +8,18 @@
 	padding:5px;
 	background-color:#EDEFF4;
 }
+
+div.genderM {
+	border: 1px solid blue;
+	background-color:#D8DFEA;
+}
+
+div.genderF {
+	border: 1px solid #FF007B;
+	background-color: #FFE2EE;
+}
+
+div.gender {
+	border: 1px solid;
+	border-color: #888888;
+}
