@@ -19,16 +19,33 @@
 	<%= f.multi_friend_input :label=>"User to Challenge"%>
 	<br/>
 	
+	<table>
+		<tr>
+			<% if @contestants.length >0 %>
+			<td width="45%" style="font-weight:bold;" >Choose An Existing Sprite</td>
+			<td width="10%">or</td>
+			<% end %>
+			
+			<td style="font-weight:bold;">Create a New Sprite<td>
+		</tr>
+		<tr>
+			<% if @contestants.length >0 %>
+			<td width="45%">
+				<%= select "contest", :select_contestant_id, @contestants.map { |c| [c.name,c.id]} %>
+				<br/><br/>
+				<input type="Submit" name="submit" value="Submit Challenge" />
+			</td>
+			<td style="border-left: 1px solid #000000; padding: 5px;"></td>
+			<% end %>
+			
+			<td>Continue on to spriteclub.net to create your sprite profile and upload a photo of your sprite..
+				<br/><br/>
+				<input type="Submit" name="submit" value="Create New Sprite"/>
+			</td>
+			
+		</tr>
+	</table>
 	
-	
-	
-	
-	<%= f.select :select_contestant_id, @contestants.map { |c| [c.name,c.id]} , :label=>"Choose your sprite" %>
-	
-
-  <p>
- 	<%= f.buttons "Submit Challenge!" %>
-  </p>
 <% end %>
 
 <%= link_to 'Back', contests_path %>

@@ -1,6 +1,23 @@
-
+<br />
 
 <% for contestant in @contestants %>
-	<a href="<%= url_for :action=>'show', :id=>contestant.id %>" class="editorkit"><%=contestant.name%></a>
+	<div class="gender<%=contestant.gender%>">
+	<table>
+		<tr>
+			<td >
+				<a href="<%= url_for :action=>'show', :id=>contestant.id %>" class="editorkit">
+		<%=image_tag contestant.photo.url :small %> 
+		
+		</a>
+		</td>
+		<td valign="middle">
+			<a href="<%= url_for :action=>'show', :id=>contestant.id %>" class="editorkit">
+			<span style="font-weight:bold;"><%=contestant.name%></span>
+			</a>
+		</td>
+
+		</tr>
+	</table>
+	</div>
 	<br/>
 <% end %>

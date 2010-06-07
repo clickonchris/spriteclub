@@ -34,10 +34,10 @@ def new
     end
     
     @contestants = current_user.contestants
-    new_contestant_option = Contestant.new()
-    new_contestant_option.id =-1
-    new_contestant_option.name="Create New Sprite..."
-    @contestants.insert(0,new_contestant_option)
+#    new_contestant_option = Contestant.new()
+#    new_contestant_option.id =-1
+#    new_contestant_option.name="Create New Sprite..."
+#    @contestants.insert(0,new_contestant_option)
     #@options = options_from_collection_for_select(contestants, 'id', 'name', selected = nil)
     
     
@@ -57,7 +57,6 @@ end
 #
  def create
    
-   
     
     if params[:ids].blank?
       flash[:error] = "You forgot to tell me who you wanted to Challenge!"    
@@ -76,23 +75,8 @@ end
     
     @contest.save!
     
-    #set the secret key so we can see it outside of facebook
-    current_user.secret_key = current_user.session_key
-    current_user.save!
-    
-    flash[:notice] = "Face-Off created"
-    
-    if @contest.select_contestant_id == "-1"
-        #User selected "Create new sprite..."
-        #TODO hash session key so we can compare it with a hashed version on constestant/new
-        
-        redirect_to :controller=>"ext_contestants",:action=>"new",
-                    :canvas=>false,
-                    :contest_id=>@contest.id,
-                    :user_id=>current_user.id,
-                    :key=>current_user.secret_key,
-                    :method=>'post'
-    else
+    #different logic depending on the which submit button was pushed
+    if params[:submit] == "Submit Challenge"
         #User selected an existing sprite
         @contest.contestants << Contestant.find(@contest.select_contestant_id)
 
@@ -100,9 +84,19 @@ end
         @contest.send_challenge_notification
         
         render :action=>'show', :id=>@contest.id
+        flash[:notice] = "Face-Off created"
+    elsif params[:submit] == "Create New Sprite"
+        #We are redirecting the user to the external site to create a sprite profile
+  
+        #set the secret key so we can see it outside of facebook
+        current_user.secret_key = current_user.session_key
+        current_user.save!
+        
+        redirect_to_new_contestant
+      
+    else
+      logger.error "params[:submit] was empty when creating a new sprite.  wtf?"
     end
-
-
 end
 
 def accept
@@ -132,10 +126,10 @@ def accept
   newContestant.user = @user
   
   @contestants = current_user.contestants
-  new_contestant_option = Contestant.new()
-  new_contestant_option.id =-1
-  new_contestant_option.name="Create New Sprite..."
-  @contestants.insert(0,new_contestant_option)
+#  new_contestant_option = Contestant.new()
+#  new_contestant_option.id =-1
+#  new_contestant_option.name="Create New Sprite..."
+#  @contestants.insert(0,new_contestant_option)
   
   #do some validation to make sure that the user accessing this method is
   #the "sent_to_user"
@@ -153,22 +147,7 @@ def accept_save
     throw SpriteClubGenericError.new("Error")
   end
 
-  if @contest.select_contestant_id == "-1"
-      #User selected "Create new sprite..."
-      #TODO hash session key so we can compare it with a hashed version on constestant/new
-      
-      #set the secret key so we can see it outside of facebook
-      current_user.secret_key = current_user.session_key
-      current_user.save!
-      
-      redirect_to :controller=>"ext_contestants",:action=>"new",
-                  :canvas=>false,
-                  :contest_id=>@contest.id,
-                  :user_id=>current_user.id,
-                  :key=>current_user.secret_key,
-                  :method=>'post'
-  else
-      
+  if params[:submit] == "Accept Challenge"
       @contest.status = 'IN_PROGRESS'
       @contest.start_time = Time.now.utc
       @contest.end_time = @contest.start_time + 60*60*24*7 # end the contest 7 days from now
@@ -178,8 +157,16 @@ def accept_save
       flash[:notice] = "Challenge Accepted"
       
       render :action=>'show'
+  elsif params[:submit] == "Create New Sprite"
+      #set the secret key so we can see it outside of facebook
+      current_user.secret_key = current_user.session_key
+      current_user.save!
+      
+      redirect_to_new_contestant
   end
 end
+
+
 
 
 # The method that correlates to viewing of the main contest page
@@ -241,6 +228,17 @@ end
     end
     
     render :action=>'show'
+  end
+  
+  private
+  
+  def redirect_to_new_contestant
+      redirect_to :controller=>"ext_contestants",:action=>"new",
+                :canvas=>false,
+                :contest_id=>@contest.id,
+                :user_id=>current_user.id,
+                :key=>current_user.secret_key,
+                :method=>'post'
   end
 
 end

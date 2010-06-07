@@ -14,20 +14,19 @@ Your sprite will compete for votes against <fb:name uid="<%=@contest.initiated_b
 <p/>
 <div id="the_challenger" class="editorkit" style="width:425px;text-align:center;">
 	<h3>The Challenger:</h3>
+	<div class="gender<%=@contest.contestant_for_user(@contest.initiated_by_user.id).gender%>">
 	<%=image_tag(@contest.contestant_for_user(@contest.initiated_by_user.id).photo.url(:small))%>
 	<br/>
 	<%=@contest.contestant_for_user(@contest.initiated_by_user.id).name %>
-	
+	</div>
 </div>
 
+<!-- fix me! -->
 <% facebook_form_for :contest,@contest, :url=>url_for( :action=>'accept_save'), :prompt_permission=>'publish_stream' do |f| %>
 	<input type="hidden" name="id" value="<%=@contest.id %>" />
-	<%= f.select :select_contestant_id, @contestants.map { |c| [c.name,c.id]} , :label=>"Choose your sprite" %>
 	
+	<%= render :partial=>'pick_contestant', :locals=>{:submit_button_value=>'Accept Challenge'}%>
 
-  <p>
- 	<%= f.buttons "Accept Challenge!" %>
-  </p>
 <% end %>
   
 

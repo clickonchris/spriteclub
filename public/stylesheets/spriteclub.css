@@ -1,3 +1,7 @@
+div.mainContainer {
+	padding: 0 20px 0 40px;
+}
+
 .votetotal {
 	display: block;
 }
@@ -12,14 +16,20 @@
 div.genderM {
 	border: 1px solid blue;
 	background-color:#D8DFEA;
+	display:inline-block;
+	padding:5px
 }
 
 div.genderF {
 	border: 1px solid #FF007B;
 	background-color: #FFE2EE;
+	display:inline-block;
+	padding:5px
 }
 
 div.gender {
 	border: 1px solid;
 	border-color: #888888;
+	display:inline-block;
+	padding:5px
 }

@@ -2,8 +2,9 @@
 
 <h2>Record: <%=@wins.round %>-<%=@losses.round%>-<%=@ties.round %> (W/L Ratio: <%='%.1f' % (@wlRatio*100)%>% ) </h2>
 
+<div class="gender<%=@contestant.gender%>" style="display:inline-block;padding:5px;">
 <%= image_tag @contestant.photo.url :medium %>
-
+</div>
 <% if @pending_contests.length > 0 %>
 	<h2>Pending Contests</h2>
 	<% for contest in @pending_contests %>
@@ -19,19 +20,21 @@
 	<% end %>
 <% end %>
 
-<h2>Active Contests</h2>
-<% for contest in @active_contests %>
-<a href="<%=url_for :controller=>'contests',:action=>'show',:id=>contest.id  %>">
-<%=contest.name %>:	<%=@contestant.name %> vs.
-	<% for c in contest.contestants %>
-		<% if c != @contestant %>
-			<%=c.name %>
-		<% end%>
+<% if @active_contests.length >0 %>
+	<h2>Active Contests</h2>
+	<% for contest in @active_contests %>
+	<a href="<%=url_for :controller=>'contests',:action=>'show',:id=>contest.id  %>">
+	<%=contest.name %>:	<%=@contestant.name %> vs.
+		<% for c in contest.contestants %>
+			<% if c != @contestant %>
+				<%=c.name %>
+			<% end%>
+		<% end %>
+	</a>
+	 <br/>
 	<% end %>
-</a>
- <br/>
 <% end %>
- 
+	 
 <h2>Recently Finished Contests</h2>
 <% for contest in @recent_contests %>
 <a href="<%=url_for :controller=>'contests',:action=>'show',:id=>contest.id  %>"><%=contest.name %></a>: 
