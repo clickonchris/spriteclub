@@ -10,13 +10,20 @@
   <tr>
   	<th>Name</th>
     <!--<th>Received by user</th>-->
+	<th></th>
     <th>End Date</th>
   </tr>
 
 <% for contest in @contests %>
   <tr>
-  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %></td>
-	
+  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %>:</td>
+	<td>
+		<% for i in (0..1) %>
+			<!-- put tiny images of contestants here -->
+			<%=contest.contestants[i].name%>
+			<% if i <1 %> vs. <%end%>
+		<%end%>
+	</td>
     <td><%=h contest.end_time %></td>
     <td></td>
 
@@ -26,4 +33,7 @@
 
 <br />
 
-<h2><%= link_to 'New Face-Off', new_contest_path %></h2>
+<fb:dashboard>
+	
+<fb:create-button href="<%=url_for :action=>'new' %>">Create a new Face-Off</fb:create-button>
+</fb:dashboard>

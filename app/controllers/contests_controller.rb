@@ -41,11 +41,11 @@ def new
     #@options = options_from_collection_for_select(contestants, 'id', 'name', selected = nil)
     
     
-    @prompt_permission = true
-    
-    if current_user.facebook_session.user.has_permission?('publish_stream')
-      @prompt_permission = false
-    end
+#    @prompt_permission = true
+#    
+#    if current_user.facebook_session.user.has_permission?('publish_stream')
+#      @prompt_permission = false
+#    end
 
 end
 
@@ -81,9 +81,9 @@ end
         @contest.contestants << Contestant.find(@contest.select_contestant_id)
 
         #send the challenge notification
-        @contest.send_challenge_notification
+        #@contest.send_challenge_notification
         
-        render :action=>'show', :id=>@contest.id
+        redirect_to :action=>'show', :id=>@contest.id, :prompt_publish_contestant_id=>@contest.select_contestant_id
         flash[:notice] = "Face-Off created"
     elsif params[:submit] == "Create New Sprite"
         #We are redirecting the user to the external site to create a sprite profile
@@ -156,7 +156,7 @@ def accept_save
       logger.info "Face-Off updated"
       flash[:notice] = "Challenge Accepted"
       
-      render :action=>'show'
+      redirect_to :action=>'show',:id=>@contest.id
   elsif params[:submit] == "Create New Sprite"
       #set the secret key so we can see it outside of facebook
       current_user.secret_key = current_user.session_key
@@ -172,6 +172,9 @@ end
 # The method that correlates to viewing of the main contest page
 # If the contest is pending, show "waiting for challenger" from the missing
 # contestant.
+
+# If the contest is waiting for challenger and the current user is the challenger, prompt them to accept
+
 
 # If the contest is active, show a vote button to any users that haven't voted yet
 
@@ -190,7 +193,22 @@ def show
   # This will end the contest if it should be ended
   @contest.check_finished?
   
-  #for each contestant, show picture, show votes
+  #This will check if this user should be prompted to accept
+  if @contest.status == 'WAITING_FOR_CHALLENGER' && @contest.sent_to_user.id == @user.id
+    @prompt_accept_challenge = true
+  end
+  
+  #show the initial challenge popup?
+  if params[:prompt_publish_contestant_id]
+    logger.info "initial challenge prompt"
+    #this is the initial challenge
+    @prompt_publish_contestant = Contestant.find(params[:prompt_publish_contestant_id])
+    @prompt_publish_to_user_id = @contest.sent_to_user.facebook_id
+  end
+  
+  if @contest.initiated_by_user_id == @user.id || @contest.sent_to_user_id == @user.id
+    @users_contestant = @contest.contestant_for_user(@user.id)
+  end
   
 end
 

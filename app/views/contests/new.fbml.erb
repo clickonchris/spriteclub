@@ -57,6 +57,7 @@
 <br/><br/>
 <a href='#' onclick="show_Popup(this); return false;">Show Popup</a>
 -->
+
 <script>
 <!--
 function show_Popup(context) {
@@ -66,12 +67,11 @@ function show_Popup(context) {
 	
 }
 var onload = [];
+
 onload.push(function() {
-	if (<%=@prompt_permission %> == true) {
-		Facebook.showPermissionDialog('publish_stream');
-	}
-	
+	//Facebook.streamPublish();
 });
+
 //-->
 </script>
 

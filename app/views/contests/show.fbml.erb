@@ -60,4 +60,67 @@
 		
 	</tr>	
 </table>
-<%= link_to 'Back', contests_path %>
+<br/>
+
+<% if @users_contestant != nil %>
+	<h2>
+		<a href="#" onclick="javascript:promptPublish(<%=@contest.id %>,
+												<%=@users_contestant.id %>,
+												'<%=image_url @users_contestant.photo.url(:small)%>',null)">
+													Get More Votes for <%=@users_contestant.name%>!</a>
+	</h2>
+<% end %>
+
+
+<script>
+	
+<!--
+var onload = [];
+
+function promptPublish(contest_id,contestant_id,photo_url,post_to_user_id) {
+	var message = 'I have the cutest kid'; 
+	var attachment = { 
+	    'name': 'Sprite Club Challenge', 
+	    'href': 'http://apps.facebook.com<%=url_for :controller=>"contests",:action=>"show", :path_only=>false %>',
+	    'caption': '{*actor*} Thinks their kid is cuter than your kid', 
+	    'description': 'Sprite Club is a social application where users children(sprites) '+
+						'compete for rank as the best sprite on the internet', 
+	    'media': [{ 
+	        'type': 'image', 
+	        'src': photo_url, 
+	        'href': 'http://apps.facebook.com<%= url_for :controller=> "contestants" %>/'+contestant_id }] 
+	}; 
+	var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
+	Facebook.streamPublish(message, attachment, null,post_to_user_id);
+}
+
+// if the prompt_publish contestant exists, prompt the user to publish
+<% if @prompt_publish_contestant != nil %>
+	//alert ("hey");
+	//new Dialog().showMessage("sup");
+	//promptPublish(<%=@contest.id %>,<%=@prompt_publish_contestant.id %>,"<%=@prompt_publish_contestant.photo.url(:small) %>",<%=@prompt_publish_to_user_id %> );
+	promptPublish(<%=@contest.id %>,
+				<%=@prompt_publish_contestant.id %>,
+				'<%= image_url @prompt_publish_contestant.photo.url(:small) %>',
+				<%=@prompt_publish_to_user_id %>);
+
+<% end %>
+
+<% if @prompt_accept_challenge != nil %>
+	var d = new Dialog();
+	onload.push(new function(){
+		var text = "Your friend thinks their kid is better than your kid." +
+					"The credibility of your legacy is at stake.  What will you do?"
+		d.showChoice('Accept Challenge', text, 'Accept the Challenge', 'Nothing.  I am too scared');
+	});
+	
+	d.onconfirm = function() {
+		document.setLocation('http://apps.facebook.com<%=url_for :action=>"accept", :id=>@contest.id %>');
+	}
+<% end %>
+
+//the very last thing on the page
+for(var a = 0;a < onload.length;a++) {onload[a]();}
+//-->
+</script>
+​
