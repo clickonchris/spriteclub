@@ -53,18 +53,10 @@ class ExtContestantsController < ActionController::Base
     
     @contestant.save!
     
-    #send the challenge notification
-    #We need a way to detect if saving this contestant means that the contest is active
-    if (user == contest.initiated_by_user)
-      contest.send_challenge_notification
-    else
-      contest.kickoff
-    end
-    
 
     
     #redirect back to facebook
-    redirect_to "http://apps.facebook.com/"+ FACEBOOKER['canvas_page_name'] +"/contests/" + contest.id.to_s
+    redirect_to "http://apps.facebook.com/"+ FACEBOOKER['canvas_page_name'] +"/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s 
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end
