@@ -148,11 +148,9 @@ def accept_save
   end
 
   if params[:submit] == "Accept Challenge"
-      @contest.status = 'IN_PROGRESS'
-      @contest.start_time = Time.now.utc
-      @contest.end_time = @contest.start_time + 60*60*24*7 # end the contest 7 days from now
+      
       @contest.contestants << Contestant.find(@contest.select_contestant_id)
-      @contest.save!
+      @contest.kickoff
       logger.info "Face-Off updated"
       flash[:notice] = "Challenge Accepted"
       

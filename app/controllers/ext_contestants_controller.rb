@@ -44,6 +44,9 @@ class ExtContestantsController < ActionController::Base
         raise SpriteClubGenericError.new("This contest already has a contestant added by you.")
       end
     }
+    
+
+    
 
     @contestant = Contestant.new(params[:contestant])
     @contestant.contests << contest
@@ -52,6 +55,11 @@ class ExtContestantsController < ActionController::Base
     @contestant.user = user
     
     @contestant.save!
+    
+    #check if this is the user which is accepting the challenge
+    if contest.sent_to_user_id == user.id
+      contest.kickoff
+    end
     
 
     

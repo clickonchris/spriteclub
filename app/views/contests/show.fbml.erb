@@ -119,8 +119,15 @@ function promptPublish(contest_id,contestant_id,photo_url,post_to_user_id) {
 	}
 <% end %>
 
+  onload.push(function starttimer() {
+    var count = 10;
+    //setInterval(function() { document.getElementById('timer_div').setTextValue(count--);   }, 1000);
+  });
+
 //the very last thing on the page
 for(var a = 0;a < onload.length;a++) {onload[a]();}
 //-->
 </script>
-​
+
+<div id='timer_div'></div>
+
