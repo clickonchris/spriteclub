@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100307222020) do
+ActiveRecord::Schema.define(:version => 20100703211321) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name",               :limit => 200
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20100307222020) do
     t.datetime "updated_at"
     t.datetime "finish_date"
     t.boolean  "is_a_tie"
+    t.integer  "length",               :limit => 3
   end
 
   create_table "users", :force => true do |t|

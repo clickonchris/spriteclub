@@ -34,6 +34,8 @@ def new
     end
     
     @contestants = current_user.contestants
+    
+    #@contest_length_options = [{:name => "1 Day",:val=>1},{"name" => "3 Days",:val=>3} ]
 #    new_contestant_option = Contestant.new()
 #    new_contestant_option.id =-1
 #    new_contestant_option.name="Create New Sprite..."
@@ -207,6 +209,7 @@ def show
   if @contest.initiated_by_user_id == @user.id || @contest.sent_to_user_id == @user.id
     @users_contestant = @contest.contestant_for_user(@user.id)
   end
+  
   
 end
 

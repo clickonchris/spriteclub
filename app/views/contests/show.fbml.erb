@@ -1,11 +1,10 @@
 <h1>Sprite Club Face-Off - <%=@contest.name %></h1>
-
-
 <%= facebook_messages %>
+<div class="timer" id="countdown"></div>
 <br/>
 
 <% if @contest.status == 'FINISHED' %>
-<h1><%= @contest.result_text %></h1>
+<div class="results"><%= @contest.result_text %></div>
 <% end %>
 
 <table>
@@ -17,7 +16,6 @@
 					<div id="faceoff_contestant" class="gender<%=contestant.gender%>"><!--If we replace the table with divs we can just use this div-->
 						<a href="<%=url_for :controller=>'contestants',:action=>'show',:id=>contestant.id %>">
 							<h2><%= contestant.name %></h2>
-						
 							Click for Profile
 						</a>
 						<br/>				
@@ -62,7 +60,8 @@
 </table>
 <br/>
 
-<% if @users_contestant != nil %>
+<!-- Get more Votes link -->
+<% if @users_contestant != nil  && @contest.status == 'IN_PROGRESS' %>
 	<h2>
 		<a href="#" onclick="javascript:promptPublish(<%=@contest.id %>,
 												<%=@users_contestant.id %>,
@@ -70,7 +69,6 @@
 													Get More Votes for <%=@users_contestant.name%>!</a>
 	</h2>
 <% end %>
-
 
 <script>
 	
@@ -118,16 +116,12 @@ function promptPublish(contest_id,contestant_id,photo_url,post_to_user_id) {
 		document.setLocation('http://apps.facebook.com<%=url_for :action=>"accept", :id=>@contest.id %>');
 	}
 <% end %>
-
-  onload.push(function starttimer() {
-    var count = 10;
-    //setInterval(function() { document.getElementById('timer_div').setTextValue(count--);   }, 1000);
-  });
-
+<% if @contest.end_time != nil%>
+	countdown_clock(<%=@contest.end_time.year%>,<%=@contest.end_time.month%>,<%=@contest.end_time.day%>,<%=@contest.end_time.hour%>,<%=@contest.end_time.min%>,<%=@contest.end_time.sec%>);
+<% end %>
 //the very last thing on the page
 for(var a = 0;a < onload.length;a++) {onload[a]();}
 //-->
 </script>
 
-<div id='timer_div'></div>
 

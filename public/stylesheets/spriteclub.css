@@ -33,3 +33,15 @@ div.gender {
 	display:inline-block;
 	padding:5px
 }
+
+div.timer {
+	text-align:center;
+	font-size:x-large;
+}
+
+div.results {
+	color: #55FF55;
+	font-size:x-large;
+	font-weight:bold;
+	text-align:center;
+}

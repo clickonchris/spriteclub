@@ -48,7 +48,10 @@ class Contest < ActiveRecord::Base
   def kickoff
     self.status = 'IN_PROGRESS'
     self.start_time = Time.now.utc
-    self.end_time = Time.now.utc + 60*60*24*7 # 7 days
+    if self.length == nil
+      self.length = 1
+    end
+    self.end_time = Time.now.utc + 60*60*24*self.length # 7 days
     self.save
     
   end

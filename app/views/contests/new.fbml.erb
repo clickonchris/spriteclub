@@ -3,13 +3,6 @@
 
 <%= facebook_messages %>
 
-<% if @prompt_permission %>
-	<fb:prompt-permission perms="publish_stream">
-	Spriteclub will use your wall to publish challenges to your friends.<br/>
-	 Will you allow spriteclub to publish to your wall?
-	</fb:prompt-permission>
-<% end %>
-
 <% facebook_form_for :contest,@contest, :url=>contests_path, :prompt_permission=>'publish_stream' do |f| %>
 	
 	
@@ -18,6 +11,8 @@
 		
 	<%= f.multi_friend_input :label=>"User to Challenge"%>
 	<br/>
+	
+	<%= f.select :length,{"1 Day"=>1, "3 Days"=>3 }, :label=>"Contest Length" %>
 	
 	<table>
 		<tr>
