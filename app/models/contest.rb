@@ -126,6 +126,35 @@ class Contest < ActiveRecord::Base
     }
     return nil
   end
+  
+  #returns a string representation of the time remaining in the contest
+  #  This method is more or less duplicated on the client side
+  def time_remaining
+    if end_time != nil
+      remaining = end_time - Time.now.utc 
+      if remaining < 0
+        remaining = 0
+      end
+      days = (remaining / (60*60*24)).floor
+      remaining = remaining % (60*60*24)
+      hours = (remaining / (60*60)).floor
+      remaining = remaining % (60*60)
+      minutes = (remaining / 60).floor
+      
+      sRet = ""
+      if days >0
+        sRet +=  days.to_s + " days "
+      end
+      if hours >0  || days >0
+        sRet += hours.to_s + " hours "
+      end
+      sRet += minutes.to_s + " minutes "
+      
+      return sRet
+    else
+      return ""
+    end
+  end
 
   
 end

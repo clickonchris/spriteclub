@@ -246,7 +246,7 @@ end
     
     end
     
-    render :action=>'show'
+    redirect_to :action=>'show', :next_faceoff_link=>true
   end
   
   private

@@ -8,10 +8,10 @@
 
 <table>
   <tr>
-  	<th>Name</th>
+  	<th>Face-Off Name</th>
     <!--<th>Received by user</th>-->
-	<th></th>
-    <th>End Date</th>
+	<th>Contestants</th>
+    <th>Time Remaining</th>
   </tr>
 
 <% for contest in @contests %>
@@ -24,7 +24,7 @@
 			<% if i <1 %> vs. <%end%>
 		<%end%>
 	</td>
-    <td><%=h contest.end_time %></td>
+    <td><%=h contest.time_remaining %></td>
     <td></td>
 
   </tr>

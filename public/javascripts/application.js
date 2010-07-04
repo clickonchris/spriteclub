@@ -73,10 +73,10 @@ function countdown(year, month, day, hour, minute, second)
         if (days >0) {
 			countdown = days + ' day' + dps + ' ';
 		}
-		if (hours >0) {
+		if (hours >0 || days >0) {
 	        countdown += sHours + ' hour' + hps+' ';
 		}
-		if (minutes >0) {
+		if (minutes >0 || hours >0 || days >0) {
 	        countdown += sMinutes + ' minute'+mps+' ';
 		}
 
