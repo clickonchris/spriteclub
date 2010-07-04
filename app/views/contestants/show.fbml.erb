@@ -3,7 +3,7 @@
 <h2>Record: <%=@wins.round %>-<%=@losses.round%>-<%=@ties.round %> (W/L Ratio: <%='%.1f' % (@wlRatio*100)%>% ) </h2>
 
 <div class="gender<%=@contestant.gender%>" style="display:inline-block;padding:5px;">
-<%= image_tag @contestant.photo.url :medium %>
+<%= image_tag @contestant.photo.url( :medium) %>
 </div>
 <% if @pending_contests.length > 0 %>
 	<h2>Pending Contests</h2>

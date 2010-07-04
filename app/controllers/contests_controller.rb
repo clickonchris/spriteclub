@@ -16,7 +16,9 @@ def index
       return 
     end
     
-    @contests = Contest.find(:all, :conditions=>{:status=>'IN_PROGRESS'})
+    @contests = Contest.find_active_by_end_time
+    
+    @recently_ended_contests = Contest.find(:all, :conditions=>"status = 'FINISHED' AND end_time > '#{(Time.now.utc - 48.hours).to_formatted_s(:db)}' ")
 
 
 end
@@ -188,7 +190,11 @@ def show
       @user = current_user
   end
   
-  @contest = Contest.find(params[:id])
+  if params[:show_next] != nil && params[:show_next] =='true'
+    @contest = Contest.find_next_active(params[:id])
+  else
+    @contest = Contest.find(params[:id])
+  end
   
   # This will end the contest if it should be ended
   @contest.check_finished?
@@ -210,10 +216,11 @@ def show
     @users_contestant = @contest.contestant_for_user(@user.id)
   end
   
-  
 end
 
-
+def show_next_active(this_id)
+  contest
+end
 
   def default_url_options(options)
     {:canvas=>true}

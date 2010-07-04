@@ -62,16 +62,16 @@
 
 <!-- Get more Votes link -->
 <% if @users_contestant != nil  && @contest.status == 'IN_PROGRESS' %>
-	<h2>
+	<div class="more_votes_link">
 		<a href="#" onclick="javascript:promptPublish(<%=@contest.id %>,
 												<%=@users_contestant.id %>,
 												'<%=image_url @users_contestant.photo.url(:small)%>',null)">
 													Get More Votes for <%=@users_contestant.name%>!</a>
-	</h2>
+	</div>
 <% end %>
 
 <% if params[:next_faceoff_link] != nil %>
-	<!--<div class="next_faceoff_link">Show me another Face-Off >></div> -->
+	<div class="next_faceoff_link"><%=link_to "Show me another Face-Off >>", :show_next=>'true' %></div>
 <% end %>
 
 <script>

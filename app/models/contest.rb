@@ -155,6 +155,32 @@ class Contest < ActiveRecord::Base
       return ""
     end
   end
+  
+  def self.find_active_by_end_time
+    return Contest.find(:all, :conditions=>{:status=>'IN_PROGRESS'}, :order=>"end_time")
+  end
+  
+  def self.find_next_active(previous_id)
+    if previous_id == nil
+      return nil
+    end
+    
+    last_contest = Contest.find(previous_id)
+    
+    #get the next contest in the db by end time
+    contest =  Contest.find(:first, :conditions=>["status = 'IN_PROGRESS' AND end_time > ?", last_contest.end_time], :order=>"end_time")
+    
+    #if none are found, get the first contest in the db by end time
+    if contest == nil
+      contest = Contest.find(:first,:conditions=>["status = 'IN_PROGRESS'"], :order=>"end_time")
+    end
+    #if we still can't find any, return the original contest
+    if contest == nil
+      return last_contest
+    end
+    
+    return contest
+  end
 
   
 end

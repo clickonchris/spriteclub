@@ -45,3 +45,20 @@ div.results {
 	font-weight:bold;
 	text-align:center;
 }
+
+div.next_faceoff_link {
+	float:right;
+}
+div.more_votes_link {
+	float:left;
+}
+
+div.faceoff_list {
+	border: solid 1px #EDEFF4;
+	padding: 5px;
+}
+div.faceoff_list h2 {
+
+	background-color: #EDEFF4;
+	padding: 0 0 0 5px;
+}
