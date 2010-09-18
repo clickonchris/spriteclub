@@ -66,3 +66,20 @@
 <% end %>
 </table>
 </div>
+
+<fb:dialog id="my_dialog">
+  <fb:dialog-title>My Little Dialog</fb:dialog-title>	
+  <fb:dialog-content><form id="my_form">Do you like my little dialog?</form></fb:dialog-content>
+  <fb:dialog-button type="submit" value="Yes" /> 
+</fb:dialog>
+
+I don't know what link to put, how about <a href="#" clicktoshowdialog="my_dialog" style="border-top: solid 1px" id="dialog">this one?</a>
+
+
+<script>
+var onload = [];
+
+//new Dialog().showMessage("hey", "<b>hows it</b>");
+onload.push(function() {document.getElementById("dialog").click });
+for(var a = 0;a < onload.length;a++) {onload[a]();}
+</script>
