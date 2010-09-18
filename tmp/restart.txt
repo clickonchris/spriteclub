@@ -1,0 +1,1 @@
+This will tell Dreamhost to automatically restart the RoR application during deploy
