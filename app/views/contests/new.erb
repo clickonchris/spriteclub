@@ -1,0 +1,71 @@
+<h1>New challenge</h1>
+
+
+
+	<fb:serverFbml id="my-request-form" style="width:740px;" >
+	  <script type="text/fbml">
+	    <fb:fbml>
+	    	<fb:request-form
+                action="http://127.0.0.1:3000/contests"
+				method="POST"
+                type="My App"
+                content="This is the content attribute">
+                	
+			Challenge Name (optional):<br/>					
+			<%= text_field :name, :label=>"Challenge Name (optional)" %>
+			<br/>
+			
+			Select a friend to challenge:
+	        <fb:multi_friend_input name="ids" width="360px" max="1" border_color="#8496ba" /> 
+			
+			Contest Length:<br/>
+			<%= select "length","length",{"1 Day"=>1, "3 Days"=>3 } %>
+			
+		
+		<table>
+		<tr>
+			<% if @contestants.length >0 %>
+			<td width="45%" style="font-weight:bold;" >Choose An Existing Sprite</td>
+			<td width="10%">or</td>
+			<% end %>
+			
+			<td style="font-weight:bold;">Create a New Sprite<td>
+		</tr>
+		<tr>
+			<% if @contestants.length >0 %>
+			<td width="45%">
+				<%= select "contest", :select_contestant_id, @contestants.map { |c| [c.name,c.id]} %>
+				<br/><br/>
+				<input type="Submit" name="submit" value="Submit Challenge" />
+			</td>
+			<td style="border-left: 1px solid #000000; padding: 5px;"></td>
+			<% end %>
+			
+			<td>Continue on to spriteclub.net to create your sprite profile and upload a photo of your sprite..
+				<br/><br/>
+			<input type="Submit" name="submit" value="Create New Sprite"/>
+			</td>
+			
+		</tr>
+	</table>
+			
+			
+		  </fb:request-form>
+	    </fb:fbml>
+	  </script>
+	</fb:serverFbml>
+<% form_for :contest,@contest, :url=>contests_path, :canvas=>false do |f| %>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<% end %>
+
+<%= link_to 'Back', contests_path %>
+
+

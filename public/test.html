@@ -1,0 +1,46 @@
+<html>
+	
+	<head>
+	</head>
+
+	<body>
+	
+		Multi-Friend Selector should appear here:
+
+		<fb:serverfbml width="650px"> 
+		<script type="text/fbml">
+		    <fb:fbml> 
+		        <fb:request-form
+		                action="http://localhost:3002/contests/new"
+		                method="POST"
+		                invite="true"
+		                type="My App"
+		                content="Try out my app!
+		                        <fb:req-choice url='http://apps.facebook.com/spriteclub-dev'
+		                        label='hey ladies!'
+		                        /> 
+		                " > 
+		                <fb:multi_friend_input name="ids" width="360px" max="1" /> 
+		        </fb:request-form> 
+		    </fb:fbml>
+		</script> 
+		</fb:serverfbml>
+		
+		<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+		<script type="text/javascript">
+		    FB_RequireFeatures(
+		        ["CanvasUtil"],
+		        function(){
+		                 FB.XdComm.Server.init('/xd_receiver.html');
+		                 FB.CanvasClient.startTimerToSizeToContent();
+		        }
+		    );
+		</script>
+		
+		<script type="text/javascript">
+		    FB_RequireFeatures(["XFBML"], function(){ FB.Facebook.init("a3a60d6b7e8f89f472e3991a80dc4b5a", "/xd_receiver.html"); });       
+		</script>
+
+	</body>
+
+</html>

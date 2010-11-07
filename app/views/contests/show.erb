@@ -1,0 +1,116 @@
+<h1>Sprite Club Face-Off - <%=@contest.name %></h1>
+
+<div class="timer" id="countdown"></div>
+<br/>
+
+<% if @contest.status == 'FINISHED' %>
+<div class="results"><%= @contest.result_text %></div>
+<% end %>
+
+<table>
+	<tr>
+		<% for i in (0..1) %>
+			<% if i < @contest.contestants.size  %>
+				<% contestant = @contest.contestants[i] %>				
+				<td width="380" style="text-align:center;">
+					<div id="faceoff_contestant" class="gender<%=contestant.gender%>"><!--If we replace the table with divs we can just use this div-->
+						<a href="<%=url_for :controller=>'contestants',:action=>'show',:id=>contestant.id %>">
+							<h2><%= contestant.name %></h2>
+							Click for Profile
+						</a>
+						<br/>				
+						<br/>
+						<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>
+							<a href="<%=url_for :action=>'vote', :id=>@contest.id, :contestant_id=>contestant.id%>" style="text-decoration:none">
+						<% end %>
+						<%= image_tag( contestant.photo.url( :medium)) %>
+						</br>
+						<!-- Only show the vote button when the contest is in progress -->
+						<% if @contest.status == "IN_PROGRESS" && !current_user.can_vote_on_contest?(@contest.id) %>
+						<span class="vote">
+							
+								Vote for <%=contestant.name %>
+							
+								
+							</span>
+							
+					   <% end%>
+					   </a>
+					   <span class="votetotal">Total votes: <%=contestant.votes_for_contest @contest.id %></span>
+				   </div>
+				</td>
+				
+				<% if i < 1 %>
+					<td><%= image_tag "vs_pink.gif" %></td>
+				<% end%>
+				
+				
+			<% else %> 
+				<%# There is no contestant. We are waiting for the challenger #%>
+				<td width="380" valign="top"><h2>Waiting for Challenger...</h2>
+					<br/>
+					<br/>
+					<%= image_tag "challenger_question.gif" %>
+				</td>
+			<% end%>
+		<% end %>
+
+		
+	</tr>	
+</table>
+<br/>
+
+<!-- Get more Votes link -->
+<% if @users_contestant != nil  && @contest.status == 'IN_PROGRESS' %>
+	<div class="more_votes_link">
+		<a href="#" onclick="javascript:promptPublish('http://apps.facebook.com<%=url_for :controller=>"contests",:action=>"show", :path_only=>false %>',
+												'<%=image_url @users_contestant.photo.url(:small)%>',null)">
+													Get More Votes for <%=@users_contestant.name%>!</a>
+	</div>
+<% end %>
+
+
+	<div class="next_faceoff_link"><%=link_to "Show me another Face-Off >>", :show_next=>'true' %></div>
+
+
+<script>
+	
+<!--
+var onload = [];
+
+
+
+// if the prompt_publish contestant exists, prompt the user to publish
+<% if @prompt_publish_contestant != nil %>
+	//alert ("hey");
+
+
+	promptPublish('http://apps.facebook.com<%=url_for :controller=>"contests",:action=>"show", :path_only=>false %>',
+				'<%= image_url @prompt_publish_contestant.photo.url(:small) %>',
+				<%=@prompt_publish_to_user_id %>);
+
+<% end %>
+
+<% if @prompt_accept_challenge != nil %>
+/*
+	var d = new Dialog();
+	onload.push(new function(){
+		var text = "Your friend thinks their kid is better than your kid." +
+					"The credibility of your legacy is at stake.  What will you do?"
+		d.showChoice('Accept Challenge', text, 'Accept the Challenge', 'Nothing.  I am too scared');
+	});
+	
+	d.onconfirm = function() {
+		document.setLocation('http://apps.facebook.com<%=url_for :action=>"accept", :id=>@contest.id %>');
+	}
+*/
+<% end %>
+<% if @contest.end_time != nil%>
+	countdown_clock(<%=@contest.end_time.year%>,<%=@contest.end_time.month%>,<%=@contest.end_time.day%>,<%=@contest.end_time.hour%>,<%=@contest.end_time.min%>,<%=@contest.end_time.sec%>);
+<% end %>
+//the very last thing on the page
+//for(var a = 0;a < onload.length;a++) {onload[a]();}
+//-->
+</script>
+
+

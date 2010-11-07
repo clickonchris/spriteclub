@@ -47,7 +47,7 @@ ActionController::Routing::Routes.draw do |map|
                     :conditions=>{:canvas=>true}
                     
   #this is the contest controller that will be accessible from spriteclub.net                  
-  map.contest '',:controller=>"ext_contests"
+  map.contest '',:controller=>"contests"
   #map.contest 'contestants',:controller=>"contestant"
 
   # Install the default routes as the lowest priority.

@@ -1,6 +1,8 @@
 class ContestsController < ApplicationController
   
-attr_accessor :intro_text
+#  before_filter :login_required
+  
+  attr_accessor :intro_text
 
 def index
     
@@ -10,11 +12,11 @@ def index
       @user = current_user
        #redirect_to leaders_path and return if @user.nil?
     end
-    # If we don't have a user, require add
-    if @user.blank?
-      ensure_authenticated_to_facebook   
-      return 
-    end
+#    # If we don't have a user, require add
+#    if @user.blank?
+#      ensure_authenticated_to_facebook   
+#      return 
+#    end
     
     @contests = Contest.find_active_by_end_time
     
@@ -31,9 +33,11 @@ def new
     # @contest.contestants.build
     # @contest.contestants[0].user = @user;
     
-    if params[:user_id]
-      @user = User.find(params[:user_id])
-    end
+#    if params[:user_id]
+#      @user = User.find(params[:user_id])
+#    end
+    
+#    logger.info "userID is " + current_user.id
     
     @contestants = current_user.contestants
     
@@ -64,6 +68,7 @@ end
     
     if params[:ids].blank?
       flash[:error] = "You forgot to tell me who you wanted to Challenge!"    
+      @contestants = current_user.contestants
       render :action=>"new"
     end
     
@@ -222,9 +227,9 @@ def show_next_active(this_id)
   contest
 end
 
-  def default_url_options(options)
-    {:canvas=>true}
-  end
+#  def default_url_options(options)
+#    {:canvas=>true}
+#  end
   
   def vote
     

@@ -4,6 +4,10 @@ class User < ActiveRecord::Base
   has_many :challenges_received, :class_name=>'Contest', :foreign_key=>'sent_to_user_id'
   has_many :contestants, :class_name=>'Contestant', :foreign_key=>'owner_user_id'
   
+  def connected?
+    !facebook_id.blank?
+  end
+  
   def create_user
     User.for(facebook_session.user.to_i)
   end

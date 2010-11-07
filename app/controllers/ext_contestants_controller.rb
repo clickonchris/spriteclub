@@ -64,7 +64,7 @@ class ExtContestantsController < ActionController::Base
 
     
     #redirect back to facebook
-    redirect_to "http://apps.facebook.com/"+ FACEBOOKER['canvas_page_name'] +"/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s 
+    redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s 
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end

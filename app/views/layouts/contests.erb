@@ -1,0 +1,85 @@
+<div class="mainContainer">
+<%#= javascript_include_tag "facebooker" %>
+<%# #javascript_include_tag :defaults %>
+
+<%= stylesheet_link_tag "spriteclub" %>
+<%=link_to image_tag( "sc_logo.gif"), :action=>'index' %>
+
+<br/><br/>
+	<h2 style="text-align:center">THE OFFICIAL ARENA OF FRIENDLY COMPETITION TO DETERMINE ONE THING - WHO HAS THE CUTEST KID</h2>
+	
+	(tabs go here. use jquery tabs)
+	|<a href="<%=url_for :action=>'index' %>">index</a>|<a href="<%=url_for :controller=>'contestants' %>">contestants</a>|
+<fb:tabs>
+	<fb:tab-item href="<%=url_for :only_path=>false, :action=>'index'  %>" selected="true" title="Active Face-Offs" />
+	<fb:tab-item href="<%=url_for :controller=>'contestants' %>" title="My Sprites" />
+</fb:tabs>
+    <% fb_connect_async_js  do %>    
+      <%= yield :fb_connect%>
+    <% end %>
+	
+	<%= javascript_include_tag "application" %>
+	<script type="text/javascript">
+/*
+ * This method shows a popup window to prompt the user to post something to their own wall or a friend's wall
+ */
+function promptPublish(contest_url,photo_url,post_to_user_id) {
+	var publish = {
+		method: 'stream.publish',
+		message: 'I think my kid is cuter than yours.  Let\'s find out', 
+		attachment: { 
+		    name: 'Sprite Club Challenge', 
+		    href: contest_url,
+		    caption: '{*actor*} Thinks their kid is cuter than your kid', 
+		    description: ('Sprite Club is a social application where users children(sprites) '+
+							'compete for rank as the best sprite on the internet'), 
+		    media: [{ 
+		        'type': 'image', 
+		        'src': photo_url, 
+		        'href': contest_url }] 
+		}
+	}; 
+	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
+	//Facebook.streamPublish(message, attachment, null,post_to_user_id);
+	FB.ui(publish, function(){});
+}
+</script>
+<%= yield  %> 
+
+<div>
+	
+	<!--
+	
+<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" type="text/javascript"></script>
+<script type="text/javascript">
+	FB_RequireFeatures(
+	    ["CanvasUtil"],
+	    function(){
+	             FB.XdComm.Server.init('/xd_receiver.html');
+	             //FB.CanvasClient.startTimerToSizeToContent();
+	    }
+	);
+</script>
+
+<script type="text/javascript">
+	FB_RequireFeatures(["XFBML"], function(){ FB.Facebook.init("a3a60d6b7e8f89f472e3991a80dc4b5a", "/xd_receiver.html"); });       
+</script>
+
+-->
+<!--
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+<script>
+  FB.init({appId: 'a3a60d6b7e8f89f472e3991a80dc4b5a',
+  		   status: true,
+		   cookie: true,
+		   xfbml: true});
+  FB.Event.subscribe('auth.sessionChange', function(response) {
+    if (response.session) {
+      // A user has logged in, and a new cookie has been saved
+    } else {
+      alert("response.session is false");
+    }
+  });
+</script>
+-->

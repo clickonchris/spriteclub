@@ -91,22 +91,3 @@ function countdown(year, month, day, hour, minute, second)
 		 	}, 1000);
 }
 
-/*
- * This method shows a popup window to prompt the user to post something to their own wall or a friend's wall
- */
-function promptPublish(contest_url,photo_url,post_to_user_id) {
-	var message = 'I think my kid is cuter than yours.  Let\'s find out'; 
-	var attachment = { 
-	    'name': 'Sprite Club Challenge', 
-	    'href': contest_url,
-	    'caption': '{*actor*} Thinks their kid is cuter than your kid', 
-	    'description': 'Sprite Club is a social application where users children(sprites) '+
-						'compete for rank as the best sprite on the internet', 
-	    'media': [{ 
-	        'type': 'image', 
-	        'src': photo_url, 
-	        'href': contest_url }] 
-	}; 
-	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
-	Facebook.streamPublish(message, attachment, null,post_to_user_id);
-}
