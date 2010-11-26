@@ -1,3 +1,11 @@
+body {
+	color:#333333;
+	direction:ltr;
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	text-align:left;
+}
+
 div.mainContainer {
 	padding: 0 20px 0 40px;
 }
@@ -62,3 +70,43 @@ div.faceoff_list h2 {
 	background-color: #EDEFF4;
 	padding: 0 0 0 5px;
 }
+
+ul.toggle_tabs {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+.clearfix {
+	display:block;
+}
+
+a {
+	cursor:pointer;
+	text-decoration:none;
+}
+
+/*The following items were all lifted from facebook*/
+.tabs{padding:0;border-bottom:1px solid #898989}
+.ff2 .tabs{padding:3px 0}
+.tabs.top{background:#f7f7f7}
+.tabs .left_tabs{padding-left:10px;float:left}
+.tabs .right_tabs{padding-right:10px;float:right}
+.tabs .back_links{padding-right:20px;float:right}
+.toggle_tabs{text-align:center;margin-bottom:-1px}
+.ff2 .toggle_tabs{margin-bottom:0}
+.toggle_tabs li{display:inline;padding:2px 0 3px;background:#f1f1f1 top left repeat-x}
+.toggle_tabs li a{border:1px solid #898989;border-left:0;color:#333;font-weight:bold;padding:2px 8px 3px 9px;display:inline-block}
+.toggle_tabs li a small{font-size:11px;font-weight:normal}
+.toggle_tabs li a:focus{outline:0}
+.toggle_tabs li.first a{border:1px solid #898989}
+.toggle_tabs li a.selected{margin-left:-1px;background:#6d84b4;border:1px solid #3b5998;border-left:1px solid #5973a9;border-right:1px solid #5973a9;color:#fff}
+.toggle_tabs li.last a.selected{margin-left:-1px;border-left:1px solid #5973a9;border-right:1px solid #36538f}
+.toggle_tabs li.first a.selected{margin:0;border-left:1px solid #36538f;border-right:1px solid #5973a9}
+.toggle_tabs li.first.last a.selected{border:1px solid #36538f}
+.toggle_tabs li a.selected:hover{text-decoration:none}
+.toggle_tabs li a.disabled{color:#999;cursor:default}
+.toggle_tabs li a.disabled:hover{text-decoration:none}
+.toggle_tabs .hidden{display:none}
+
+#bootloader_css_ecyn096untsgs4gc_pkg_css { height: 42px; }

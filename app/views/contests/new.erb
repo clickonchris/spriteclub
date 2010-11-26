@@ -6,20 +6,20 @@
 	  <script type="text/fbml">
 	    <fb:fbml>
 	    	<fb:request-form
-                action="http://127.0.0.1:3000/contests"
+                action="<%=url_for(:action=>'create',:only_path=>false) %>"
 				method="POST"
                 type="My App"
                 content="This is the content attribute">
                 	
 			Challenge Name (optional):<br/>					
-			<%= text_field :name, :label=>"Challenge Name (optional)" %>
+			<%= text_field :contest, :name,:size=>30 %>
 			<br/>
 			
 			Select a friend to challenge:
 	        <fb:multi_friend_input name="ids" width="360px" max="1" border_color="#8496ba" /> 
 			
 			Contest Length:<br/>
-			<%= select "length","length",{"1 Day"=>1, "3 Days"=>3 } %>
+			<%= select :contest, :length, {"1 Day"=>1, "3 Days"=>3 }  %>
 			
 		
 		<table>

@@ -1,0 +1,9 @@
+# config/spriteclub.yml
+development:
+  canvas_name: spriteclub-dev
+
+test:
+  canvas_name: spriteclub-dev
+
+production:
+  canvas_name: spritelub

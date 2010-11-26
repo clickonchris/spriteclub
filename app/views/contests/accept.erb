@@ -1,0 +1,45 @@
+<h1>Accept Challenge</h1>
+
+<%#= facebook_messages %>
+	<p/>
+
+<%# We need to make a partial page to share code between new and accept %>
+
+In order to accept the challenge You must create a new sprite profile or choose an existing sprite profile.
+
+<p/>
+
+
+Your sprite will compete for votes against <fb:name uid="<%=@contest.initiated_by_user.facebook_id%>"/>'s sprite
+<p/>
+<div id="the_challenger" class="editorkit" style="width:425px;text-align:center;">
+	<h3>The Challenger:</h3>
+	<div class="gender<%=@contest.contestant_for_user(@contest.initiated_by_user.id).gender%>">
+	<%=image_tag(@contest.contestant_for_user(@contest.initiated_by_user.id).photo.url(:small))%>
+	<br/>
+	<%=@contest.contestant_for_user(@contest.initiated_by_user.id).name %>
+	</div>
+</div>
+
+<!-- fix me! -->
+	<fb:serverFbml id="my-request-form" style="width:740px;" >
+	  <script type="text/fbml">
+<%# facebook_form_for :contest,@contest, :url=>url_for( :action=>'accept_save'), :prompt_permission=>'publish_stream' do |f| %>
+		<%# Do we need to ask for stream publishing permission here?  maybe not%>
+		<fb:request-form 
+			action="<%=url_for( :action=>'accept_save', :only_path=>false) %>"
+			method="POST"
+			type="my app"
+			content="???">
+				
+				
+	<input type="hidden" name="id" value="<%=@contest.id %>" />
+	
+	<%= render :partial=>'pick_contestant', :locals=>{:submit_button_value=>'Accept Challenge'}%>
+
+		</fb:request-form>
+  
+		</script>
+	</fb:serverFbml>
+
+<%= link_to 'Back', contests_path %>
