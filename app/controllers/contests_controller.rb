@@ -1,8 +1,11 @@
 class ContestsController < ApplicationController
-  
+  layout "application"
 #  before_filter :login_required
   
   attr_accessor :intro_text
+  
+  #setting this to highlight the "active face-offs" tab
+  @@selected = "contests"
 
 def index
     
@@ -20,7 +23,11 @@ def index
     
     @contests = Contest.find_active_by_end_time
     
-    @recently_ended_contests = Contest.find(:all, :conditions=>"status = 'FINISHED' AND end_time > '#{(Time.now.utc - 48.hours).to_formatted_s(:db)}' ")
+    @recently_ended_contests = Contest.find(:all, 
+                                            :limit=>10,
+                                            :joins=>:contestants,
+                                            :conditions=>"status = 'FINISHED'", 
+                                            :order=> "end_time desc")
 
 
 end
@@ -198,7 +205,7 @@ def show
   if params[:show_next] != nil && params[:show_next] =='true'
     @contest = Contest.find_next_active(params[:id])
   else
-    @contest = Contest.find(params[:id])
+    @contest = Contest.find(params[:id], :joins=>:contestants)
   end
   
   # This will end the contest if it should be ended

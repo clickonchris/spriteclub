@@ -10,12 +10,7 @@
 </head>
 
 <body>
-<div class="mainContainer">
-<%=link_to image_tag( "sc_logo.gif"), :action=>'index' %>
 
-<br/><br/>
-	<h2 style="text-align:center">THE OFFICIAL ARENA OF FRIENDLY COMPETITION TO DETERMINE ONE THING - WHO HAS THE CUTEST KID</h2>
-	
 
 
 
@@ -24,81 +19,34 @@
     <% end %>
 	
 	<%= javascript_include_tag "application" %>
-	<script type="text/javascript">
-/*
- * This method shows a popup window to prompt the user to post something to their own wall or a friend's wall
- */
-function promptPublish(contest_url,photo_url,post_to_user_id) {
-	var publish = {
-		method: 'stream.publish',
-		message: 'I think my kid is cuter than yours.  Let\'s find out', 
-		attachment: { 
-		    name: 'Sprite Club Challenge', 
-		    caption: 'Thinks their kid is cuter than your kid', 
-		    description: ('Sprite Club is a social application where users children(sprites) '+
-							'compete for rank as the best sprite on the internet'),
-			href: contest_url,		
-		    media: [{ 
-		        'type': 'image', 
-				'src': photo_url,
-				'href': contest_url }]
-		}
-	}; 
-	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
-	//Facebook.streamPublish(message, attachment, null,post_to_user_id);
-	FB.ui(publish, callback());
-}
 
-function testPublish() {
-var publish = {
-  method: 'stream.publish',
-  message: 'I think my kid is cuter than yours.  Let\'s find out',
-  attachment: {
-    name: 'Sprite Club Challenge',
-    caption: '{*actor*} Thinks their kid is cuter than your kid',
-    description: ('Sprite Club is a social application where users children(sprites) '+
-							'compete for rank as the best sprite on the internet'),
-    href: 'http://apps.facebook.com/spriteclub?contest_id=102',
-    media: [
-      {
-        type: 'image',
-        href: 'http://www.spriteclub.net',
-        src: 'http://web1.tunnlr.com:11467/assets/contestants/41/small/RROD_small.jpg?1289104288'
-      }
-    ]
-  }
-  //action_links: [
-  //  { text: 'fbrell', href: 'http://fbrell.com/' }
-  //],
-  //user_prompt_message: 'Share your thoughts about RELL'
-};
+<div class="mainContainer">
+<%=link_to image_tag( "sc_logo.gif"), :action=>'index' %>
 
-FB.ui(publish, callback());
-}
-
-function callback() {
-	alert("whats up");
-}
-</script>
-
-
-<div class="tabs clearfix">
-    <center>
-        <div class="left_tabs">
-            <ul id="toggle_tabs_unused" class="toggle_tabs">
-                <li class="first ">
-                    <a onmousedown="" onclick="return true;" class="selected" href="/contests">Active Face-Offs</a>
-                </li>
-                <li class="last ">
-                    <a onmousedown="" onclick="return true;" class="" href="/contestants">My Sprites</a>
-                </li>
-            </ul>
-        </div>
-    </center>
-</div>
+<br/><br/>
+	<h2 style="text-align:center">THE OFFICIAL ARENA OF FRIENDLY COMPETITION TO DETERMINE ONE THING - WHO HAS THE CUTEST KID</h2>
 	
+
+	<div class="tabs clearfix" style="height:19xp;">
+	    <center>
+	        <div class="left_tabs">
+	            <ul id="toggle_tabs_unused" class="toggle_tabs">
+	                <li class="first">
+	                    <a onmousedown="" onclick="return true;" class="selected" href="/contests">Active Face-Offs</a>
+	                </li>
+					<li>
+						<a href="#">test</a>
+					</li>
+	                <li class="last">
+	                    <a onmousedown="" onclick="return true;" class="" href="/contestants">My Sprites</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </center>
+	</div>
+<p style="color: green"><%= flash[:notice] %></p>
 <%= yield  %> 
-<a href="#" onclick="javascript:testPublish()">test publish</a>
+
 <div>
 	
 	<!--

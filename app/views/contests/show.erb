@@ -74,7 +74,15 @@
 
 <%end%>
 
-
+<%#If you are the user who created the challenge and it has not been accepted, show a link to post to your friend's wall%>
+<% if @users_contestant != nil && @contest.status == 'WAITING_FOR_CHALLENGER' %>
+	<div class="more_votes_link">
+		<a href="#" onclick="javascript:promptPublish('<%=url_for(:controller=>'contests', :action=>'show', :id=>@contest.id,:host=>'apps.facebook.com/'+SPRITECLUB['canvas_name'],:only_path=>false) %>',
+												'<%=image_url @users_contestant.photo.url(:small)%>',
+												'<%=@contest.sent_to_user.facebook_id%>' )">
+													Post this challenge to your friend's wall</a>
+	</div>
+<% end%>
 
 
 	
@@ -83,67 +91,51 @@
 <%# if the prompt_publish contestant exists, prompt the user to publish %>
 <% if @prompt_publish_contestant != nil %>
 <script>
-	<!--
-	//alert ("hey");
 
-
-	promptPublish('<%=url_for :controller=>"contests",:action=>"show", :host=>"apps.facebook.com/"+SPRITECLUB["canvas_name"], :path_only=>false %>',
+		setTimeout(function() {
+			promptPublish('<%=url_for :controller=>"contests",:action=>"show", :host=>"apps.facebook.com/"+SPRITECLUB["canvas_name"], :path_only=>false %>',
 				'<%= image_url @prompt_publish_contestant.photo.url(:small) %>',
 				<%=@prompt_publish_to_user_id %>);
+		},200);
+
 </script>
 <% end %>
 
 <% if @prompt_accept_challenge != nil %>
 
-<div id="dialog" style="display:none" >
-	Your friend thinks their kid is better than your kid.  
-	The credibility of your legacy is at stake.  What will you do?
-	<br/>
-	<input type="button" value="Accept Challenge" id="accept_challenge_ok" />
-	<input type="button" value="Nothing.  I am too scared"  id="accept_challenge_cancel" />
-</div>
-<script>
-	//alert('accept challenge?');
+	<div id="dialog" style="display:none" >
+		Your friend thinks their kid is better than your kid.  
+		The credibility of your legacy is at stake.  What will you do?
+		<br/>
+		<input type="button" value="Accept Challenge" id="accept_challenge_ok" />
+		<input type="button" value="Nothing.  I am too scared"  id="accept_challenge_cancel" />
+	</div>
+	<script>
+		//alert('accept challenge?');
+		
+		$(function() {
+				$("#dialog").dialog({title: "Accept Challenge?",
+									resizable:false,
+									modal:true
+									});
+				$("#accept_challenge_ok").click(function() {
+					window.location = '<%=url_for :action=>"accept", :id=>@contest.id, :only_path=>false %>';
+					//$("#dialog").dialog("close");
+				})
+				$("#accept_challenge_cancel").click(function() {
+					$("#dialog").dialog("close");
+				})
+				
+		});
 	
-	$(function() {
-			$("#dialog").dialog({title: "Accept Challenge?",
-								resizable:false,
-								modal:true
-								});
-			$("#accept_challenge_ok").click(function() {
-				window.location = '<%=url_for :action=>"accept", :id=>@contest.id, :only_path=>false %>';
-				//$("#dialog").dialog("close");
-			})
-			$("#accept_challenge_cancel").click(function() {
-				$("#dialog").dialog("close");
-			})
-			
-	});
-
-	
-	/*
-	var d = new Dialog();
-	onload.push(new function(){
-		var text = "Your friend thinks their kid is better than your kid." +
-					"The credibility of your legacy is at stake.  What will you do?"
-		d.showChoice('Accept Challenge', text, 'Accept the Challenge', 'Nothing.  I am too scared');
-	});
-	--*/
-	d.onconfirm = function() {
-		window.location('<%=url_for :action=>"accept", :id=>@contest.id, :only_path=>false %>');
-	}
-</script>
+		
+	</script>
 <% end %>
 <% if @contest.end_time != nil%>
 	<script>
 	countdown_clock(<%=@contest.end_time.year%>,<%=@contest.end_time.month%>,<%=@contest.end_time.day%>,<%=@contest.end_time.hour%>,<%=@contest.end_time.min%>,<%=@contest.end_time.sec%>);
 	</script>
 <% end %>
-<script>
-//the very last thing on the page
-for(var a = 0;a < onload.length;a++) {onload[a]();}
-//-->
 
-</script>
 
 

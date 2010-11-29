@@ -41,7 +41,7 @@ function countdown(year, month, day, hour, minute, second)
 		Time_Left = Math.round((Target_DateTS - Todays_DateTS) / 1000);
 		
 		if (Time_Left <= 0) {
-			document.getElementById('countdown').setTextValue("Time Expired");
+			$("#countdown")[0].innerHTML = "Time Expired";
 		return;
 		}
          
@@ -82,7 +82,7 @@ function countdown(year, month, day, hour, minute, second)
 
         countdown += sSeconds + ' second'+sps+' ';
 		countdown = 'Time Remaining: ' + countdown;
-		document.getElementById('countdown').setTextValue(countdown);
+		$('#countdown')[0].innerHTML = countdown;
                
          //Recursive call, keeps the clock ticking.
          setTimeout(function(){
@@ -91,3 +91,39 @@ function countdown(year, month, day, hour, minute, second)
 		 	}, 1000);
 }
 
+/*
+ * This method shows a popup window to prompt the user to post something to their own wall or a friend's wall
+ */
+function promptPublish(contest_url,photo_url,post_to_user_id) {
+	//if FB api is not initialized, keep retrying until it is
+	if (FB == null) {
+		setTimeout(function() {
+			promptPublish(contest_url,photo_url,post_to_user_id);
+		},200);
+		return;
+	}
+	var publish = {
+		method: 'stream.publish',
+		message: 'I think my kid is cuter than yours.  Let\'s find out', 
+		attachment: { 
+		    name: 'Sprite Club Challenge', 
+		    caption: 'Thinks their kid is cuter than your kid', 
+		    description: ('Sprite Club is a social application where users children(sprites) '+
+							'compete for rank as the best sprite on the internet'),
+			href: contest_url,		
+		    media: [{ 
+		        'type': 'image', 
+				'src': photo_url,
+				'href': contest_url }]
+		}
+	}; 
+	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
+
+	FB.ui(publish, callback());
+}
+
+
+
+function callback() {
+	//alert("whats up");
+}

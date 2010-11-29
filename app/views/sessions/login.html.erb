@@ -6,5 +6,8 @@
 	</head>
 	<body>
 		Please login to facebook
+    	<% fb_connect_async_js  do %>    
+	      <%= yield :fb_connect%>
+	    <% end %>
 	</body>
 </html>

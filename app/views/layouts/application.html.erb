@@ -1,1 +1,53 @@
-application.erb
+<!doctype html >
+<html>
+	<head>
+	<%= stylesheet_link_tag "spriteclub" %>
+	<link type="text/css" href="/stylesheets/smoothness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />	
+	<script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js" ></script>
+	<script type="text/javascript" src="/javascripts/jquery-ui-1.8.6.custom.min.js" ></script>
+
+	
+</head>
+
+<body>
+
+
+
+
+    <% fb_connect_async_js  do %>    
+      <%= yield :fb_connect%>
+    <% end %>
+	<%= javascript_include_tag "application" %>
+	
+	
+<div class="mainContainer">
+<%=link_to image_tag( "sc_logo.gif"),:controller=>'contests', :action=>'index' %>
+
+
+	<div class="tabs clearfix" style="height:19xp;">
+	    <center>
+	        <div class="left_tabs">
+	            <ul id="toggle_tabs_unused" class="toggle_tabs">
+	                <li class="first">
+	                    <a onmousedown="" onclick="return true;" href="/contests"
+						<% if selected=='contests'%>class="selected"<%end%>
+						>Active Face-Offs</a>
+	                </li>
+
+	                <li class="last">
+	                    <a onmousedown="" onclick="return true;" href="/contestants"
+						<% if selected=='contestants'%>class="selected"<%end%>
+						>My Sprites</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </center>
+	</div>
+	
+	<p style="color: green"><%= flash[:notice] %></p>
+<%= yield  %> 
+
+</div>
+
+</body>
+<html>

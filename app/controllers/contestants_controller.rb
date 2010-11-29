@@ -1,4 +1,7 @@
 class ContestantsController < ApplicationController
+  layout "application"
+  
+  @@selected = "contestants"
   
   def index
     #show all contestants for the currently logged in user
