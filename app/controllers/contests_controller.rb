@@ -25,7 +25,7 @@ def index
     
     @recently_ended_contests = Contest.find(:all, 
                                             :limit=>10,
-                                            :joins=>:contestants,
+                                            #:joins=>:contestants,
                                             :conditions=>"status = 'FINISHED'", 
                                             :order=> "end_time desc")
 
