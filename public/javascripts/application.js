@@ -96,7 +96,7 @@ function countdown(year, month, day, hour, minute, second)
  */
 function promptPublish(contest_url,photo_url,post_to_user_id) {
 	//if FB api is not initialized, keep retrying until it is
-	if (FB == null) {
+	if (FB == undefined) {
 		setTimeout(function() {
 			promptPublish(contest_url,photo_url,post_to_user_id);
 		},200);
@@ -104,17 +104,18 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 	}
 	var publish = {
 		method: 'stream.publish',
+		//display: 'iframe',
 		message: 'I think my kid is cuter than yours.  Let\'s find out', 
 		attachment: { 
 		    name: 'Sprite Club Challenge', 
 		    caption: 'Thinks their kid is cuter than your kid', 
 		    description: ('Sprite Club is a social application where users children(sprites) '+
 							'compete for rank as the best sprite on the internet'),
-			href: contest_url,		
+			href: contest_url +'/',		
 		    media: [{ 
 		        'type': 'image', 
 				'src': photo_url,
-				'href': contest_url }]
+				'href': contest_url+'/' }]
 		}
 	}; 
 	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];

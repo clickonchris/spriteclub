@@ -16,6 +16,8 @@
 
     <% fb_connect_async_js  do %>    
       <%= yield :fb_connect%>
+	  FB.XD._origin = (window.location.protocol+'//'+window.location.host+'/'+FB.guid());
+	  //FB.getLoginStatus(function(response) {});
     <% end %>
 	<%= javascript_include_tag "application" %>
 	

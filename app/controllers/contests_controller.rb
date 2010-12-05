@@ -85,7 +85,7 @@ end
     @contest.initiated_by_user = current_user;
     
     #params[:ids][0] should be the id of the facebook user we are sending the challenge to
-    @contest.sent_to_user = User.for(params[:ids][0])
+    @contest.sent_to_user = User.for_facebook_id(params[:ids][0])
     
     @contest.status = 'WAITING_FOR_CHALLENGER'
     
@@ -105,8 +105,8 @@ end
         #We are redirecting the user to the external site to create a sprite profile
   
         #set the secret key so we can see it outside of facebook
-        current_user.secret_key = current_user.session_key
-        current_user.save!
+#        current_user.secret_key = current_user.session_key
+#        current_user.save!
         
         redirect_to_new_contestant
       
@@ -271,7 +271,7 @@ end
   private
   
   def redirect_to_new_contestant
-      redirect_to :controller=>"ext_contestants",:action=>"new",
+      redirect_to :controller=>"contestants",:action=>"new",
                 :canvas=>false,
                 :contest_id=>@contest.id,
                 :user_id=>current_user.id,

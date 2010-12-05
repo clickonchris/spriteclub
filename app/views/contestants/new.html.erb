@@ -1,11 +1,9 @@
-<%=image_tag "sc_logo.gif" %>
-
 <h1>Create New Sprite Profile</h1>
-
 
 <% form_for :contestant,@contestant,
 					 :html => { :multipart => true },
-					 :url=> { :action=>'create'} do |f| %>					 
+					 :url=> { :action=>'create'} do |f| %>		
+	<%= hidden_field :contest, :id, :value=>params[:contest_id] %>			 
 	<fb:editor-custom>
 		<table>
 			<tr>

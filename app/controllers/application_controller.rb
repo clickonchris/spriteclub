@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
    if session[:facebook_id]
      @current_user ||= User.find_by_facebook_id(session[:facebook_id])
    elsif current_facebook_user and @current_user.nil?
-      @current_user = User.find_by_facebook_id(current_facebook_user.id)
+      @current_user = User.for(current_facebook_user)
       session[:facebook_id] = current_facebook_user.id
     else
       logger.info "current user is nil"
@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
     # by redirecting back to HTTP_REFERER, we will go back to the the apps.facebook.com request!
     @authenticator ||= Mogli::Authenticator.new(Facebooker2.app_id, 
                                          Facebooker2.secret, 
-                                         @_request.env['HTTP_REFERER']+'/')
+                                         @_request.env['HTTP_REFERER'])
   end
   
   # Redirects the top window to the given url if the content is in an iframe, otherwise performs 

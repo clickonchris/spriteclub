@@ -12,13 +12,30 @@ class User < ActiveRecord::Base
     User.for(facebook_session.user.to_i)
   end
   
-  def self.for(facebook_id,facebook_session=nil)
-    returning find_or_create_by_facebook_id(facebook_id) do |user|
-      unless facebook_session.nil?
-        user.store_session(facebook_session.session_key) 
-      end
+#  def self.for(facebook_id,facebook_session=nil)
+#    returning find_or_create_by_facebook_id(facebook_id) do |user|
+#      unless facebook_session.nil?
+#        user.store_session(facebook_session.session_key) 
+#      end
+#    end
+#  end
+  
+  def self.for(current_facebook_user)
+    u = find_or_create_by_facebook_id(current_facebook_user.id)
+    unless current_facebook_user.client.nil?
+      #logger.info "expiration is" + current_facebook_user.client.expiration.to_s
+      u.update_attributes(:access_token=>current_facebook_user.client.access_token.to_s, 
+                          :expires => current_facebook_user.client.expiration)
     end
+    return u
   end
+  
+  def self.for_facebook_id(facebook_id)
+    u = find_or_create_by_facebook_id(facebook_id)
+    return u
+  end
+  
+  
   
   def store_session(session_key)
     if self.session_key != session_key
