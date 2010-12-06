@@ -16,8 +16,26 @@
 
     <% fb_connect_async_js  do %>    
       <%= yield :fb_connect%>
+	  
 	  FB.XD._origin = (window.location.protocol+'//'+window.location.host+'/'+FB.guid());
 	  //FB.getLoginStatus(function(response) {});
+	  FB.Event.subscribe('auth.sessionChange', function(response) {
+	    if (response.session) {
+	      // A user has logged in, and a new cookie has been saved
+		  //alert('user logged in');
+	    } else {
+	      // The user has logged out or removed permissions to this app. The cookie has been cleared
+		  // If the user is still logged into facebook but has removed permissions
+		  alert('user logged out.  redirecting');
+		  logout();
+	    }
+	  });
+	  FB.getLoginStatus(function(response) {
+		  if (response.session == undefined) {
+		    logout();
+		  }
+	  });
+		
     <% end %>
 	<%= javascript_include_tag "application" %>
 	
@@ -50,6 +68,12 @@
 <%= yield  %> 
 
 </div>
+
+<script type="text/javascript">
+function logout() {
+	window.location = '<%= url_for :controller=>'', :logout=>'true' %>';
+}
+</script>
 
 </body>
 <html>

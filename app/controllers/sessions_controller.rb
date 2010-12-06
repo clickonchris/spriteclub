@@ -2,7 +2,9 @@ class SessionsController < ActionController::Base
   
   include Facebooker2::Rails::Controller
   
-  def login
-    
+  
+  def logout
+    reset_session;
   end
+  
 end

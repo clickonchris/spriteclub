@@ -104,6 +104,7 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 	}
 	var publish = {
 		method: 'stream.publish',
+		target_id: post_to_user_id,
 		//display: 'iframe',
 		message: 'I think my kid is cuter than yours.  Let\'s find out', 
 		attachment: { 
@@ -125,6 +126,6 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 
 
 
-function callback() {
-	//alert("whats up");
-}
+function callback() { /*alert("whats up");*/ }
+
+

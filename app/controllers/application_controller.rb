@@ -18,17 +18,18 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4d95a45fc63dc292a49749954a059cd2'
-  before_filter :ensure_authenticated_to_facebook  
+  before_filter :check_for_logout
+  before_filter :ensure_authenticated_to_facebook
   
   class SpriteClubAuthError < StandardError; end
   class SpriteClubGenericError < StandardError; end
   
-  # See ActionController::Base for details 
-  # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password"). 
-  # filter_parameter_logging :password
-  
-#  helper_attr :current_user
+  def check_for_logout
+    if params[:logout] == "true"
+      logger.info "logging out the user"
+      reset_session
+    end
+  end
   
   #each time a user visits apps.facebook.com/spriteclub, we will refresh their access token
   def ensure_authenticated_to_facebook
@@ -41,13 +42,28 @@ class ApplicationController < ActionController::Base
   
   def current_user
    if session[:facebook_id]
+     #if we have a session, get the user from the session
      @current_user ||= User.find_by_facebook_id(session[:facebook_id])
    elsif current_facebook_user and @current_user.nil?
+      # if we have a valid oath token we will come here to get/save the user and set the session
       @current_user = User.for(current_facebook_user)
       session[:facebook_id] = current_facebook_user.id
-    else
+   elsif params[:code]
+      #in case the user just authorized the application and redirected to our app, will get a "code" and "signed_request"
+      # in the request.  Within the signed_request are these "issued_at" and "algorithm" parameters
+      # according to facebook's Oauth implementation we are supposed to exchange the code and our application secret for
+      # a user_id and oauth_token.  IMO this should be handled inside facebooker2's current_facebook_user method.  See the following docs:
+      # http://developers.facebook.com/docs/authentication/
+      # http://developers.facebook.com/docs/authentication/canvas
+      # I've observed that in the next request after this one we always get the oauth token, so lets just refresh the page without setting the session
+      logger.info "code found but no oauth token.  @facebook_params: " +@facebook_param.to_s
+      render :layout=>false, :inline=> '<html><head><script type="text/javascript">window.top.location.href = '+
+                                            ('http://apps.facebook.com/' + SPRITECLUB['canvas_name']).to_json + 
+                                            ';</script></head></html>'
+      #alternatively we could get the user id by calling Mogli::Client.create_from_code_and_authenticator(params[:code], authenticator)                                             
+   else
       logger.info "current user is nil"
-      @current_user = nil
+      @current_user = nil        
     end
   end
   
@@ -55,7 +71,9 @@ class ApplicationController < ActionController::Base
   # more details on the scope and display options can be found here:
   # http://developers.facebook.com/docs/authentication/
   def login_url
-    authenticator.authorize_url(:scope => 'publish_stream,email', :display => 'page')
+    url = authenticator.authorize_url(:scope => 'publish_stream,email', :display => 'page')
+    logger.info "redirecting to " + url
+    return url
   end
   
   def authenticator
