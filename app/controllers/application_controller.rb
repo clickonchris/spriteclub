@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4d95a45fc63dc292a49749954a059cd2'
+  before_filter :set_p3p
   before_filter :check_for_logout
   before_filter :ensure_authenticated_to_facebook
   
@@ -43,6 +44,10 @@ class ApplicationController < ActionController::Base
   def current_user
    if session[:facebook_id]
      #if we have a session, get the user from the session
+     # If there is a oath token we need to look at it and make sure this is the right user
+#     if @facebook_param[:user_id] && @facebook_param[:user_id] != session[:facebook_id]
+#       #get the current facebook user and set that one in the session
+#     end
      @current_user ||= User.find_by_facebook_id(session[:facebook_id])
    elsif current_facebook_user and @current_user.nil?
       # if we have a valid oath token we will come here to get/save the user and set the session
@@ -106,6 +111,10 @@ class ApplicationController < ActionController::Base
 #      self.current_user = User.for(facebook_session.user.to_i,facebook_session) 
 #    end
 #  end
+
+def set_p3p
+   response.headers["P3P"]='CP="CAO PSA OUR"'
+end
   
   
 end
