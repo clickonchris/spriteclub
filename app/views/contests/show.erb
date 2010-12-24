@@ -63,7 +63,7 @@
 <!-- Get more Votes link -->
 <% if @users_contestant != nil  && @contest.status == 'IN_PROGRESS' %>
 	<div class="more_votes_link">
-		<a href="#" onclick="javascript:promptPublish('<%=url_for(:controller=>'contests', :action=>'show', :id=>@contest.id,:host=>'apps.facebook.com/'+SPRITECLUB['canvas_name'],:only_path=>false) %>',
+		<a href="#" onclick="javascript:promptPublish('<%=url_for(:controller=>'contests', :action=>'view', :id=>@contest.id,:host=>'apps.facebook.com/'+SPRITECLUB['canvas_name'],:only_path=>false) %>',
 												'<%=image_url @users_contestant.photo.url(:small)%>',null)">
 													Get More Votes for <%=@users_contestant.name%>!</a>
 	</div>
@@ -77,7 +77,7 @@
 <%#If you are the user who created the challenge and it has not been accepted, show a link to post to your friend's wall%>
 <% if @users_contestant != nil && @contest.status == 'WAITING_FOR_CHALLENGER' %>
 	<div class="more_votes_link">
-		<a href="#" onclick="javascript:promptPublish('<%=url_for(:controller=>'contests', :action=>'show', :id=>@contest.id,:host=>'apps.facebook.com/'+SPRITECLUB['canvas_name'],:only_path=>false) %>',
+		<a href="#" onclick="javascript:promptPublish('<%=url_for(:controller=>'contests', :action=>'view', :id=>@contest.id,:host=>'apps.facebook.com/'+SPRITECLUB['canvas_name'],:only_path=>false) %>',
 												'<%=image_url @users_contestant.photo.url(:small)%>',
 												'<%=@contest.sent_to_user.facebook_id%>' )">
 													Post this challenge to your friend's wall</a>
@@ -93,7 +93,7 @@
 <script>
 
 		setTimeout(function() {
-			promptPublish('<%=url_for :controller=>"contests",:action=>"show", :host=>"apps.facebook.com/"+SPRITECLUB["canvas_name"], :path_only=>false %>',
+			promptPublish('<%=url_for :controller=>"contests",:action=>"view", :id=>@contest.id, :host=>"apps.facebook.com/"+SPRITECLUB["canvas_name"], :path_only=>false %>',
 				'<%= image_url @prompt_publish_contestant.photo.url(:small) %>',
 				<%=@prompt_publish_to_user_id %>);
 		},200);
@@ -106,15 +106,18 @@
 	<div id="dialog" style="display:none" >
 		Your friend thinks their kid is better than your kid.  
 		The credibility of your legacy is at stake.  What will you do?
-		<br/>
-		<input type="button" value="Accept Challenge" id="accept_challenge_ok" />
+		<br/><br/>
+		
 		<input type="button" value="Nothing.  I am too scared"  id="accept_challenge_cancel" />
+		<input type="button" value="Accept Challenge" id="accept_challenge_ok" style="float:right"  />
+
 	</div>
 	<script>
 		//alert('accept challenge?');
 		
 		$(function() {
 				$("#dialog").dialog({title: "Accept Challenge?",
+									minWidth:400,
 									resizable:false,
 									modal:true
 									});
@@ -139,6 +142,6 @@
 
 <!--
 <fb:login-button autologoutlink="true" perms="publish_stream"></fb:login-button>
--->
 
+-->
 

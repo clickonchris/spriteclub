@@ -10,15 +10,27 @@
 </head>
 
 <body>
-
+<script>
+	var onload = [];
+</script>
 
 
 
     <% fb_connect_async_js  do %>    
       <%= yield :fb_connect%>
+	  FB.Canvas.setAutoResize();
 	  
-	  FB.XD._origin = (window.location.protocol+'//'+window.location.host+'/'+FB.guid());
-	  //FB.getLoginStatus(function(response) {});
+	  //FB.XD._origin = (window.location.protocol+'//'+window.location.host+'/'+FB.guid());
+	  
+  	  /*FB.getLoginStatus(function(response) {
+	  	if (response.session) {
+			alert('the user is logged in');
+		}
+		else {
+			alert('the user is not logged in');
+		}
+	  });
+	  */
 	  FB.Event.subscribe('auth.sessionChange', function(response) {
 	    if (response.session) {
 	      // A user has logged in, and a new cookie has been saved
@@ -30,12 +42,9 @@
 		  logout();
 	    }
 	  });
-	  FB.getLoginStatus(function(response) {
-		  if (response.session == undefined) {
-		    logout();
-		  }
-	  });
 		
+		//this will make any functions in the onload array execute after FB.init
+		for(var a = 0;a < onload.length;a++) {onload[a]();}
     <% end %>
 	<%= javascript_include_tag "application" %>
 	

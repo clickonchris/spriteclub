@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
   @@selected = ""
   
   helper_method :selected
+  helper_method :current_user
+  helper_method :auth_url
+  helper_method :top_redirect_to
   
   def selected
     @@selected
@@ -19,63 +22,40 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4d95a45fc63dc292a49749954a059cd2'
   before_filter :set_p3p
-  before_filter :check_for_logout
   before_filter :ensure_authenticated_to_facebook
   
   class SpriteClubAuthError < StandardError; end
   class SpriteClubGenericError < StandardError; end
   
-  def check_for_logout
-    if params[:logout] == "true"
-      logger.info "logging out the user"
-      reset_session
-    end
-  end
-  
   #each time a user visits apps.facebook.com/spriteclub, we will refresh their access token
+  #1 - check for a user_id from the signed_request
+  #2 - check the session for an active user
+  #3 - nothing worked.  redirect to the auth page.
   def ensure_authenticated_to_facebook
-    #1 - check for a active token in the signed request
-    #2 - check for a user in the session (how do we know if the facebook session is valid?)
-    #3 - nothing worked.  make them login to facebook
-    
-     top_redirect_to login_url if current_user == nil
-  end
-  
-  def current_user
-   if session[:facebook_id]
-     #if we have a session, get the user from the session
-     # If there is a oath token we need to look at it and make sure this is the right user
-#     if @facebook_param[:user_id] && @facebook_param[:user_id] != session[:facebook_id]
-#       #get the current facebook user and set that one in the session
-#     end
-     @current_user ||= User.find_by_facebook_id(session[:facebook_id])
-   elsif current_facebook_user and @current_user.nil?
-      # if we have a valid oath token we will come here to get/save the user and set the session
-      @current_user = User.for(current_facebook_user)
-      session[:facebook_id] = current_facebook_user.id
-   elsif params[:code]
-      #in case the user just authorized the application and redirected to our app, will get a "code" and "signed_request"
-      # in the request.  Within the signed_request are these "issued_at" and "algorithm" parameters
-      # according to facebook's Oauth implementation we are supposed to exchange the code and our application secret for
-      # a user_id and oauth_token.  IMO this should be handled inside facebooker2's current_facebook_user method.  See the following docs:
-      # http://developers.facebook.com/docs/authentication/
-      # http://developers.facebook.com/docs/authentication/canvas
-      # I've observed that in the next request after this one we always get the oauth token, so lets just refresh the page without setting the session
-      logger.info "code found but no oauth token.  @facebook_params: " +@facebook_param.to_s
-      render :layout=>false, :inline=> '<html><head><script type="text/javascript">window.top.location.href = '+
-                                            ('http://apps.facebook.com/' + SPRITECLUB['canvas_name']).to_json + 
-                                            ';</script></head></html>'
-      #alternatively we could get the user id by calling Mogli::Client.create_from_code_and_authenticator(params[:code], authenticator)                                             
-   else
-      logger.info "current user is nil"
-      @current_user = nil        
+    if facebook_params[:user_id]     
+      logger.info "User succesfully authenticated. expires: " + facebook_params[:expires].to_s
+      fb_create_user_and_client(facebook_params[:oauth_token], facebook_params[:expires], facebook_params[:user_id])
+      #I don't like having to rely on current_facebook_user here
+      @current_user = User.for(facebook_params[:oauth_token], facebook_params[:expires], facebook_params[:user_id])
+      session[:facebook_id] = @current_user.facebook_id
+    elsif session[:facebook_id]
+      @current_user = User.find_by_facebook_id(session[:facebook_id])
+      
+      #make sure the auth token we have is still valid  (I think facebooker2 provides this somehow already but I can't find it)
+      logger.info "token expires: " + @current_user.access_token_expires.to_s
+      if @current_user.access_token_expires == nil  || (@current_user.access_token_expires != nil && @current_user.access_token_expires.utc < Time.now.utc)
+        top_redirect_to auth_url
+      end
+      
+    else
+      top_redirect_to auth_url
     end
   end
   
   #creates the oauth url for the user to request authorize and authenticate to spriteclub
   # more details on the scope and display options can be found here:
   # http://developers.facebook.com/docs/authentication/
-  def login_url
+  def auth_url
     url = authenticator.authorize_url(:scope => 'publish_stream,email', :display => 'page')
     logger.info "redirecting to " + url
     return url
@@ -96,22 +76,13 @@ class ApplicationController < ActionController::Base
                                             ';</script></head></html>'
   end
 
-  
-  helper_method :current_user
-  
-  
-#   attr_accessor :current_user
-#  before_filter :set_current_user
-#  def set_current_user
-#    set_facebook_session
-#    # if the session isn't secured, we don't have a good user id
-#    if facebook_session and 
-#       facebook_session.secured? and 
-#       !request_is_facebook_tab?
-#      self.current_user = User.for(facebook_session.user.to_i,facebook_session) 
-#    end
-#  end
 
+  def current_user
+    @current_user
+  end
+  
+  
+#we need to set this p3p privacy policy header or facebook connect will never work on IE
 def set_p3p
    response.headers["P3P"]='CP="CAO PSA OUR"'
 end

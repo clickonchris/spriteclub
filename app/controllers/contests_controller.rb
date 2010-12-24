@@ -14,7 +14,17 @@ def index
     else
       @user = current_user
        #redirect_to leaders_path and return if @user.nil?
-    end
+   end
+   
+  begin
+    current_facebook_user.fetch
+  rescue
+    logger.error "failed to lookup facebook user: #{$!}.  Maybe an auth problem"
+    top_redirect_to auth_url
+    return
+  end
+   #logger.info "current user is " + current_facebook_user.to_s
+   
 #    # If we don't have a user, require add
 #    if @user.blank?
 #      ensure_authenticated_to_facebook   
@@ -205,7 +215,7 @@ def show
   if params[:show_next] != nil && params[:show_next] =='true'
     @contest = Contest.find_next_active(params[:id])
   else
-    @contest = Contest.find(params[:id], :joins=>:contestants)
+    @contest = Contest.find(params[:id])
   end
   
   # This will end the contest if it should be ended
@@ -228,6 +238,15 @@ def show
     @users_contestant = @contest.contestant_for_user(@user.id)
   end
   
+end
+
+#This method is a poor hack to get around the fact that all requests are coming in as posts
+#and I can't find a way to generate a url that contains the "show" action.  For GETS our routing knows that if no
+#action is specified then it is show by default.
+def view
+  logger.info "in view"
+  show
+  render :action=>'show'
 end
 
 def show_next_active(this_id)

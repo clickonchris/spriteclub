@@ -60,7 +60,7 @@ class ContestantsController < ApplicationController
     #check if this is the user which is accepting the challenge
     if contest.sent_to_user_id == current_user.id
       contest.kickoff
-      redirect_to "/contests/" + contest.id.to_s
+      redirect_to "/contests/" + contest.id.to_s and return
     end
     
     #redirect back to facebook

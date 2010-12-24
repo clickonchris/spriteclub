@@ -109,7 +109,7 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 		message: 'I think my kid is cuter than yours.  Let\'s find out', 
 		attachment: { 
 		    name: 'Sprite Club Challenge', 
-		    caption: 'Thinks their kid is cuter than your kid', 
+		    caption: '{*actor*} Thinks their kid is cuter than your kid', 
 		    description: ('Sprite Club is a social application where users children(sprites) '+
 							'compete for rank as the best sprite on the internet'),
 			href: contest_url +'/',		
