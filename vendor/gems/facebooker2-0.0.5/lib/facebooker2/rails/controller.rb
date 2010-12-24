@@ -23,8 +23,10 @@ module Facebooker2
       
       def fetch_client_and_user
         return if @_fb_user_fetched
-        fetch_client_and_user_from_cookie
+        #I have flipped the order of the next two calls from how it exists in Facebooker2 right now
+        #This is because I trust the signed_request much more than the cookie
         fetch_client_and_user_from_signed_request unless @_current_facebook_client
+        fetch_client_and_user_from_cookie
         @_fb_user_fetched = true
       end
       
