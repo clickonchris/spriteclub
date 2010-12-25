@@ -11,6 +11,7 @@
 
 <table cellspacing="0px" cellpadding="5px" >
 	<tr>
+		<th>Rank</th>
 		<th>Sprite</th>
 		<th>Wins</th>
 	</tr>
@@ -18,6 +19,7 @@
 	<%	@leaderboard.each do |contestant| %>
 	<%rows = rows + 1%>
 	<tr class=<%="even" if rows%2 == 1 %>>
+		<td><%=rows%></td>
 		<td>
 			<a href="<%=url_for :controller=>'contestants',:action=>'show',:id=>contestant.id %>">
 			<%=contestant.name%>
