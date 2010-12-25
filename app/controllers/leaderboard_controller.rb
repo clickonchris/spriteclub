@@ -1,7 +1,11 @@
 class LeaderboardController < ApplicationController
   layout "application"
   
-  @@selected = "leaderboard"
+    before_filter :set_tab
+
+  def set_tab
+    @@selected = "leaderboard"  
+  end
   
   def index
     @leaderboard = Contestant.find_by_sql( "select contestants.id, contestants.name, count(contestants.id) as contests_won " +

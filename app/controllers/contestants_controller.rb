@@ -1,7 +1,11 @@
 class ContestantsController < ApplicationController
   layout "application"
   
-  @@selected = "contestants"
+  before_filter :set_tab
+
+  def set_tab
+    @@selected = "contestants"  
+  end
   
   def index
     #show all contestants for the currently logged in user

@@ -5,7 +5,11 @@ class ContestsController < ApplicationController
   attr_accessor :intro_text
   
   #setting this to highlight the "active face-offs" tab
-  @@selected = "contests"
+  before_filter :set_tab
+
+  def set_tab
+    @@selected = "contests"  
+  end
 
 def index
     
