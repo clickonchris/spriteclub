@@ -1,0 +1,33 @@
+<style type="text/css">
+	
+	table {border:1px solid #BBBBBB;}
+	td {border:1px solid #BBBBBB; }
+	th {border:1px solid #BBBBBB;}
+	
+	.even {background-color:#F4F8FC;}
+	
+</style>
+
+
+<table cellspacing="0px" cellpadding="5px" >
+	<tr>
+		<th>Sprite</th>
+		<th>Wins</th>
+	</tr>
+	<%rows =0%>
+	<%	@leaderboard.each do |contestant| %>
+	<%rows = rows + 1%>
+	<tr class=<%="even" if rows%2 == 1 %>>
+		<td>
+			<a href="<%=url_for :controller=>'contestants',:action=>'show',:id=>contestant.id %>">
+			<%=contestant.name%>
+			</a>
+		</td>
+		<td>
+			<%=contestant.contests_won%>
+		</td>
+	</tr>
+	<%	end %>
+	
+	
+</table>
