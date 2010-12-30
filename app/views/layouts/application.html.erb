@@ -16,7 +16,7 @@
 
 
 
-    <% fb_connect_async_js  do %>    
+    <% fb_connect_async_js Facebooker2.app_id,:cookie=>'false'  do %>    
       <%= yield :fb_connect%>
 	  FB.Canvas.setAutoResize();
 	  

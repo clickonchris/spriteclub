@@ -47,7 +47,11 @@ class ApplicationController < ActionController::Base
         top_redirect_to auth_url
       end
       
+      fb_create_user_and_client(@current_user.access_token, @current_user.access_token_expires, @current_user.facebook_id)
+      
+    #elsif "cookie found"  #A fbs_<app_id> cookie is another way to check for a user.  implement me!
     else
+      logger.info "no auth token, session, or cookie found."
       top_redirect_to auth_url
     end
   end
