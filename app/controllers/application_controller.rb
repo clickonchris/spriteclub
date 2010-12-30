@@ -52,8 +52,8 @@ class ApplicationController < ActionController::Base
       fb_create_user_and_client(@current_user.access_token, @current_user.access_token_expires, @current_user.facebook_id)
     
     #Next try to authenticate from a cookie  
-    elsif (hash_data = fb_cookie_hash_for_app_id(app_id)) and
-          fb_cookie_signature_correct?(fb_cookie_hash_for_app_id(app_id),Facebooker2.secret) 
+    elsif (hash_data = fb_cookie_hash_for_app_id(Facebooker2.app_id)) and
+          fb_cookie_signature_correct?(fb_cookie_hash_for_app_id(Facebooker2.app_id),Facebooker2.secret) 
       logger.info "cookie auth.  token expires: " + hash_data["expires"]
       @current_user = User.find_by_facebook_id(hash_data["uid"])
       fb_create_user_and_client(hash_data["access_token"],hash_data["expires"],hash_data["uid"])
