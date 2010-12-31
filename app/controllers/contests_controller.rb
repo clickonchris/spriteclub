@@ -109,9 +109,8 @@ end
     if params[:submit] == "Submit Challenge"
         #User selected an existing sprite
         @contest.contestants << Contestant.find(@contest.select_contestant_id)
-
-        #send the challenge notification
-        #@contest.send_challenge_notification
+        @contest.save
+        
         
         redirect_to :action=>'show', :id=>@contest.id, :prompt_publish_contestant_id=>@contest.select_contestant_id
         flash[:notice] = "Face-Off created"
@@ -181,6 +180,10 @@ def accept_save
       
       @contest.contestants << Contestant.find(@contest.select_contestant_id)
       @contest.kickoff
+      
+      @contest.sent_to_user.reward_for_accepting("Accepted challenge: " + @contest.name)
+      @contest.initiated_by_user.reward_for_getting_challenge_accepted("Your challenge was accepted: " + @contest.name)
+      
       logger.info "Face-Off updated"
       flash[:notice] = "Challenge Accepted"
       
@@ -281,8 +284,11 @@ end
       vote = Vote.new
       vote.user_id = current_user.id
       vote.contest_id = @contest.id
-      vote.contestant_id = Contestant.find(params[:contestant_id]).id
+      contestant = Contestant.find(params[:contestant_id])
+      vote.contestant_id = contestant.id
       vote.save!
+      
+      current_user.reward_for_voting("Voted for " + contestant.name + " in " + @contest.name)
       
       flash[:notice] = "Vote cast successfully.  Come back in 4 hours and vote again!"
     

@@ -6,7 +6,7 @@
 		<tr>
 			<td >
 				<a href="<%= url_for :action=>'show', :id=>contestant.id %>" class="editorkit">
-		<%=image_tag contestant.photo.url :small %> 
+		<%=image_tag( contestant.photo.url( :small)) %> 
 		
 		</a>
 		</td>

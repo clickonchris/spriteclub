@@ -2,6 +2,7 @@ class Contest < ActiveRecord::Base
 
   has_and_belongs_to_many :contestants
   has_many :votes
+  has_many :rewards
   
   belongs_to :initiated_by_user, 
              :class_name=>'User', 
@@ -62,7 +63,7 @@ class Contest < ActiveRecord::Base
   def check_finished?
     if status == 'IN_PROGRESS' && Time.now.utc >= end_time
       #The contest is supposed to have ended.  We will end it now.
-      end_contest
+      end_contest     
       return true
     elsif status == 'FINISHED' || status == 'EXPIRED'
       return true
@@ -93,13 +94,18 @@ class Contest < ActiveRecord::Base
         self.is_a_tie = true
         self.winner = nil
       end
-    }
-    
+    }    
     self.save!
     
+    #assign reward points
     if is_a_tie
+      contestants.each {|contestant|
+        contestant.user.reward_for_tie("contest: " + self.name + "resulted in a TIE", contestant.id)
+      }
       logger.info "contest ID " + id.to_s + " Result: Its a Tie!"
     else
+      logger.info winner.name + " Won contest: " + name
+      self.winner.user.reward_for_winning(winner.name + " Won contest: " + name, winner.id)
       logger.info "contest ID " + id.to_s + " Result: winner is contestant ID " + winner.id.to_s + ", " + winner.name
     end
   end

@@ -76,6 +76,9 @@
 	            </ul>
 	        </div>
 	    </center>
+		<div id="rewards">
+			XP: <%=@current_user.reward_points%>
+		</div>
 	</div>
 	
 	<p style="color: green"><%= flash[:notice] %></p>
@@ -85,7 +88,7 @@
 
 <div id="footer"><%=Time.now-@start_time%>s
 	<br/>
-	A Clickonchris production</div>
+	A Christopher G Johnson production</div>
 
 <script type="text/javascript">
 function logout() {

@@ -17,22 +17,14 @@ class ContestantsController < ApplicationController
   
   def new
     
-    #if the user is hitting this method after a post from apps.facebook.com, 
-    #they might not yet have a facebook session and will get redirected to
-    #www.spriteclub.net
-    # In this case we need to automatically establish the facebook session.
+    #we should be hitting this page from the contests.new page. This is the second step in creating a contest
     
     @contestant = Contestant.new
     
     #wrap in try/catch?
     @contestant.contests << Contest.find(params[:contest_id])
     
-    #New will pass these to Create.
-#    session[:contest_id] = params[:contest_id]
-#    session[:secret_key] = params[:key]
-    session[:user_id] = params[:user_id]
-    
-
+    #session[:user_id] = params[:user_id]
   end
   
   
@@ -61,13 +53,16 @@ class ContestantsController < ApplicationController
     
     @contestant.save!
     
+    current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
+    
     #check if this is the user which is accepting the challenge
     if contest.sent_to_user_id == current_user.id
       contest.kickoff
+      current_user.reward_for_accepting("Accepted challenge: " + contest.name)
       redirect_to "/contests/" + contest.id.to_s and return
     end
     
-    #redirect back to facebook
+    #redirect back to contest page
     redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s 
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
@@ -112,16 +107,6 @@ class ContestantsController < ApplicationController
         logger.info "ratio is " + @wlRatio.to_s
       end
         
-    
-  end
-  
-  def leaderboard
-    @@selected = 'leaderboard'
-    @leaderboard = Contestant.find_by_sql( "select contestants.id, contestants.name, count(contestants.id) as contests_won " +
-          "FROM contestants, contests " +
-          "WHERE contestants.id = contests.winner_contestant_id " +
-          "GROUP BY contestants.id " +
-          "ORDER BY contests_won DESC")
     
   end
 end

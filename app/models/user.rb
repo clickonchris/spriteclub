@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :challenges_initiated, :class_name=>'Contest', :foreign_key=>'initiated_by_user_id'
   has_many :challenges_received, :class_name=>'Contest', :foreign_key=>'sent_to_user_id'
   has_many :contestants, :class_name=>'Contestant', :foreign_key=>'owner_user_id'
+  has_many :rewards
   
   def connected?
     !facebook_id.blank?
@@ -57,6 +58,72 @@ class User < ActiveRecord::Base
       return false
     end
     
+  end
+  
+  #####  User Rewards Section ####
+  
+  def reward_points
+    return Reward.calculate(:sum,:points,:conditions=> "user_id = " + self.id.to_s)
+  end
+  
+  def reward_for_voting(description)
+    
+      reward = Reward.new
+      reward.points = 1
+      reward.description = description
+      reward.user_id = self.id
+      reward.save!
+  end
+  
+  def reward_for_challenging(description)
+      reward = Reward.new
+      reward.points = 5
+      reward.description = description
+      reward.user_id = self.id
+      reward.save!
+  end
+  
+  def reward_for_accepting(description)
+      reward = Reward.new
+      reward.points = 10
+      reward.description = description
+      reward.user_id = self.id
+      reward.save!
+  end
+  
+  def reward_for_winning(description, contestant_id)
+      reward = Reward.new
+      reward.points = 100
+      reward.description = description
+      reward.user_id = self.id
+      reward.contestant_id = contestant_id
+      reward.save!
+  end
+  
+  def reward_for_tie(description, contestant_id)
+      reward = Reward.new
+      reward.points = 50
+      reward.description = description
+      reward.user_id = self.id
+      reward.contestant_id = contestant_id
+      reward.save!
+  end
+  
+  def reward_for_getting_challenge_accepted(description)
+      reward = Reward.new
+      reward.points = 5
+      reward.description = description
+      reward.user_id = self.id
+      reward.save!
+  end
+  
+  def reward_for_creating_contestant(description, contestant_id)
+      reward = Reward.new
+      reward.points = 30
+      reward.description = description
+      reward.user_id = self.id
+      reward.contestant_id = contestant_id
+      reward.save!
   end
   
 end
