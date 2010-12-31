@@ -16,7 +16,7 @@
 
 
 
-    <% fb_connect_async_js Facebooker2.app_id,:cookie=>'false'  do %>    
+    <% fb_connect_async_js  do %>    
       <%= yield :fb_connect%>
 	  FB.Canvas.setAutoResize();
 	  
@@ -82,6 +82,10 @@
 <%= yield  %> 
 
 </div>
+
+<div id="footer"><%=Time.now-@start_time%>s
+	<br/>
+	A Clickonchris production</div>
 
 <script type="text/javascript">
 function logout() {

@@ -14,6 +14,8 @@
 		<th>Rank</th>
 		<th>Sprite Name</th>
 		<th>Wins</th>
+		<th>Losses</th>
+		<th>W/L</th>
 	</tr>
 	<%rows =0%>
 	<%	@leaderboard.each do |contestant| %>
@@ -27,6 +29,12 @@
 		</td>
 		<td>
 			<%=contestant.contests_won%>
+		</td>
+		<td>
+			<%=contestant.total_contests%>
+		</td>
+		<td>
+			<%=contestant.ratio %>
 		</td>
 	</tr>
 	<%	end %>

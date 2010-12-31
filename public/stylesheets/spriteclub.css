@@ -6,6 +6,12 @@ body {
 	text-align:left;
 }
 
+
+#footer {
+	padding-top:10px;
+	text-align:center;
+}
+
 div.mainContainer {
 	padding: 0 20px 0 40px;
 }

@@ -29,4 +29,13 @@ class Contestant < ActiveRecord::Base
     attributes['contests_won']
   end
   
+  def total_contests
+    attributes['total_contests']
+  end
+  
+  def ratio
+    return 0 if total_contests == nil || total_contests == 0
+    if contests_won == nil then attributes['contests_won'] = 0  end
+    return sprintf("%.3f",(contests_won.to_f / total_contests.to_f))
+  end
 end

@@ -21,8 +21,10 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '4d95a45fc63dc292a49749954a059cd2'
+  before_filter :init
   before_filter :set_p3p
   before_filter :ensure_authenticated_to_facebook
+
   
   class SpriteClubAuthError < StandardError; end
   class SpriteClubGenericError < StandardError; end
@@ -101,6 +103,10 @@ class ApplicationController < ActionController::Base
 #we need to set this p3p privacy policy header or facebook connect will never work on IE
 def set_p3p
    response.headers["P3P"]='CP="CAO PSA OUR"'
+end
+
+def init
+  @start_time = Time.now
 end
   
   
