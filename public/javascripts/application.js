@@ -119,9 +119,11 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 				'href': contest_url+'/' }]
 		}
 	}; 
-	//var action_links = [{'text':'Recaption this', 'href':'http://bit.ly/19DTbF'}];
-
-	FB.ui(publish, callback());
+	//put another 200ms delay on this call since the box often just spins
+	setTimeout(function() {
+		FB.ui(publish, callback());	
+	},200);
+	
 }
 
 
