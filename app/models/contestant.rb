@@ -8,9 +8,13 @@ class Contestant < ActiveRecord::Base
            :foreign_key=>'winner_contestant_id'
 
   
-    has_attached_file :photo, :styles => { :small => "150x150>", :medium => "300x300>" },
-                  :url  => "/assets/contestants/:id/:style/:basename.:extension",
-                  :path => ":rails_root/public/assets/contestants/:id/:style/:basename.:extension"
+    has_attached_file :photo, 
+                  :styles => { :small => "150x150>", :medium => "300x300>" },
+                  #:url  => "/assets/contestants/:id/:style/:basename.:extension",
+                  :path => ":attachment/assets/contestants/:id/:style/:basename.:extension",
+                  :storage => :s3,
+                  :s3_credentials => "#{RAILS_ROOT}/config/s3.yml",
+                  :bucket => 'spriteclub-' +Rails.env #eg spriteclub-development, spriteclub-production
   
 
   

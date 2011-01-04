@@ -30,6 +30,8 @@ class ContestantsController < ApplicationController
   
   def create
     
+    logger.info 'bucket is spriteclub-' + Rails.env
+    
     #Doing some decent validation here to make sure that 
     #the user isn't trying to pull any funny stuff
 

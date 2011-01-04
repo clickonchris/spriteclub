@@ -39,9 +39,9 @@ ActiveRecord::Schema.define(:version => 20101231173556) do
     t.integer  "sent_to_user_id"
     t.string   "status"
     t.datetime "expire_date"
-    t.datetime "finish_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "finish_date"
     t.boolean  "is_a_tie"
     t.integer  "length",               :limit => 3
   end
@@ -58,11 +58,11 @@ ActiveRecord::Schema.define(:version => 20101231173556) do
   create_table "users", :force => true do |t|
     t.integer  "facebook_id",          :limit => 8,   :null => false
     t.string   "session_key"
-    t.string   "secret_key"
     t.string   "first_name",           :limit => 100
     t.string   "last_name",            :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "secret_key"
     t.string   "access_token",         :limit => 100
     t.datetime "access_token_expires"
   end
@@ -70,9 +70,9 @@ ActiveRecord::Schema.define(:version => 20101231173556) do
   create_table "votes", :force => true do |t|
     t.integer  "user_id"
     t.integer  "contestant_id"
-    t.integer  "contest_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "contest_id"
   end
 
 end
