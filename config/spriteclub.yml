@@ -6,4 +6,4 @@ test:
   canvas_name: spriteclub-dev
 
 production:
-  canvas_name: spriteclub
+  canvas_name: spriteclub-staging
