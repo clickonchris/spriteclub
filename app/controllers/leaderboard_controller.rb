@@ -17,7 +17,7 @@ class LeaderboardController < ApplicationController
           sql = "select contestants.id, contestants.name, count(contestants.id) as contests_won, finished_contests.total_contests  " + 
                   "FROM contestants, contests, " + 
                         #subquery to get a list of total finished contests per contestant
-                  "    (select contestants.id contestant_id, count(contestants.id)total_contests " + 
+                  "    (select contestants.id as contestant_id, count(contestants.id) as total_contests " + 
                   "    FROM contestants, contestants_contests cc, contests all_contests  " + 
                   "    WHERE contestants.id = cc.contestant_id " + 
                   "    AND cc.contest_id = all_contests.id " + 
