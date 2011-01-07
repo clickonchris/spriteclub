@@ -11,15 +11,17 @@
                 type="My App"
                 content="This is the content attribute">
                 	
-			Challenge Name (optional):<br/>					
-			<%= text_field :contest, :name,:size=>30 %>
-			<br/>
+
 			
 			Select a friend to challenge:
-	        <fb:multi_friend_input name="ids" width="360px" max="1" border_color="#8496ba" /> 
+	        <fb:multi_friend_input name="ids" width="360px" max="1" border_color="#8496ba" />
 			
 			Contest Length:<br/>
-			<%= select :contest, :length, {"1 Day"=>1, "3 Days"=>3 }  %>
+			<%= select :contest, :length, {"1 Day"=>1, "3 Days"=>3 }  %><br/>
+			
+			Challenge tag line (optional e.g. rumble in the jungle gym):<br/>					
+			<%= text_field :contest, :name,:size=>30 %>
+			<br/>
 			
 		
 		<table>

@@ -43,6 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   #map.resources :challenges
   map.resources :contestants
   map.resources :leaderboard
+  map.resources :about
   
   map.spriteclub '',:controller=>"contests",
                     :conditions=>{:canvas=>true}

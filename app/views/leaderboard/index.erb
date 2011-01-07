@@ -31,7 +31,7 @@
 			<%=contestant.contests_won%>
 		</td>
 		<td>
-			<%=contestant.total_contests%>
+			<%=contestant.total_contests.to_i - contestant.contests_won.to_i%>
 		</td>
 		<td>
 			<%=contestant.ratio %>
