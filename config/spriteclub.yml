@@ -5,5 +5,8 @@ development:
 test:
   canvas_name: spriteclub-dev
 
-production:
+staging:
   canvas_name: spriteclub-staging
+
+production:
+  canvas_name: spriteclub
