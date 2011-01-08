@@ -2,6 +2,7 @@ class Contestant < ActiveRecord::Base
   has_and_belongs_to_many :contests
   belongs_to :user, :class_name=>'User', :foreign_key=>'owner_user_id'
   has_many :votes
+  has_many :ratings
   
   has_many :contests_won,
            :class_name=>'Contest',
@@ -29,6 +30,9 @@ class Contestant < ActiveRecord::Base
   end
   
   #virtual attribute to help with our leaderboard query
+  def average_score
+    attributes['average_score']
+  end
   def contests_won
     attributes['contests_won']
   end
@@ -37,9 +41,30 @@ class Contestant < ActiveRecord::Base
     attributes['total_contests']
   end
   
+  def average_score_formatted
+    return "0.000" if average_score == nil || average_score == 0
+    
+  end
+  
   def ratio
-    return 0 if total_contests == nil || total_contests == 0
-    if contests_won == nil then attributes['contests_won'] = 0  end
+    return "0.000" if total_contests == nil || total_contests == 0
     return sprintf("%.3f",(contests_won.to_f / total_contests.to_f))
+  end
+  
+  # this method will get the next contestant for the user to rank
+  # based on the "last" contestant id which is passed in
+  # It basically rotates backwards through all of the contestants
+  # starting with the newest one.
+  def self.get_next_to_rank(last_ranked_id)
+    result =  find :first, 
+                        :conditions=> ["id < ?", last_ranked_id],
+                        :order=> "id DESC"
+                 
+    if result == nil
+      logger.info "next result is nil. starting over from max"
+      result = find :first,
+                         :order=> "id DESC"
+    end
+    return result
   end
 end

@@ -1,0 +1,51 @@
+<style type="text/css">
+td {text-align:center;}
+</style>
+
+<script type="text/javascript">
+	// with jquery register onSelected for each input element on the page to submit the form
+	// maybe we
+</script>
+
+
+<div style="width:100%;text-align:center;">
+	<h3><%=@contestant.name %></h3>
+	<br/>
+	
+	<%= image_tag( @contestant.photo.url( :medium)) %>
+	
+	<p/>
+	<form action="/rating/rate">
+		<input type="hidden" name="rating[contestant_id]" value="<%=@contestant.id%>" />
+		
+		<table cellpadding="0" cellspacing="0" style="margin:auto;">
+			<tr>
+				<td rowspan="2" style="font-size:larger;color:#CAC95E;font-weight:bold;width:70px;text-align:right;" >fugly</td>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+				<td>8</td>
+				<td>9</td>
+				<td>10</td>
+				<td rowspan="2" style="font-size:larger;color:#33AA22;font-weight:bold;">super cute!</td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="rating[score]" value="1" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="2" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="3" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="4" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="5" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="6" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="7" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="8" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="9" onclick="javascript:document.forms[0].submit()" /></td>
+				<td><input type="radio" name="rating[score]" value="10" onclick="javascript:document.forms[0].submit()" /></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<h2 style="text-align:center;">Select a rating to see the next Sprite</h2>

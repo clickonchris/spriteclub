@@ -40,21 +40,25 @@ class ApplicationController < ActionController::Base
       
       @current_user = User.for(facebook_params[:oauth_token], facebook_params[:expires], facebook_params[:user_id])
       session[:facebook_id] = @current_user.facebook_id
-    
+      return
+    end
     #Try to authenticate from the session
-    elsif session[:facebook_id]
+    if session[:facebook_id]
       @current_user = User.find_by_facebook_id(session[:facebook_id])
       
       #make sure the auth token we have is still valid  (I think facebooker2 provides this somehow already but I can't find it)
       logger.info "session auth.  token expires: " + @current_user.access_token_expires.to_s
-      if @current_user.access_token_expires == nil  || (@current_user.access_token_expires != nil && @current_user.access_token_expires.utc < Time.now.utc)
-        top_redirect_to auth_url
+      if @current_user.access_token_expires != nil  && (@current_user.access_token_expires == nil || @current_user.access_token_expires.utc >= Time.now.utc)
+        fb_create_user_and_client(@current_user.access_token, @current_user.access_token_expires, @current_user.facebook_id)
+        return
       end
-      
-      fb_create_user_and_client(@current_user.access_token, @current_user.access_token_expires, @current_user.facebook_id)
-    
+
+      logger.info 'user found in session but access token is expired. checking cookie'
+    end
+
+      return
     #Next try to authenticate from a cookie  
-    elsif (hash_data = fb_cookie_hash_for_app_id(Facebooker2.app_id)) and
+    if (hash_data = fb_cookie_hash_for_app_id(Facebooker2.app_id)) and
           fb_cookie_signature_correct?(fb_cookie_hash_for_app_id(Facebooker2.app_id),Facebooker2.secret) 
       logger.info "cookie auth.  token expires: " + hash_data["expires"]
       @current_user = User.find_by_facebook_id(hash_data["uid"])

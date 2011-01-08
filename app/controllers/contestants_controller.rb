@@ -22,7 +22,7 @@ class ContestantsController < ApplicationController
     @contestant = Contestant.new
     
     #wrap in try/catch?
-    @contestant.contests << Contest.find(params[:contest_id])
+    @contestant.contests << Contest.find(params[:contest_id]) if params[:contest_id]
     
     #session[:user_id] = params[:user_id]
   end
@@ -32,40 +32,45 @@ class ContestantsController < ApplicationController
     
     logger.info 'bucket is spriteclub-' + Rails.env
     
-    #Doing some decent validation here to make sure that 
-    #the user isn't trying to pull any funny stuff
-
-    contest = Contest.find(params[:contest][:id])
-#    secret_key = session[:secret_key]
-#    logger.debug("secret key: " + secret_key)
-#    user = User.find_by_facebook_id(session[:facebook_id])
-    
-    #Make sure that the same user isn't adding two sprites accidentally
-    contest.contestants.each { |c|
-      if (c.user.id == current_user.id)
-        raise SpriteClubGenericError.new("This contest already has a contestant added by you.")
-      end
-    }
-
     @contestant = Contestant.new(params[:contestant])
-    @contestant.contests << contest
+
     @contestant.experience_level =1
     @contestant.total_points =0
     @contestant.user = current_user
+    
+    # if there is a contest id we will link this contestant to the contest
+    if (params[:contest][:id] != nil && params[:contest][:id] != "" )
+      logger.info "contest_id is " + params[:contest][:id]
+      contest = Contest.find(params[:contest][:id])
+      
+      #Make sure that the same user isn't adding two sprites accidentally
+      contest.contestants.each { |c|
+        if (c.user.id == current_user.id)
+          raise SpriteClubGenericError.new("This contest already has a contestant added by you.")
+        end
+      }
+      @contestant.contests << contest
+    end
+
     
     @contestant.save!
     
     current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
     
-    #check if this is the user which is accepting the challenge
-    if contest.sent_to_user_id == current_user.id
-      contest.kickoff
-      current_user.reward_for_accepting("Accepted challenge: " + contest.name)
-      redirect_to "/contests/" + contest.id.to_s and return
+    #redirect the user to the right place if we have created a contest
+    if (params[:contest][:id] != nil && params[:contest][:id] != "" )
+      #check if this is the user which is accepting the challenge
+      if contest.sent_to_user_id == current_user.id
+        contest.kickoff
+        current_user.reward_for_accepting("Accepted challenge: " + contest.name)
+        redirect_to "/contests/" + contest.id.to_s and return
+      end
+      
+      #redirect back to contest page
+      redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s and return
+    else
+      redirect_to "/rating?contestant_id= " + @contestant.id.to_s and return
     end
-    
-    #redirect back to contest page
-    redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s 
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end

@@ -24,7 +24,13 @@
   </p>
   <p>
   	<fb:editor-custom>
-  	<%= f.submit "Create Sprite and Submit Challenge!", :class=>'editorkit_button action' %>
+  	<%	if params[:contest_id]
+			buttontext = "Create Sprite and Submit Challenge!"
+		else
+			buttontext = "Create Sprite!"
+		end
+	%>
+  	<%= f.submit buttontext, :class=>'editorkit_button action' %>
 	</fb:editor-custom>
   </p>
 <% end %>

@@ -1,6 +1,6 @@
 <h1><%= @contestant.name %></h1>
 
-<%= image_tag @contestant.photo.url %>
+<%= image_tag( @contestant.photo.url( :medium )) %>
 <% if @pending_contests.length > 0 %>
 	<h2>Pending Contests</h2>
 	<% for contest in @pending_contests %>

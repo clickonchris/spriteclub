@@ -60,8 +60,13 @@
 	                <li class="first">
 	                    <a onmousedown="" onclick="return true;" href="/contests"
 						<% if selected=='contests'%>class="selected"<%end%>
-						>Active Face-Offs</a>
+						>Home</a>
 	                </li>
+					<li>
+						<a href="/rating" 
+						<% if selected=='rating'%>class="selected"<%end%>
+						>Rate Sprites
+						</a>
 					<li>
 						<a href="/leaderboard"
 						<% if selected=='leaderboard'%>class="selected"<%end%>
@@ -95,7 +100,7 @@
 
 <div id="footer"><%=Time.now-@start_time%>s
 	<br/>
-	A Christopher G Johnson production</div>
+	a Christopher G Johnson production</div>
 
 <script type="text/javascript">
 function logout() {

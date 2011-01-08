@@ -1,4 +1,12 @@
-<br />
+
+<% if @contestants.size == 0%>
+<div style="border:1px solid #339900;background-color:#DDFFDD;padding:10px">
+	Click 'Create New Sprite' to create a profile for your kid
+</div>
+<% end%>
+<input type="button" value="Create New Sprite" onclick="window.location='<%=url_for :action=>'new' %>'" />
+<p/>
+
 
 <% for contestant in @contestants %>
 	<div class="gender<%=contestant.gender%>">

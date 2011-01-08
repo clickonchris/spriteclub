@@ -1,6 +1,6 @@
 <style type="text/css">
 	
-	table {border:1px solid #BBBBBB;}
+	table {border:1px solid #BBBBBB; margin:auto;}
 	td {border:1px solid #BBBBBB; }
 	th {border:1px solid #BBBBBB;}
 	
@@ -13,6 +13,7 @@
 	<tr>
 		<th>Rank</th>
 		<th>Sprite Name</th>
+		<th>Avg Rating</th>
 		<th>Wins</th>
 		<th>Losses</th>
 		<th>W/L</th>
@@ -27,8 +28,12 @@
 			<%=contestant.name%>
 			</a>
 		</td>
+		<td align="right">
+			<%=(contestant.average_score != nil && contestant.average_score != 0 ? sprintf("%.3f",contestant.average_score) : "0.000" ) %>
+			<%#= contestant.average_score unless (contestant.average_score == nil || contestant.average_score == 0) then "0.000" %>
+		</td>
 		<td>
-			<%=contestant.contests_won%>
+			<%=(contestant.contests_won ? contestant.contests_won : "0")%>
 		</td>
 		<td>
 			<%=contestant.total_contests.to_i - contestant.contests_won.to_i%>

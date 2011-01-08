@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101231173556) do
+ActiveRecord::Schema.define(:version => 20110108061212) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name",               :limit => 200
@@ -46,6 +46,14 @@ ActiveRecord::Schema.define(:version => 20101231173556) do
     t.integer  "length"
   end
 
+  create_table "ratings", :force => true do |t|
+    t.integer  "score"
+    t.integer  "contestant_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "rewards", :force => true do |t|
     t.string   "description",   :limit => 512
     t.integer  "points"
@@ -57,13 +65,13 @@ ActiveRecord::Schema.define(:version => 20101231173556) do
 
   create_table "users", :force => true do |t|
     t.integer  "facebook_id",          :limit => 8,   :null => false
-    t.string   "session_key"
+    t.string   "session_key",          :limit => 128
     t.string   "secret_key"
     t.string   "first_name",           :limit => 100
     t.string   "last_name",            :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "access_token",         :limit => 100
+    t.string   "access_token",         :limit => 128
     t.datetime "access_token_expires"
   end
 

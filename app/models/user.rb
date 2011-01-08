@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :challenges_received, :class_name=>'Contest', :foreign_key=>'sent_to_user_id'
   has_many :contestants, :class_name=>'Contestant', :foreign_key=>'owner_user_id'
   has_many :rewards
+  has_many :ratings
   
   def connected?
     !facebook_id.blank?
@@ -67,7 +68,14 @@ class User < ActiveRecord::Base
   end
   
   def reward_for_voting(description)
-    
+      reward = Reward.new
+      reward.points = 1
+      reward.description = description
+      reward.user_id = self.id
+      reward.save!
+  end
+  
+    def reward_for_rating(description)
       reward = Reward.new
       reward.points = 1
       reward.description = description
