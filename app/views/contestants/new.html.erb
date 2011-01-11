@@ -30,10 +30,19 @@
 			buttontext = "Create Sprite!"
 		end
 	%>
-  	<%= f.submit buttontext, :class=>'editorkit_button action'  %>
+  	<%= f.submit buttontext, :id=>'submit', :class=>'editorkit_button action', :onclick=>'javascript:submitNewSprite();'  %>
 	<img src="/images/ajax.gif" id="ajax_img" style="display:none;" />
 	</fb:editor-custom>
   </p>
 <% end %>
 
-Back
+<script type="text/javascript">
+	/**
+	 * disables the button and shows a spinny ajax loader while uploading the picture
+	 */
+	function submitNewSprite() {
+		$('#ajax_img').toggle();
+		$('#submit').attr('disabled', true);
+	}
+	
+</script>

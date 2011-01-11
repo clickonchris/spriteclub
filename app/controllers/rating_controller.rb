@@ -40,6 +40,9 @@ class RatingController < ApplicationController
     
     @contestant = Contestant.get_next_to_rank(rating.contestant.id)
     
+    #put the contestant id we just ranked into the session 
+    session[:last_ranked_contestant] = rating.contestant.id
+    
     render :index
   end
 
