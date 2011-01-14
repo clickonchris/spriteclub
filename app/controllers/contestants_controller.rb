@@ -53,23 +53,26 @@ class ContestantsController < ApplicationController
     end
 
     
-    @contestant.save!
+    if @contestant.save
     
-    current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
-    
-    #redirect the user to the right place if we have created a contest
-    if (params[:contest][:id] != nil && params[:contest][:id] != "" )
-      #check if this is the user which is accepting the challenge
-      if contest.sent_to_user_id == current_user.id
-        contest.kickoff
-        current_user.reward_for_accepting("Accepted challenge: " + contest.name)
-        redirect_to "/contests/" + contest.id.to_s and return
-      end
+      current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
       
-      #redirect back to contest page
-      redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s and return
+      #redirect the user to the right place if we have created a contest
+      if (params[:contest][:id] != nil && params[:contest][:id] != "" )
+        #check if this is the user which is accepting the challenge
+        if contest.sent_to_user_id == current_user.id
+          contest.kickoff
+          current_user.reward_for_accepting("Accepted challenge: " + contest.name)
+          redirect_to "/contests/" + contest.id.to_s and return
+        end
+        
+        #redirect back to contest page
+        redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s and return
+      else
+        redirect_to "/rating?contestant_id= " + @contestant.id.to_s and return
+      end
     else
-      redirect_to "/rating?contestant_id= " + @contestant.id.to_s and return
+      render :action=>"new"
     end
     
     #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true

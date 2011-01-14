@@ -6,24 +6,28 @@ Welcome <%=@_current_facebook_user.name unless @_current_facebook_user == nil %>
 
 <div class="faceoff_list">
 <h2>Active Face-Offs</h2>
-<table>
+<table class="active_contests">
   <tr>
-  	<th width="200px">Face-Off Name</th>
-    <!--<th>Received by user</th>-->
 	<th width="175px">Contestants</th>
+  	<th width="200px"></th>
+    <!--<th>Received by user</th>-->
     <th width="200px">Time Remaining</th>
   </tr>
 
 <% for contest in @contests %>
   <tr>
-  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %>:</td>
 	<td>
-		<% for i in (0..1) %>
-			<!-- put tiny images of contestants here -->
-			<%=contest.contestants[i].name%>
-			<% if i <1 %> vs. <%end%>
-		<%end%>
+		<a href="<%=url_for :action=>'show', :id=>contest.id %>">
+			<% for i in (0..1) %>
+				<!-- put tiny images of contestants here -->
+				<%=contest.contestants[i].name%>
+				<% if i <1 %> vs. <%end%>
+			<%end%>
+		</a>
+
 	</td>
+  	<td><%=contest.name%></td>
+
     <td><%=h contest.time_remaining %></td>
     <td></td>
 
@@ -40,24 +44,28 @@ Welcome <%=@_current_facebook_user.name unless @_current_facebook_user == nil %>
 
 <div class="faceoff_list">
 <h2>Recently Ended Face-Offs</h2>
-<table>
+<table class="old_contests">
   <tr>
-  	<th width="200px">Face-Off Name</th>
+  	<th width="175px">Contestants</th>
+  	<th width="200px"></th>
     <!--<th>Received by user</th>-->
-	<th width="175px">Contestants</th>
     <th width="400px">Result</th>
   </tr>
 
 <% for contest in @recently_ended_contests %>
   <tr>
-  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %>:</td>
 	<td>
+		<a href="<%=url_for :action=>'show', :id=>contest.id %>">
 		<% for i in (0..1) %>
 			<!-- put tiny images of contestants here -->
 			<%=contest.contestants[i].name%>
 			<% if i <1 %> vs. <%end%>
 		<%end%>
+		</a>
+
 	</td>
+  	<td><%= link_to contest.name, :action=>'show',:id=>contest.id %>:</td>
+
     <td><%=h contest.result_text %></td>
     <td></td>
 

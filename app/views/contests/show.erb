@@ -104,12 +104,15 @@
 <% if @prompt_accept_challenge != nil %>
 
 	<div id="dialog" style="display:none" >
-		Your friend thinks their kid is better than your kid.  
+		<%= image_tag( @contest.contestants[0].photo.url( :small), :style=>"float:left") %>
+		<div style="margin-left:20px">
+		Your friend thinks their sprite is better than your sprite.  
 		The credibility of your legacy is at stake.  What will you do?
 		<br/><br/>
 		
-		<input type="button" value="Nothing.  I am too scared"  id="accept_challenge_cancel" />
-		<input type="button" value="Accept Challenge" id="accept_challenge_ok" style="float:right"  />
+		<input type="button" value="Accept Challenge" id="accept_challenge_ok" style="margin-left:20px"   />
+		</div>
+
 
 	</div>
 	<script>

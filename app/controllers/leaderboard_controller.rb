@@ -14,7 +14,15 @@ class LeaderboardController < ApplicationController
           #Then, the losses are the total contests - contests won
           #then we can compute win/loss ratio
           #this query is tested working on mysql and postgresql
-          sql = "Select contestants.id, contestants.name, average_ratings.average_score, win_totals.wins as contests_won, finished_contests.total_contests    
+          sql = "Select contestants.id,
+                       contestants.name, 
+                       contestants.photo_file_name,
+                       contestants.photo_content_type,
+                       contestants.photo_file_size,
+                       contestants.photo_updated_at,
+                       average_ratings.average_score, 
+                       win_totals.wins as contests_won, 
+                       finished_contests.total_contests    
                   FROM contestants 
                     --get the average rating per contestant
                     LEFT OUTER JOIN

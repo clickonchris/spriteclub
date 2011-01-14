@@ -106,12 +106,11 @@ function promptPublish(contest_url,photo_url,post_to_user_id) {
 		method: 'stream.publish',
 		target_id: post_to_user_id,
 		//display: 'iframe',
-		message: 'I think my kid is cuter than yours.  Let\'s find out', 
+		message: 'Think your little one is pretty cute?  You are invited you to take the Sprite Club challenge.  Accept the invite and find if you are right.', 
 		attachment: { 
-		    name: 'Sprite Club Challenge', 
-		    caption: '{*actor*} Thinks their kid is cuter than your kid', 
-		    description: ('Sprite Club is a social application where users children(sprites) '+
-							'compete for rank as the best sprite on the internet'),
+		    name: 'Sprite Club', 
+		    caption: '{*actor*} has issued you a challenge.  Click here to accept.', 
+		    description: ('Sprite Club is a social network where your little ones (Sprites) compete for rank as the most celebrated Sprite on the web.'),
 			href: contest_url +'/',		
 		    media: [{ 
 		        'type': 'image', 

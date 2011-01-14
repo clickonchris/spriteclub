@@ -1,14 +1,16 @@
-<h1>Create New Sprite Profile</h1>
+<h1>Create Your Sprite Profile</h1>
 
 <% form_for :contestant,@contestant,
-					 :html => { :multipart => true },
+					 :html => { :multipart => true, :id=>"create_sprite_form" },
 					 :url=> { :action=>'create'} do |f| %>		
-	<%= hidden_field :contest, :id, :value=>params[:contest_id] %>			 
+	<%= hidden_field :contest, :id, :value=>params[:contest_id] %>	
+	
+	<%= f.error_messages %>		 
 	<fb:editor-custom>
 		<table>
 			<tr>
 				<td>Sprite Name:</td>
-				<td><%= f.text_field :name %></td>
+				<td><%= f.text_field :name %>*</td>
 			</tr>
 			<tr>
 				<td>Gender:</td>
@@ -16,7 +18,7 @@
 			</tr>
 			<tr>
 				<td>Photo:</td>
-				<td><%= f.file_field :photo %></td>
+				<td><%= f.file_field :photo %><br/> (limit 5 Mb.  Need to compress a photo?  try <a href="http://www.picresize.com" target="new">picresize.com</a>)</td>
 			</tr>
 		</table>		 
 
@@ -30,7 +32,7 @@
 			buttontext = "Create Sprite!"
 		end
 	%>
-  	<%= f.submit buttontext, :id=>'submit', :class=>'editorkit_button action', :onclick=>'javascript:submitNewSprite();'  %>
+  	<input type="button" class='editorkit_button action' onclick='javascript:submitNewSprite();' value="Create Sprite!"  />
 	<img src="/images/ajax.gif" id="ajax_img" style="display:none;" />
 	</fb:editor-custom>
   </p>
@@ -43,6 +45,7 @@
 	function submitNewSprite() {
 		$('#ajax_img').toggle();
 		$('#submit').attr('disabled', true);
+		$('form:first').submit();
 	}
 	
 </script>

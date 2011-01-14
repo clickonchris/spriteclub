@@ -1,8 +1,6 @@
 <h1>New challenge</h1>
 
-
-
-	<fb:serverFbml id="my-request-form" style="width:740px;" >
+	<fb:serverFbml id="my-request-form" style="width:740px;overflow:hidden;" >
 	  <script type="text/fbml">
 	    <fb:fbml>
 	    	<fb:request-form
@@ -11,7 +9,10 @@
                 type="My App"
                 content="This is the content attribute">
                 	
-
+			<style type="text/css">
+				input { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+				
+			</style>
 			
 			Select a friend to challenge:
 	        <fb:multi_friend_input name="ids" width="360px" max="1" border_color="#8496ba" />
@@ -56,14 +57,3 @@
 	    </fb:fbml>
 	  </script>
 	</fb:serverFbml>
-<% form_for :contest,@contest, :url=>contests_path, :canvas=>false do |f| %>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-<% end %>

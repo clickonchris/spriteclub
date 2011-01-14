@@ -1,5 +1,5 @@
 <!doctype html >
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 	<%= stylesheet_link_tag "spriteclub" %>
 	<link type="text/css" href="/stylesheets/smoothness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />	
@@ -38,7 +38,7 @@
 	    } else {
 	      // The user has logged out or removed permissions to this app. The cookie has been cleared
 		  // If the user is still logged into facebook but has removed permissions
-		  alert('user logged out.  redirecting');
+		  alert('You have been logged out of this session');
 		  logout();
 	    }
 	  });
@@ -52,8 +52,9 @@
 <div class="mainContainer">
 <%=link_to image_tag( "sc_logo.gif"),:controller=>'contests', :action=>'index' %>
 
+	<p><%= flash[:notice] %></p>
 
-	<div class="tabs clearfix" style="height:19xp;">
+	<div class="tabs clearfix" style="height:19xp;border-radius:0px">
 	    <center>
 	        <div class="left_tabs">
 	            <ul id="toggle_tabs_unused" class="toggle_tabs">
