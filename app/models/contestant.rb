@@ -20,7 +20,7 @@ class Contestant < ActiveRecord::Base
   validates_presence_of :name
   
   validates_attachment_presence :photo
-  validates_attachment_size :photo, :less_than => 1.megabytes, :message=>"file size must be less than 5 Mb"
+  validates_attachment_size :photo, :less_than => 5.megabytes, :message=>"file size must be less than 5 Mb"
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg']
    
    
