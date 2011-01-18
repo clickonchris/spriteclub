@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110108061212) do
+ActiveRecord::Schema.define(:version => 20110118003152) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name",               :limit => 200
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20110108061212) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.string   "gender",             :limit => 1
+    t.datetime "deleted_at"
   end
 
   create_table "contestants_contests", :id => false, :force => true do |t|
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20110108061212) do
     t.datetime "updated_at"
     t.boolean  "is_a_tie"
     t.integer  "length"
+    t.datetime "deleted_at"
   end
 
   create_table "ratings", :force => true do |t|

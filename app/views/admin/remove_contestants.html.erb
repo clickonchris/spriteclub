@@ -1,0 +1,21 @@
+<h1>Admin#remove_contestants</h1>
+
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Image</th>
+			<th></th>
+		</tr>
+<% for contestant in @contestants %>
+		<tr>
+			<td ><%=contestant.name%></td>
+			<td><%=image_tag( contestant.photo.url( :small)) %>	</td>
+		<td valign="middle">
+			<a href="<%= url_for :action=>'destroy_contestant', :contestant_id=>contestant.id %>" 
+				class="editorkit"
+				onclick="javascript:confirm('are you sure you want to delete <%=contestant.name %>?')">DELETE</a>
+		</td>
+
+<% end %>
+
+	</table>

@@ -45,6 +45,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :leaderboard
   map.resources :about
   
+  #I need to be able to POST to remove_contestants and GET to destry_contestant
+  map.connect 'admin/remove_contestants', :controller=>'admin', :action=>'remove_contestants'
+  map.connect 'admin/destroy_contestant', :controller=>'admin', :action=>'destroy_contestant'
+  
   map.spriteclub '',:controller=>"contests",
                     :conditions=>{:canvas=>true}
                     

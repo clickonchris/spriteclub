@@ -45,6 +45,7 @@ class LeaderboardController < ApplicationController
                       AND all_contests.status = 'FINISHED'   
                       GROUP BY contestants.id) as finished_contests
                     ON contestants.id = finished_contests.contestant_id
+                  WHERE deleted_at is null
                   ORDER BY average_score DESC NULLS LAST"
                                   
       @leaderboard = Contestant.find_by_sql(sql)
