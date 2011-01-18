@@ -1,3 +1,4 @@
 rails -v 2.3.5
 pg
 aws-s3 -v '0.6.2'
+acts_as_paranoid -v 0.3.1

@@ -3,12 +3,6 @@ class AdminController < ApplicationController
   def remove_contestants
     @contestants = Contestant.find :all
   end
-  
-  def show
-    #not sure why this needs to exist
-  end
-  
-
 
   #(soft) delete a contestant and their associated contests
   def destroy_contestant
