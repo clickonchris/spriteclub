@@ -31,12 +31,28 @@ class ContestantsController < ApplicationController
   def create
     
     logger.info 'bucket is spriteclub-' + Rails.env
-    
+    @contest_id = params[:contest][:id]
     @contestant = Contestant.new(params[:contestant])
 
     @contestant.experience_level =1
     @contestant.total_points =0
     @contestant.user = current_user
+
+    if @contestant.save
+    
+      
+
+      render :action=>"crop"
+    else
+      render :action=>"new"
+    end
+    
+    #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
+  end
+  
+  # This method will get invoked after the cropping screen
+  def update
+    @contestant = Contestant.find(params[:contestant][:id])
     
     # if there is a contest id we will link this contestant to the contest
     if (params[:contest][:id] != nil && params[:contest][:id] != "" )
@@ -51,31 +67,38 @@ class ContestantsController < ApplicationController
       }
       @contestant.contests << contest
     end
-
     
-    if @contestant.save
-    
-      current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
-      
-      #redirect the user to the right place if we have created a contest
-      if (params[:contest][:id] != nil && params[:contest][:id] != "" )
-        #check if this is the user which is accepting the challenge
-        if contest.sent_to_user_id == current_user.id
-          contest.kickoff
-          current_user.reward_for_accepting("Accepted challenge: " + contest.name)
-          redirect_to "/contests/" + contest.id.to_s and return
-        end
+    #saves the contestant.  updated attributes include cropping parameters.  This will crop the photo
+    if @contestant.update_attributes(params[:contestant])
+      if params[:contestant][:photo].blank?
+        flash[:notice] = "Successfully updated contestant."
         
-        #redirect back to contest page
-        redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s and return
+        current_user.reward_for_creating_contestant("Created Sprite: " + @contestant.name, @contestant.id)
+
+        #now figure out where to redirect the user based on the scenario
+
+        #redirect the user to the right place if we have created a contest
+        if (params[:contest][:id] != nil && params[:contest][:id] != "" )
+          #check if this is the user which is accepting the challenge
+          if contest.sent_to_user_id == current_user.id
+            contest.kickoff
+            current_user.reward_for_accepting("Accepted challenge: " + contest.name)
+            redirect_to "/contests/" + contest.id.to_s and return
+          end
+          #redirect back to contest page
+          redirect_to "/contests/" + contest.id.to_s + "?prompt_publish_contestant_id=" +@contestant.id.to_s and return
+        else
+          # create new sprite
+          redirect_to "/rating?contestant_id= " + @contestant.id.to_s and return
+        end
+        # create new challenge
+        # accept challenge
       else
-        redirect_to "/rating?contestant_id= " + @contestant.id.to_s and return
+        render :action => "crop"
       end
     else
-      render :action=>"new"
+      render :action => 'edit'
     end
-    
-    #redirect_to :action => "show", :id => @contestant.id, :send_notification=> true
   end
   
   def show
@@ -116,7 +139,9 @@ class ContestantsController < ApplicationController
         @wlRatio= @wins/(@wins+@losses)
         logger.info "ratio is " + @wlRatio.to_s
       end
-        
-    
+  end
+  
+  def associate_with_contest
+
   end
 end

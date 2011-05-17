@@ -11,7 +11,10 @@ class Contestant < ActiveRecord::Base
 
   
     has_attached_file :photo, 
-                  :styles => { :small => "150x150>", :medium => "300x300>" },
+                  :styles => { :small => "150x150#", 
+                               :medium => "300x300>", 
+                               :large=>"500x500>" },
+                  :processors => [:cropper],
                   #:url  => "/assets/contestants/:id/:style/:basename.:extension",
                   :path => ":attachment/assets/contestants/:id/:style/:basename.:extension",
                   :storage => :s3,
@@ -23,6 +26,22 @@ class Contestant < ActiveRecord::Base
   validates_attachment_presence :photo
   validates_attachment_size :photo, :less_than => 5.megabytes, :message=>"file size must be less than 5 Mb"
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png', 'image/gif', 'image/pjpeg']
+  
+  after_update :reprocess_photo, :if => :cropping?
+  
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+  
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+    
+  def photo_geometry(style = :original)
+    @geometry ||= {}
+    #TODO: encode this url
+    @geometry[style] ||= Paperclip::Geometry.from_file photo.to_file(style)
+  end
+  
+
    
    
   #convenience method to tell us how many votes some contestant has for some contest 
@@ -68,4 +87,11 @@ class Contestant < ActiveRecord::Base
     end
     return result
   end
+  
+  private
+  
+  def reprocess_photo
+    photo.reprocess!
+  end
+
 end

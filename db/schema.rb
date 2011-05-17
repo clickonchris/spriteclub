@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(:version => 20110118003152) do
 
   create_table "users", :force => true do |t|
     t.integer  "facebook_id",          :limit => 8,   :null => false
-    t.string   "session_key",          :limit => 128
+    t.string   "session_key"
     t.string   "secret_key"
     t.string   "first_name",           :limit => 100
     t.string   "last_name",            :limit => 100
