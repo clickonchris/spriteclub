@@ -1,0 +1,34 @@
+# The api key, secret key, and canvas page name are required to get started
+# Tunnel configuration is only needed if you are going to use the facebooker:tunnel Rake tasks
+# Your callback url in Facebook should be set to http://public_host:public_port
+# If you're building a Facebook connect site, 
+#    change the value of set_asset_host_to_callback_url to false
+# To develop for the new profile design, add the following key..
+# api: new
+# remove the key or set it to anything else to use the old facebook design.
+# This should only be necessary until the final version of the new profile is released.
+
+#  If you want the staging or production keys I might be willing to hand them over.  Email me - chris@clickonchris.com
+
+development:
+  app_id: 157956263702
+  secret: b060cd2719459085c14073aa222d36d3
+  api_key: a3a60d6b7e8f89f472e3991a80dc4b5a
+
+    
+
+test:
+  app_id: 157956263702
+  secret: b060cd2719459085c14073aa222d36d3
+  api_key: a93ff32decd1d51250fd1d173911b43d
+
+
+staging:
+  app_id: 178462422176353
+  secret: 
+  api_key: 
+
+production:
+  app_id: 138592869726
+  secret: 
+  api_key: 

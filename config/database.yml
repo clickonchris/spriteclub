@@ -1,0 +1,64 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+#
+# Install the MySQL driver:
+#   gem install mysql
+# On Mac OS X:
+#   sudo gem install mysql -- --with-mysql-dir=/usr/local/mysql
+# On Mac OS X Leopard:
+#   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
+#       This sets the ARCHFLAGS environment variable to your native architecture
+# On Windows:
+#   gem install mysql
+#       Choose the win32 build.
+#       Install MySQL and put its /bin directory on your path.
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+#development:
+#  adapter: mysql
+#  encoding: utf8
+#  database: spriteclub_development
+#  pool: 5
+#  username: root
+#  password: password
+#  host: localhost
+  
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: spriteclub_development
+  username: postgres
+  password:
+  host: localhost
+  port: 5432
+
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  adapter: mysql
+  encoding: utf8
+  database: spriteclub_test
+  pool: 5
+  username: root
+  password:
+  host: localhost
+
+staging: 
+  encoding: unicode
+  adapter: postgresql
+  username: qusoceuspe
+  port: 5432
+  host: ec2-50-16-245-61.compute-1.amazonaws.com
+  database: qusoceuspe
+  password: f5lxx1zz5pnorynqglhzmsp34
+
+production: 
+  encoding: unicode
+  adapter: postgresql
+  username: qyphbnazuv
+  port: 5432
+  host: ec2-50-16-245-53.compute-1.amazonaws.com
+  database: qyphbnazuv
+  password: f5lxx1zz5pnorynqglhzmsp34
